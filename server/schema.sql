@@ -14,6 +14,15 @@ CREATE TABLE
   );
 
 CREATE TABLE
+  session (
+    session_id SERIAL PRIMARY KEY,
+    account_id INTEGER,
+    session VARCHAR(255) UNIQUE,
+    expires_timestamp BIGINT,
+    CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
+  );
+
+CREATE TABLE
   project (
     project_id SERIAL PRIMARY KEY,
     account_id INTEGER,
@@ -21,7 +30,7 @@ CREATE TABLE
     description TEXT,
     creation_date DATE,
     last_edited_timestamp BIGINT,
-    CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id)
+    CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
   );
 
 CREATE TABLE
