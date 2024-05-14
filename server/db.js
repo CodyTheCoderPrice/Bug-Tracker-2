@@ -1,5 +1,4 @@
-import pg from 'pg';
-const { Pool } = pg;
+const Pool = require('pg').Pool;
 
 const env = process.env.NODE_ENV || 'development';
 
