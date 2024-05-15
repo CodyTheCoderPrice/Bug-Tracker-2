@@ -11,16 +11,16 @@ CREATE TABLE
     hash_pass VARCHAR(255),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
-    join_date DATE,
-    last_edited_timestamp BIGINT
+    join_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    last_edited timestamptz NOT NULL DEFAULT now()
   );
 
 CREATE TABLE
-  session (
-    session_id SERIAL PRIMARY KEY,
+  token (
+    token_id SERIAL PRIMARY KEY,
     account_id INTEGER,
-    session VARCHAR(255) UNIQUE,
-    expires_timestamp BIGINT,
+    token VARCHAR(255) UNIQUE,
+    expires timestamptz NOT NULL DEFAULT now() + INTERVAL '30 days',
     CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
   );
 
@@ -30,8 +30,8 @@ CREATE TABLE
     account_id INTEGER,
     name VARCHAR(255),
     description TEXT,
-    creation_date DATE,
-    last_edited_timestamp BIGINT,
+    creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    last_edited timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
   );
 
@@ -75,10 +75,10 @@ CREATE TABLE
     location TEXT,
     priority_id SMALLINT NOT NULL,
     status_id SMALLINT NOT NULL,
-    creation_date DATE,
+    creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
     due_date DATE,
     completion_date DATE,
-    last_edited_timestamp BIGINT,
+    last_edited timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES project (project_id) ON DELETE CASCADE,
     CONSTRAINT fk_priority FOREIGN KEY (priority_id) REFERENCES priority (priority_id) ON DELETE SET NULL,
     CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status (status_id) ON DELETE SET NULL
@@ -89,7 +89,7 @@ CREATE TABLE
     comment_id SERIAL PRIMARY KEY,
     bug_id INTEGER,
     description TEXT,
-    creation_date DATE,
-    last_edited_timestamp BIGINT,
+    creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    last_edited timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT fk_bug FOREIGN KEY (bug_id) REFERENCES bug (bug_id) ON DELETE CASCADE
   );

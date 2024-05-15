@@ -1,14 +1,15 @@
 const express = require('express');
 const { routes } = require('./routes');
+
 const app = express();
 
-//middleware
+// Middleware
 app.use(express.json());
 
 // Must be after middleware
 app.use(routes);
 
-app.route('/api/hello').get((req, res) => {
+app.route('/api/test').get((req, res) => {
 	return res.sendStatus(200);
 });
 

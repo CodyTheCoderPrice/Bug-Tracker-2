@@ -1,3 +1,10 @@
+const {
+	accountPasswordMinLen,
+	accountPasswordMaxLen,
+	accountNameMinLen,
+	accountNameMaxLen,
+} = require('../constants');
+
 const registerAccountValidationSchema = {
 	email: {
 		notEmpty: { errorMessage: 'Email cannot be empty' },
@@ -8,24 +15,24 @@ const registerAccountValidationSchema = {
 		notEmpty: { errorMessage: 'Password cannot be empty' },
 		isString: { errorMessage: 'Password must be a string' },
 		isLength: {
-			options: { min: 6, max: 30 },
-			errorMessage: 'password must be 6-30 characters',
+			options: { min: accountPasswordMinLen, max: accountPasswordMaxLen },
+			errorMessage: `password must be ${accountPasswordMinLen}-${accountPasswordMaxLen} characters`,
 		},
 	},
 	first_name: {
 		notEmpty: { errorMessage: 'First name cannot be empty' },
 		isString: { errorMessage: 'First name must be a string' },
 		isLength: {
-			options: { min: 1, max: 35 },
-			errorMessage: 'First name must be 1-35 characters',
+			options: { min: accountNameMinLen, max: accountNameMaxLen },
+			errorMessage: `First name must be ${accountNameMinLen}-${accountNameMaxLen} characters`,
 		},
 	},
 	last_name: {
 		notEmpty: { errorMessage: 'Last name cannot be empty' },
 		isString: { errorMessage: 'Last name must be a string' },
 		isLength: {
-			options: { min: 1, max: 35 },
-			errorMessage: 'Last name must be 1-35 characters',
+			options: { min: accountNameMinLen, max: accountNameMaxLen },
+			errorMessage: `Last name must be ${accountNameMinLen}-${accountNameMaxLen} characters`,
 		},
 	},
 };
