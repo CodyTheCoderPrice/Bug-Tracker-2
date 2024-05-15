@@ -1,3 +1,4 @@
+require('dotenv').config();
 const Pool = require('pg').Pool;
 
 const env = process.env.NODE_ENV || 'development';
@@ -14,7 +15,7 @@ let connectionString = {
 if (env === 'development') {
 	connectionString = {
 		user: 'postgres',
-		password: 'PostgresEasyPassword',
+		password: process.env.POSTGRES_PASSWORD,
 		host: 'localhost',
 		port: 5432,
 		database: 'bugtracker',

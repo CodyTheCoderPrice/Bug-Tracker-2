@@ -2,6 +2,8 @@ DROP DATABASE IF EXISTS bugtracker;
 
 CREATE DATABASE bugtracker;
 
+\c bugtracker;
+
 CREATE TABLE
   account (
     account_id SERIAL PRIMARY KEY,
