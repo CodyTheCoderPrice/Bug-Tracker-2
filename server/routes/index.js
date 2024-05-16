@@ -3,6 +3,6 @@ const { accountRouter } = require('./accounts');
 
 const router = Router();
 
-router.use(accountRouter);
+router.use('/api/v1/account', accountRouter);
 
 module.exports = { routes: router };

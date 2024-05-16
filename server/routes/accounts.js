@@ -6,26 +6,20 @@ const {
 } = require('express-validator');
 const pool = require('../db');
 const { hashPassword, comparePassword } = require('../utils/password.js');
+const jwt = require('jsonwebtoken');
 const registerAccountValidationSchema = require('../validation/accounts/registerSchema.js');
 const loginAccountValidationSchema = require('../validation/accounts/loginScema.js');
+const { getEverythingForAccount } = require('../utils/queries.js');
 
 const router = Router();
-
-router.route('/api/error').post(async (req, res) => {
-	try {
-		const shouldThrowError = await pool.query('SELECT * FROM absentTable');
-	} catch (err) {
-		console.error(err.message);
-		return res.sendStatus(503);
-	}
-});
 
 //==================
 // Register account
 //==================
-router
-	.route('/api/account/register')
-	.post(checkSchema(registerAccountValidationSchema), async (req, res) => {
+router.post(
+	'/register',
+	checkSchema(registerAccountValidationSchema),
+	async (req, res) => {
 		const result = validationResult(req);
 		if (!result.isEmpty()) {
 			return res.status(400).send({ errors: result.array() });
@@ -39,7 +33,9 @@ router
 			emailIsActive =
 				(
 					await pool.query(
-						'SELECT * FROM account WHERE LOWER(email) = LOWER($1)',
+						`SELECT *
+						   FROM account
+						  WHERE LOWER(email) = LOWER($1)`,
 						[email]
 					)
 				).rowCount > 0;
@@ -55,7 +51,7 @@ router
 
 		const hash_pass = hashPassword(password);
 		try {
-			const newAccount = await pool.query(
+			await pool.query(
 				`INSERT INTO account (email, hash_pass, first_name, last_name)
 						VALUES($1, $2, $3, $4)
 							RETURNING account_id`,
@@ -66,14 +62,16 @@ router
 		} catch (err) {
 			return res.status(503).json({ success: false, msg: err.message });
 		}
-	});
+	}
+);
 
 //===============
 // Login account
 //===============
-router
-	.route('/api/account/login')
-	.post(checkSchema(loginAccountValidationSchema), async (req, res) => {
+router.post(
+	'/login',
+	checkSchema(loginAccountValidationSchema),
+	async (req, res) => {
 		const result = validationResult(req);
 		if (!result.isEmpty()) {
 			return res.status(400).send({ errors: result.array() });
@@ -85,7 +83,9 @@ router
 		let idAndHashPass;
 		try {
 			idAndHashPass = await pool.query(
-				`SELECT account_id, hash_pass FROM account WHERE LOWER(email) = LOWER($1)`,
+				`SELECT account_id, hash_pass
+				   FROM account
+					WHERE LOWER(email) = LOWER($1)`,
 				[email]
 			);
 		} catch (err) {
@@ -109,7 +109,29 @@ router
 				.json({ success: false, msg: 'Incorrect password' });
 		}
 
-		// TODO: Retrieve everthing for account
-	});
+		let account;
+		try {
+			account = await getEverythingForAccount(idAndHashPass.rows[0].account_id);
+		} catch (err) {
+			return res.status(503).json({ success: false, msg: err.message });
+		}
+
+		const payload = {
+			account_id: account.account_id,
+		};
+
+		try {
+			const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
+
+			return res.json({
+				success: true,
+				accessToken: accessToken,
+				account: account,
+			});
+		} catch (err) {
+			return res.status(500).json({ success: false, msg: err.message });
+		}
+	}
+);
 
 module.exports = { accountRouter: router };
