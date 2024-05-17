@@ -5,6 +5,6 @@ const { authRouter } = require('./auth.js');
 const router = Router();
 
 router.use('/api/v1/auth', authRouter);
-router.use('/api/v1/account', accountRouter);
+router.use('/api/v1/accounts', accountRouter);
 
 module.exports = { routes: router };

@@ -6,9 +6,14 @@ const {
 } = require('express-validator');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const loginAccountValidationSchema = require('../validation/auth/loginScema.js');
 const { getEverythingForAccount } = require('../utils/queries.js');
-const { generateAccessToken, authenticateToken } = require('../utils/jwt.js');
+const {
+	generateAccessToken,
+	generateRefreshToken,
+	authenticateToken,
+} = require('../utils/jwt.js');
 
 const router = Router();
 
@@ -56,19 +61,23 @@ router.post(
 				.json({ success: false, msg: 'Incorrect password' });
 		}
 
-		let account;
+		let account, test1, test2;
 		try {
-			account = await getEverythingForAccount(idAndHashPass.rows[0].account_id);
+			({ account, test1, test2 } = await getEverythingForAccount(
+				idAndHashPass.rows[0].account_id
+			));
 		} catch (err) {
 			return res.status(503).json({ success: false, msg: err.message });
 		}
 
 		try {
 			const accessToken = generateAccessToken(account.account_id);
+			const refreshToken = generateRefreshToken(account.account_id);
 
 			return res.json({
 				success: true,
 				accessToken: accessToken,
+				refreshToken: refreshToken,
 				account: account,
 			});
 		} catch (err) {
@@ -77,8 +86,33 @@ router.post(
 	}
 );
 
-router.post('/test', authenticateToken, (req, res) => {
+router.post('/test-token', authenticateToken, (req, res) => {
 	return res.sendStatus(200);
+});
+
+router.post('/refresh-token', (req, res) => {
+	const refreshToken = req.header('refreshToken');
+	if (refreshToken === undefined) return res.sendStatus(401);
+
+	let payload;
+	try {
+		payload = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+	} catch (err) {
+		return res.status(403).json({ success: false, msg: err.message });
+	}
+
+	try {
+		const accessToken = generateAccessToken(payload.account_id);
+		const refreshToken = generateRefreshToken(payload.account_id);
+
+		return res.json({
+			success: true,
+			accessToken: accessToken,
+			refreshToken: refreshToken,
+		});
+	} catch (err) {
+		return res.status(500).json({ success: false, msg: err.message });
+	}
 });
 
 module.exports = { authRouter: router };

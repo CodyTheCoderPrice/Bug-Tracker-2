@@ -3,20 +3,43 @@ const jwt = require('jsonwebtoken');
 const express = require('express');
 
 /**
- * Generates an access token.
+ * Generates an access token that will expire.
  *
  * @param {number} account_id - Account id.
  * @returns {string} Returns jwtoken containing the account id.
  */
 function generateAccessToken(account_id) {
+	if (account_id === undefined || account_id === null) {
+		throw new Error('account_id is empty.');
+	}
+
 	const payload = {
 		account_id: account_id,
 	};
 
 	// TODO: Extend expiresIn (currently 15s for testing purposes)
 	return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: '15s',
+		expiresIn: '15m',
 	});
+}
+
+/**
+ * Generates a refresh token.
+ *
+ * @param {number} account_id - Account id.
+ * @returns {string} Returns jwtoken containing the account id.
+ */
+function generateRefreshToken(account_id) {
+	if (account_id === undefined || account_id === null) {
+		throw new Error('account_id is empty.');
+	}
+
+	const payload = {
+		account_id: account_id,
+	};
+
+	// TODO: Extend expiresIn (currently 15s for testing purposes)
+	return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
 }
 
 /**
@@ -42,4 +65,8 @@ function authenticateToken(req, res, next) {
 	}
 }
 
-module.exports = { generateAccessToken, authenticateToken };
+module.exports = {
+	generateAccessToken,
+	generateRefreshToken,
+	authenticateToken,
+};

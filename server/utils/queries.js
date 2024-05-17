@@ -41,6 +41,8 @@ async function getEverythingForAccount(account_id) {
 
 		return {
 			account: account.rows[0],
+			test1: 'test',
+			test2: 123,
 		};
 	} catch (err) {
 		throw err;
