@@ -48,6 +48,6 @@ async function getEverythingForAccount(account_id) {
 }
 
 module.exports = {
-	getAccount: getAccount,
-	getEverythingForAccount: getEverythingForAccount,
+	getAccount,
+	getEverythingForAccount,
 };

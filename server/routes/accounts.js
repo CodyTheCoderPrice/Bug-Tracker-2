@@ -6,7 +6,7 @@ const {
 } = require('express-validator');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
-const registerAccountValidationSchema = require('../middleware/validation/account/registerSchema.js');
+const registerAccountValidationSchema = require('../validation/account/registerSchema.js');
 
 const router = Router();
 

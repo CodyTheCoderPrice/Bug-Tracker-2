@@ -6,10 +6,9 @@ const {
 } = require('express-validator');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const loginAccountValidationSchema = require('../middleware/validation/auth/loginScema.js');
+const loginAccountValidationSchema = require('../validation/auth/loginScema.js');
 const { getEverythingForAccount } = require('../utils/queries.js');
-const { authenticateToken } = require('../middleware/auth');
+const { generateAccessToken, authenticateToken } = require('../utils/jwt.js');
 
 const router = Router();
 
@@ -64,12 +63,8 @@ router.post(
 			return res.status(503).json({ success: false, msg: err.message });
 		}
 
-		const payload = {
-			account_id: account.account_id,
-		};
-
 		try {
-			const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET);
+			const accessToken = generateAccessToken(account.account_id);
 
 			return res.json({
 				success: true,
@@ -81,5 +76,9 @@ router.post(
 		}
 	}
 );
+
+router.post('/test', authenticateToken, (req, res) => {
+	return res.sendStatus(200);
+});
 
 module.exports = { authRouter: router };
