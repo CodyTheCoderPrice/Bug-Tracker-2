@@ -11,17 +11,9 @@ CREATE TABLE
     hash_pass VARCHAR(255),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
+    refresh_token VARCHAR(255) UNIQUE,
     join_date DATE NOT NULL DEFAULT CURRENT_DATE,
     last_edited timestamptz NOT NULL DEFAULT now()
-  );
-
-CREATE TABLE
-  token (
-    token_id SERIAL PRIMARY KEY,
-    account_id INTEGER,
-    token VARCHAR(255) UNIQUE,
-    expires timestamptz NOT NULL DEFAULT now() + INTERVAL '30 days',
-    CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
   );
 
 CREATE TABLE

@@ -37,13 +37,11 @@ router.post(
 					)
 				).rowCount > 0;
 		} catch (err) {
-			return res.status(503).json({ success: false, msg: err.message });
+			return res.status(503).json({ msg: err.message });
 		}
 
 		if (emailIsActive) {
-			return res
-				.status(400)
-				.json({ success: false, msg: 'Email already in use' });
+			return res.status(400).json({ msg: 'Email already in use' });
 		}
 
 		const saltRounds = 10;
@@ -60,7 +58,7 @@ router.post(
 
 			return res.status(201).json({ success: true, msg: 'Account created' });
 		} catch (err) {
-			return res.status(503).json({ success: false, msg: err.message });
+			return res.status(503).json({ msg: err.message });
 		}
 	}
 );
