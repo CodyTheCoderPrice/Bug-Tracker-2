@@ -19,10 +19,11 @@ export const Login = () => {
 		dispatch(login(loginInfo));
 	};
 
-	const { loading, account, error } = useAppSelector((state) => state.auth);
+	const { loading, account, errors } = useAppSelector((state) => state.auth);
 
 	return (
 		<>
+			<h1>Login</h1>
 			<form noValidate onSubmit={handleSubmit}>
 				<input
 					autoFocus
@@ -43,7 +44,7 @@ export const Login = () => {
 				/>
 				<button type='submit'>LOGIN</button>
 			</form>
-			{loading && <h1>Loading...</h1>}
+			{loading && <h2>Loading...</h2>}
 			{account !== null
 				? Object.keys(account).map(function (key, index) {
 						return (
@@ -53,7 +54,8 @@ export const Login = () => {
 						);
 				  })
 				: null}
-			{error && <p>{error}</p>}
+			{errors?.email && <p>{errors.email[0]}</p>}
+			{errors?.pwd && <p>{errors.pwd[0]}</p>}
 		</>
 	);
 };

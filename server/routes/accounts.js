@@ -7,6 +7,7 @@ const {
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const registerAccountValidationSchema = require('../validation/account/registerSchema.js');
+const { extractErrors } = require('../utils/errorHandling.js');
 
 const router = Router();
 
@@ -19,7 +20,7 @@ router.post(
 	async (req, res) => {
 		const result = validationResult(req);
 		if (!result.isEmpty()) {
-			return res.status(400).send({ errors: result.array() });
+			return res.status(400).json({ errors: extractErrors(result.array()) });
 		}
 
 		const data = matchedData(req);

@@ -11,27 +11,35 @@ type Account = {
 	last_edited: Date;
 };
 
+type LoginError = {
+	email: string[] | undefined;
+	pwd: string[] | undefined;
+};
+
 type InitialState = {
 	loading: boolean;
 	account: Account | null;
-	error: string | null;
+	errors: LoginError | null;
 };
 
 const initialState: InitialState = {
 	loading: false,
 	account: null,
-	error: null,
+	errors: null,
 };
 
 export const login = createAsyncThunk(
 	'auth/login',
-	async (loginInfo: { email: string; pwd: string }) => {
-		return axios.post('/api/v1/auth/login', loginInfo).then((res) => {
-			const { refreshToken } = res.data;
-
-			console.log(refreshToken);
-			return res.data;
-		});
+	async (loginInfo: { email: string; pwd: string }, { rejectWithValue }) => {
+		try {
+			const response = axios.post('/api/v1/auth/login', loginInfo);
+			return (await response).data;
+		} catch (err: any) {
+			if (!err.response) {
+				throw err;
+			}
+			return rejectWithValue(err.response.data);
+		}
 	}
 );
 
@@ -45,20 +53,16 @@ const authSlice = createSlice({
 		});
 		builder.addCase(
 			login.fulfilled,
-			(
-				state,
-				action: PayloadAction<{ account: Account; accessToken: string }>
-			) => {
-				const { account } = action.payload;
+			(state, action: PayloadAction<{ account: Account }>) => {
 				state.loading = false;
-				state.account = account;
-				state.error = null;
+				state.account = action.payload.account;
+				state.errors = null;
 			}
 		);
-		builder.addCase(login.rejected, (state, action) => {
+		builder.addCase(login.rejected, (state, action: any) => {
 			state.loading = false;
 			state.account = null;
-			state.error = action.error.message || 'Something went wrong';
+			state.errors = action.payload.errors;
 		});
 	},
 });
