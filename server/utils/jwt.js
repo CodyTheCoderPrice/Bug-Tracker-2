@@ -38,7 +38,9 @@ function generateRefreshToken(account_id) {
 		account_id: account_id,
 	};
 
-	return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET);
+	return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+		expiresIn: '30d',
+	});
 }
 
 /**
@@ -50,7 +52,7 @@ function generateRefreshToken(account_id) {
  */
 async function authenticateToken(req, res, next) {
 	if (req.cookies.token == null) {
-		return res.status(401).send({ msg: 'Missing access token' });
+		return res.status(401).send({ errors: { token: 'Missing access token' } });
 	}
 
 	accessToken = req.cookies.token;
@@ -60,7 +62,12 @@ async function authenticateToken(req, res, next) {
 		res.locals.account_id = decoded.account_id;
 		next();
 	} catch (err) {
-		return res.status(403).json({ msg: err.message });
+		if (err.message === 'jwt expired') {
+			return res
+				.status(400)
+				.json({ errors: { token: 'Access token expired' } });
+		}
+		return res.status(403).json({ errors: { token: 'Invalid access token' } });
 	}
 }
 

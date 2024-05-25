@@ -91,9 +91,9 @@ router.post(
 			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
-		res.cookie('token', accessToken, { secure: true, httpOnly: true });
+		res.cookie('token', accessToken, { secure: false, httpOnly: true });
 		res.cookie('refreshToken', refreshToken, {
-			secure: true,
+			secure: false,
 			httpOnly: true,
 			path: '/api/v1/auth/refresh',
 		});
@@ -106,55 +106,76 @@ router.post(
 
 router.post('/refresh', async (req, res) => {
 	if (req.cookies.refreshToken == null) {
-		return res.status(401).json({ msg: 'Missing refresh token' });
+		return res.status(401).json({ errors: { token: 'Missing refresh token' } });
 	}
 
 	const refreshToken = req.cookies.refreshToken;
 
+	let decoded;
 	try {
-		const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-
-		if (decoded.account_id == null) {
-			return res.status(400).json({ msg: 'account_id is empty' });
+		decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+	} catch (err) {
+		if (err.message === 'jwt expired') {
+			return res
+				.status(400)
+				.json({ errors: { token: 'Refresh token expired' } });
 		}
+		return res.status(403).json({ errors: { token: 'Invalid refresh token' } });
+	}
 
-		const account = await pool.query(
+	if (decoded.account_id == null) {
+		return res.status(403).json({ errors: { token: 'Invalid refresh token' } });
+	}
+
+	let account;
+	try {
+		account = await pool.query(
 			`SELECT refresh_token
          FROM account
         WHERE account_id = ($1)`,
 			[decoded.account_id]
 		);
-
-		if (account.rows[0].refresh_token == null) {
-			return res.status(401).json({ msg: 'No refresh token found in DB' });
-		}
-
-		if (account.rows[0].refresh_token !== refreshToken) {
-			return res.status(401).json({ msg: 'Refresh token does not match DB' });
-		}
-
-		const newAccessToken = generateAccessToken(decoded.account_id);
-		const newRefreshToken = generateRefreshToken(decoded.account_id);
-
-		try {
-			await updateRefreshTokenInDB(decoded.account_id, newRefreshToken);
-		} catch (err) {
-			return res.status(503).json({ msg: err.message });
-		}
-
-		res.cookie('token', newAccessToken, { secure: true, httpOnly: true });
-		res.cookie('refreshToken', newRefreshToken, {
-			secure: true,
-			httpOnly: true,
-			path: '/api/v1/auth/refresh',
-		});
-
-		return res.status(200).json({
-			account_id: decoded.account_id,
-		});
 	} catch (err) {
-		return res.status(500).json({ msg: err.message });
+		console.log(err.message);
+		return res.status(503).json({ errors: { server: 'Server error' } });
 	}
+
+	if (account.rows[0].refresh_token == null) {
+		return res
+			.status(401)
+			.json({ errors: { token: 'No refresh token found in DB' } });
+	}
+
+	if (account.rows[0].refresh_token !== refreshToken) {
+		return res
+			.status(401)
+			.json({ errors: { token: 'Refresh token does not match DB' } });
+	}
+
+	let newAccessToken, newRefreshToken;
+	try {
+		newAccessToken = generateAccessToken(decoded.account_id);
+		newRefreshToken = generateRefreshToken(decoded.account_id);
+	} catch (err) {
+		console.log(err.message);
+		return res.status(500).json({ errors: { server: 'Server error' } });
+	}
+
+	try {
+		await updateRefreshTokenInDB(decoded.account_id, newRefreshToken);
+	} catch (err) {
+		console.log(err.message);
+		return res.status(503).json({ errors: { server: 'Server error' } });
+	}
+
+	res.cookie('token', newAccessToken, { secure: false, httpOnly: true });
+	res.cookie('refreshToken', newRefreshToken, {
+		secure: false,
+		httpOnly: true,
+		path: '/api/v1/auth/refresh',
+	});
+
+	return res.sendStatus(200);
 });
 
 router.post('/test-token', authenticateToken, (req, res) => {
