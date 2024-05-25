@@ -1,12 +1,15 @@
-function extractErrors(errors) {
+function extractValidationErrors(errors) {
 	let extractedErrors = {};
 
 	errors.forEach((error) => {
-		extractedErrors[error.path] = extractedErrors[error.path] || [];
-		extractedErrors[error.path].push(error.msg);
+		// Extracting only one error per field since we intend to only display one
+		// ...at a time on the front end.
+		if (!Object.hasOwn(extractedErrors, error.path)) {
+			extractedErrors[error.path] = error.msg;
+		}
 	});
 
 	return extractedErrors;
 }
 
-module.exports = { extractErrors };
+module.exports = { extractValidationErrors };

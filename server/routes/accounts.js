@@ -57,7 +57,7 @@ router.post(
 				[email, hash_pass, first_name, last_name]
 			);
 
-			return res.status(201).json({ success: true, msg: 'Account created' });
+			return res.status(201).json({ msg: 'Account created' });
 		} catch (err) {
 			return res.status(503).json({ msg: err.message });
 		}

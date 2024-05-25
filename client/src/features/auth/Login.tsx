@@ -43,6 +43,7 @@ export const Login = () => {
 					value={loginInfo.pwd}
 				/>
 				<button type='submit'>LOGIN</button>
+				<button>LOGOUT</button>
 			</form>
 			{loading && <h2>Loading...</h2>}
 			{account !== null
@@ -54,8 +55,9 @@ export const Login = () => {
 						);
 				  })
 				: null}
-			{errors?.email && <p>{errors.email[0]}</p>}
-			{errors?.pwd && <p>{errors.pwd[0]}</p>}
+			{errors?.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}
+			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
 		</>
 	);
 };

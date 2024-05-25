@@ -12,8 +12,9 @@ type Account = {
 };
 
 type LoginError = {
-	email: string[] | undefined;
-	pwd: string[] | undefined;
+	email: string | undefined;
+	pwd: string | undefined;
+	server: string | undefined;
 };
 
 type InitialState = {
@@ -36,8 +37,9 @@ export const login = createAsyncThunk(
 			return (await response).data;
 		} catch (err: any) {
 			if (!err.response) {
-				throw err;
+				return rejectWithValue(null);
 			}
+			console.log(err.response.data);
 			return rejectWithValue(err.response.data);
 		}
 	}

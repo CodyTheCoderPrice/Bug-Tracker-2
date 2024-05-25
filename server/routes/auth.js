@@ -17,7 +17,7 @@ const {
 	generateRefreshToken,
 	authenticateToken,
 } = require('../utils/jwt.js');
-const { extractErrors } = require('../utils/errorHandling.js');
+const { extractValidationErrors } = require('../utils/errorHandling.js');
 
 const router = Router();
 
@@ -30,7 +30,9 @@ router.post(
 	async (req, res) => {
 		const result = validationResult(req);
 		if (!result.isEmpty()) {
-			return res.status(400).json({ errors: extractErrors(result.array()) });
+			return res
+				.status(400)
+				.json({ errors: extractValidationErrors(result.array()) });
 		}
 
 		const data = matchedData(req);
@@ -45,17 +47,18 @@ router.post(
 				[email]
 			);
 		} catch (err) {
-			return res.status(503).json({ msg: err.message });
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
 
 		if (idAndHashPass.rowCount === 0) {
-			return res.status(401).json({ msg: 'Email unregistered' });
+			return res.status(401).json({ errors: { email: 'Email unregistered' } });
 		}
 
 		const correctpwd = bcrypt.compareSync(pwd, idAndHashPass.rows[0].hash_pass);
 
 		if (!correctpwd) {
-			return res.status(403).json({ msg: 'Incorrect password' });
+			return res.status(403).json({ errors: { pwd: 'Incorrect password' } });
 		}
 
 		let account;
@@ -63,11 +66,13 @@ router.post(
 			({ account, placeholder1, placeholder2 } =
 				await getEverythingForAccountFromDB(idAndHashPass.rows[0].account_id));
 		} catch (err) {
-			return res.status(503).json({ msg: err.message });
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
 
 		if (account.account_id == null) {
-			return res.status(500).json({ msg: 'account_id is empty.' });
+			console.log(err.message);
+			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
 		let accessToken, refreshToken;
@@ -75,13 +80,15 @@ router.post(
 			accessToken = generateAccessToken(account.account_id);
 			refreshToken = generateRefreshToken(account.account_id);
 		} catch (err) {
-			return res.status(500).json({ msg: err.message });
+			console.log(err.message);
+			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
 		try {
 			await updateRefreshTokenInDB(account.account_id, refreshToken);
 		} catch (err) {
-			return res.status(503).json({ msg: err.message });
+			console.log(err.message);
+			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
 		res.cookie('token', accessToken, { secure: true, httpOnly: true });
@@ -92,7 +99,6 @@ router.post(
 		});
 
 		return res.json({
-			success: true,
 			account: account,
 		});
 	}
