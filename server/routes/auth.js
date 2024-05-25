@@ -30,7 +30,7 @@ router.post(
 		}
 
 		const data = matchedData(req);
-		const { email, password } = data;
+		const { email, pwd } = data;
 
 		let idAndHashPass;
 		try {
@@ -48,12 +48,9 @@ router.post(
 			return res.status(401).json({ msg: 'Email unregistered' });
 		}
 
-		const correctPassword = bcrypt.compareSync(
-			password,
-			idAndHashPass.rows[0].hash_pass
-		);
+		const correctpwd = bcrypt.compareSync(pwd, idAndHashPass.rows[0].hash_pass);
 
-		if (!correctPassword) {
+		if (!correctpwd) {
 			return res.status(403).json({ msg: 'Incorrect password' });
 		}
 

@@ -1,6 +1,6 @@
 const {
-	accountPasswordMinLen,
-	accountPasswordMaxLen,
+	accountPwdMinLen,
+	accountPwdMaxLen,
 	accountNameMinLen,
 	accountNameMaxLen,
 } = require('../constants');
@@ -11,12 +11,12 @@ const registerAccountValidationSchema = {
 		isString: { errorMessage: 'Email must be a string' },
 		isEmail: { errorMessage: 'Email must be valid' },
 	},
-	password: {
+	pwd: {
 		notEmpty: { errorMessage: 'Password cannot be empty' },
 		isString: { errorMessage: 'Password must be a string' },
 		isLength: {
-			options: { min: accountPasswordMinLen, max: accountPasswordMaxLen },
-			errorMessage: `password must be ${accountPasswordMinLen}-${accountPasswordMaxLen} characters`,
+			options: { min: accountPwdMinLen, max: accountPwdMaxLen },
+			errorMessage: `password must be ${accountPwdMinLen}-${accountPwdMaxLen} characters`,
 		},
 	},
 	first_name: {
