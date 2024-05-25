@@ -7,7 +7,7 @@ const {
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const registerAccountValidationSchema = require('../validation/account/registerSchema.js');
-const { extractErrors } = require('../utils/errorHandling.js');
+const { extractValidationErrors } = require('../utils/errorHandling.js');
 
 const router = Router();
 
@@ -20,11 +20,13 @@ router.post(
 	async (req, res) => {
 		const result = validationResult(req);
 		if (!result.isEmpty()) {
-			return res.status(400).json({ errors: extractErrors(result.array()) });
+			return res
+				.status(400)
+				.json({ errors: extractValidationErrors(result.array()) });
 		}
 
 		const data = matchedData(req);
-		const { email, password, first_name, last_name } = data;
+		const { email, pwd, first_name, last_name } = data;
 
 		let emailIsActive;
 		try {
@@ -38,16 +40,19 @@ router.post(
 					)
 				).rowCount > 0;
 		} catch (err) {
-			return res.status(503).json({ msg: err.message });
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
 
 		if (emailIsActive) {
-			return res.status(400).json({ msg: 'Email already in use' });
+			return res
+				.status(400)
+				.json({ errors: { email: 'Email already in use' } });
 		}
 
 		const saltRounds = 10;
 		const salt = bcrypt.genSaltSync(saltRounds);
-		const hash_pass = bcrypt.hashSync(password, salt);
+		const hash_pass = bcrypt.hashSync(pwd, salt);
 
 		try {
 			await pool.query(
@@ -59,7 +64,8 @@ router.post(
 
 			return res.status(201).json({ msg: 'Account created' });
 		} catch (err) {
-			return res.status(503).json({ msg: err.message });
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
 	}
 );

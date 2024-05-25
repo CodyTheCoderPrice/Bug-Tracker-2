@@ -91,9 +91,9 @@ router.post(
 			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
-		res.cookie('token', accessToken, { secure: false, httpOnly: true });
+		res.cookie('token', accessToken, { secure: true, httpOnly: true });
 		res.cookie('refreshToken', refreshToken, {
-			secure: false,
+			secure: true,
 			httpOnly: true,
 			path: '/api/v1/auth/refresh',
 		});
@@ -168,18 +168,18 @@ router.post('/refresh', async (req, res) => {
 		return res.status(503).json({ errors: { server: 'Server error' } });
 	}
 
-	res.cookie('token', newAccessToken, { secure: false, httpOnly: true });
+	res.cookie('token', newAccessToken, { secure: true, httpOnly: true });
 	res.cookie('refreshToken', newRefreshToken, {
-		secure: false,
+		secure: true,
 		httpOnly: true,
 		path: '/api/v1/auth/refresh',
 	});
 
-	return res.sendStatus(200);
+	return res.status(200).json({ msg: 'Tokens refreshed' });
 });
 
 router.post('/test-token', authenticateToken, (req, res) => {
-	return res.sendStatus(200);
+	return res.status(200).json({ msg: 'Token authenticated' });
 });
 
 module.exports = { authRouter: router };
