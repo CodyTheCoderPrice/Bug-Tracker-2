@@ -8,7 +8,10 @@ const pool = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const loginAccountValidationSchema = require('../validation/auth/loginScema.js');
-const { getEverythingForAccount } = require('../utils/queries.js');
+const {
+	updateRefreshTokenInDB,
+	getEverythingForAccountFromDB,
+} = require('../utils/queries.js');
 const {
 	generateAccessToken,
 	generateRefreshToken,
@@ -56,14 +59,13 @@ router.post(
 
 		let account;
 		try {
-			({ account, test1, test2 } = await getEverythingForAccount(
-				idAndHashPass.rows[0].account_id
-			));
+			({ account, placeholder1, placeholder2 } =
+				await getEverythingForAccountFromDB(idAndHashPass.rows[0].account_id));
 		} catch (err) {
 			return res.status(503).json({ msg: err.message });
 		}
 
-		if (account.account_id === undefined || account.account_id === null) {
+		if (account.account_id == null) {
 			return res.status(500).json({ msg: 'account_id is empty.' });
 		}
 
@@ -76,36 +78,36 @@ router.post(
 		}
 
 		try {
-			await pool.query(
-				`UPDATE account
-				 SET refresh_token = ($1)
-				 WHERE account_id = ($2)`,
-				[refreshToken, account.account_id]
-			);
+			await updateRefreshTokenInDB(account.account_id, refreshToken);
 		} catch (err) {
 			return res.status(503).json({ msg: err.message });
 		}
 
+		res.cookie('token', accessToken, { secure: true, httpOnly: true });
+		res.cookie('refreshToken', refreshToken, {
+			secure: true,
+			httpOnly: true,
+			path: '/api/v1/auth/refresh',
+		});
+
 		return res.json({
 			success: true,
-			accessToken: accessToken,
-			refreshToken: refreshToken,
 			account: account,
 		});
 	}
 );
 
 router.post('/refresh', async (req, res) => {
-	const refreshToken = req.header('refreshToken');
-
-	if (refreshToken === undefined) {
-		return res.status(401).json({ msg: 'Missing refreshToken' });
+	if (req.cookies.refreshToken == null) {
+		return res.status(401).json({ msg: 'Missing refresh token' });
 	}
+
+	const refreshToken = req.cookies.refreshToken;
 
 	try {
 		const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-		if (decoded.account_id === undefined || decoded.account_id === null) {
+		if (decoded.account_id == null) {
 			return res.status(400).json({ msg: 'account_id is empty' });
 		}
 
@@ -116,10 +118,7 @@ router.post('/refresh', async (req, res) => {
 			[decoded.account_id]
 		);
 
-		if (
-			account.rows[0].refresh_token === undefined ||
-			account.rows[0].refresh_token === null
-		) {
+		if (account.rows[0].refresh_token == null) {
 			return res.status(401).json({ msg: 'No refresh token found in DB' });
 		}
 
@@ -128,10 +127,23 @@ router.post('/refresh', async (req, res) => {
 		}
 
 		const newAccessToken = generateAccessToken(decoded.account_id);
+		const newRefreshToken = generateRefreshToken(decoded.account_id);
+
+		try {
+			await updateRefreshTokenInDB(decoded.account_id, newRefreshToken);
+		} catch (err) {
+			return res.status(503).json({ msg: err.message });
+		}
+
+		res.cookie('token', newAccessToken, { secure: true, httpOnly: true });
+		res.cookie('refreshToken', newRefreshToken, {
+			secure: true,
+			httpOnly: true,
+			path: '/api/v1/auth/refresh',
+		});
 
 		return res.status(200).json({
 			account_id: decoded.account_id,
-			accessToken: newAccessToken,
 		});
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });

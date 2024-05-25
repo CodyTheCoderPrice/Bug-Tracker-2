@@ -14,14 +14,12 @@ type Account = {
 type InitialState = {
 	loading: boolean;
 	account: Account | null;
-	token: string | null;
 	error: string | null;
 };
 
 const initialState: InitialState = {
 	loading: false,
 	account: null,
-	token: null,
 	error: null,
 };
 
@@ -51,17 +49,15 @@ const authSlice = createSlice({
 				state,
 				action: PayloadAction<{ account: Account; accessToken: string }>
 			) => {
-				const { account, accessToken } = action.payload;
+				const { account } = action.payload;
 				state.loading = false;
 				state.account = account;
-				state.token = accessToken;
 				state.error = null;
 			}
 		);
 		builder.addCase(login.rejected, (state, action) => {
 			state.loading = false;
 			state.account = null;
-			state.token = null;
 			state.error = action.error.message || 'Something went wrong';
 		});
 	},

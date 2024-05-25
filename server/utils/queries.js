@@ -1,4 +1,22 @@
 const pool = require('../db');
+/**
+ * Updates the refresh_token field for an account
+ *
+ * @param {number} account_id - Account id.
+ * @param {string} refreshToken - jwtoken.
+ */
+async function updateRefreshTokenInDB(account_id, refreshToken) {
+	try {
+		await pool.query(
+			`UPDATE account
+			 SET refresh_token = ($1)
+			 WHERE account_id = ($2)`,
+			[refreshToken, account_id]
+		);
+	} catch (err) {
+		throw err;
+	}
+}
 
 /**
  * Retrieves account table info (excluding password) from database for a
@@ -14,9 +32,9 @@ const pool = require('../db');
  * 	last_edited: Date
  * }} Returns Object with account info.
  */
-async function getAccount(account_id) {
+async function getAccountFromDB(account_id) {
 	try {
-		return await await pool.query(
+		return await pool.query(
 			`SELECT account_id, email, first_name, last_name, join_date, last_edited
 				 FROM account
 				WHERE account_id = $1`,
@@ -33,16 +51,16 @@ async function getAccount(account_id) {
  * @param {*} account_id
  * @returns
  */
-async function getEverythingForAccount(account_id) {
+async function getEverythingForAccountFromDB(account_id) {
 	try {
-		const account = await getAccount(account_id);
+		const account = await getAccountFromDB(account_id);
 
 		// TODO: Retrieve everthing (projects, bugs, comments, etc.)
 
 		return {
 			account: account.rows[0],
-			test1: 'test',
-			test2: 123,
+			placeholder1: 'test',
+			placeholder2: 123,
 		};
 	} catch (err) {
 		throw err;
@@ -50,6 +68,7 @@ async function getEverythingForAccount(account_id) {
 }
 
 module.exports = {
-	getAccount,
-	getEverythingForAccount,
+	updateRefreshTokenInDB,
+	getAccountFromDB,
+	getEverythingForAccountFromDB,
 };

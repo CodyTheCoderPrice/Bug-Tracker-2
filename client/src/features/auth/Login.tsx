@@ -19,9 +19,7 @@ export const Login = () => {
 		dispatch(login(loginInfo));
 	};
 
-	const { loading, account, token, error } = useAppSelector(
-		(state) => state.auth
-	);
+	const { loading, account, error } = useAppSelector((state) => state.auth);
 
 	return (
 		<>
@@ -55,7 +53,6 @@ export const Login = () => {
 						);
 				  })
 				: null}
-			{token && <p>{token}</p>}
 			{error && <p>{error}</p>}
 		</>
 	);

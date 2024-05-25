@@ -1,6 +1,4 @@
 const jwt = require('jsonwebtoken');
-const pool = require('../db');
-const moment = require('moment');
 // Used to document js
 const express = require('express');
 
@@ -8,10 +6,10 @@ const express = require('express');
  * Generates an access token that will expire.
  *
  * @param {number} account_id - Account id.
- * @returns {string} Returns jwtoken containing the account id.
+ * @returns {string} Returns access jwtoken.
  */
 function generateAccessToken(account_id) {
-	if (account_id === undefined || account_id === null) {
+	if (account_id == null) {
 		throw new Error('account_id is empty');
 	}
 
@@ -21,7 +19,7 @@ function generateAccessToken(account_id) {
 
 	// TODO: Extend expiresIn (currently 15s for testing purposes)
 	return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-		expiresIn: '1m',
+		expiresIn: '10s',
 	});
 }
 
@@ -29,10 +27,10 @@ function generateAccessToken(account_id) {
  * Generates a refresh token.
  *
  * @param {number} account_id - Account id.
- * @returns {string} Returns jwtoken containing the account id.
+ * @returns {string} Returns resfresh jwtoken.
  */
 function generateRefreshToken(account_id) {
-	if (account_id === undefined || account_id === null) {
+	if (account_id == null) {
 		throw new Error('account_id is empty');
 	}
 
@@ -51,13 +49,11 @@ function generateRefreshToken(account_id) {
  * @param {express.NextFunction} next - Express next middleware function
  */
 async function authenticateToken(req, res, next) {
-	const authHeader = req.header('authorization');
-
-	if (authHeader === undefined) {
-		return res.status(401).send({ msg: 'Missing accessToken' });
+	if (req.cookies.token == null) {
+		return res.status(401).send({ msg: 'Missing access token' });
 	}
 
-	accessToken = authHeader.split(' ')[1];
+	accessToken = req.cookies.token;
 
 	try {
 		const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
