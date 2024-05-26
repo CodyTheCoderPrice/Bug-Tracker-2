@@ -52,7 +52,7 @@ function generateRefreshToken(account_id) {
  */
 async function authenticateToken(req, res, next) {
 	if (req.cookies.token == null) {
-		return res.status(401).send({ errors: { token: 'Missing access token' } });
+		return res.status(401).json({ errors: { token: 'Missing access token' } });
 	}
 
 	accessToken = req.cookies.token;

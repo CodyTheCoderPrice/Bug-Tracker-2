@@ -1,17 +1,23 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { login } from './authSlice';
+import { login, logout } from './authSlice';
 
 export const Login = () => {
 	const dispatch = useAppDispatch();
 
-	const [loginInfo, setLoginInfo] = useState({
+	const loginInfoInitialState = {
 		email: '',
 		pwd: '',
-	});
+	};
+	const [loginInfo, setLoginInfo] = useState(loginInfoInitialState);
 
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
+	};
+
+	const handleLogout = () => {
+		setLoginInfo(loginInfoInitialState);
+		dispatch(logout());
 	};
 
 	const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -35,7 +41,6 @@ export const Login = () => {
 					autoComplete='off'
 				/>
 				<input
-					autoFocus
 					type='password'
 					name='pwd'
 					placeholder='Password'
@@ -43,7 +48,9 @@ export const Login = () => {
 					value={loginInfo.pwd}
 				/>
 				<button type='submit'>LOGIN</button>
-				<button>LOGOUT</button>
+				<button type='button' onClick={handleLogout}>
+					LOGOUT
+				</button>
 			</form>
 			{loading && <h2>Loading...</h2>}
 			{account !== null

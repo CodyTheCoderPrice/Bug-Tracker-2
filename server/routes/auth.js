@@ -91,11 +91,16 @@ router.post(
 			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
-		res.cookie('token', accessToken, { secure: true, httpOnly: true });
+		res.cookie('token', accessToken, {
+			secure: true,
+			httpOnly: true,
+			sameSite: 'strict',
+		});
 		res.cookie('refreshToken', refreshToken, {
 			secure: true,
 			httpOnly: true,
-			path: '/api/v1/auth/refresh',
+			path: ['/api/v1/auth/refresh', '/api/v1/auth/logout'],
+			sameSite: 'strict',
 		});
 
 		return res.json({
@@ -104,6 +109,28 @@ router.post(
 	}
 );
 
+//========
+// Logout
+//========
+router.post('/logout', authenticateToken, async (req, res) => {
+	const account_id = res.locals.account_id;
+	try {
+		res.clearCookie('token');
+		res.clearCookie('refreshToken', {
+			path: ['/api/v1/auth/refresh', '/api/v1/auth/logout'],
+		});
+		await updateRefreshTokenInDB(account_id, '');
+	} catch (err) {
+		console.log(err.message);
+		return res.status(503).json({ errors: { server: 'Server error' } });
+	}
+
+	return res.status(200).json({ msg: 'Logout successful' });
+});
+
+//===============
+// Refresh Token
+//===============
 router.post('/refresh', async (req, res) => {
 	if (req.cookies.refreshToken == null) {
 		return res.status(401).json({ errors: { token: 'Missing refresh token' } });
@@ -168,16 +195,24 @@ router.post('/refresh', async (req, res) => {
 		return res.status(503).json({ errors: { server: 'Server error' } });
 	}
 
-	res.cookie('token', newAccessToken, { secure: true, httpOnly: true });
+	res.cookie('token', newAccessToken, {
+		secure: true,
+		httpOnly: true,
+		sameSite: 'strict',
+	});
 	res.cookie('refreshToken', newRefreshToken, {
 		secure: true,
 		httpOnly: true,
 		path: '/api/v1/auth/refresh',
+		sameSite: 'strict',
 	});
 
 	return res.status(200).json({ msg: 'Tokens refreshed' });
 });
 
+//============
+// Test Token
+//============
 router.post('/test-token', authenticateToken, (req, res) => {
 	return res.status(200).json({ msg: 'Token authenticated' });
 });

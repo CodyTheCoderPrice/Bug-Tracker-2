@@ -1,4 +1,10 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { AppDispatch } from '@/app/store';
+import {
+	createSlice,
+	createAsyncThunk,
+	PayloadAction,
+	createAction,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
 axios.defaults.baseURL = 'http://localhost:5000';
 
@@ -33,13 +39,14 @@ export const login = createAsyncThunk(
 	'auth/login',
 	async (loginInfo: { email: string; pwd: string }, { rejectWithValue }) => {
 		try {
-			const response = axios.post('/api/v1/auth/login', loginInfo);
+			const response = axios.post('/api/v1/auth/login', loginInfo, {
+				withCredentials: true,
+			});
 			return (await response).data;
 		} catch (err: any) {
-			if (!err.response) {
+			if (!err.response.data) {
 				return rejectWithValue(null);
 			}
-			console.log(err.response.data);
 			return rejectWithValue(err.response.data);
 		}
 	}
@@ -70,3 +77,18 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
+
+const reset = createAction('reset');
+export const logout = () => {
+	return async (dispatch: AppDispatch) => {
+		try {
+			await axios.post('/api/v1/auth/logout', '', { withCredentials: true });
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				console.log(err.message);
+			}
+			console.log(err.response.data.errors);
+		}
+		dispatch(reset());
+	};
+};
