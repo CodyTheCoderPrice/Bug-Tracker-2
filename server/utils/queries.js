@@ -1,17 +1,36 @@
 const pool = require('../db');
+
 /**
- * Updates the refresh_token field for an account
+ * Remove the refresh_token for an account from the database
+ *
+ * @param {number} account_id - Account id.
+ */
+async function removeRefreshTokenInDB(account_id) {
+	try {
+		await pool.query(
+			`DELETE FROM token
+			 WHERE account_id = ($1)`,
+			[account_id]
+		);
+	} catch (err) {
+		throw err;
+	}
+}
+
+/**
+ * Replaces the refresh_token for an account in the database
  *
  * @param {number} account_id - Account id.
  * @param {string} refreshToken - jwtoken.
  */
-async function updateRefreshTokenInDB(account_id, refreshToken) {
+async function replaceRefreshTokenInDB(account_id, refreshToken) {
 	try {
+		removeRefreshTokenInDB(account_id);
+
 		await pool.query(
-			`UPDATE account
-			 SET refresh_token = ($1)
-			 WHERE account_id = ($2)`,
-			[refreshToken, account_id]
+			`INSERT INTO token (account_id, refresh_token)
+			 VALUES ($1, $2)`,
+			[account_id, refreshToken]
 		);
 	} catch (err) {
 		throw err;
@@ -68,7 +87,8 @@ async function getEverythingForAccountFromDB(account_id) {
 }
 
 module.exports = {
-	updateRefreshTokenInDB,
+	removeRefreshTokenInDB,
+	replaceRefreshTokenInDB,
 	getAccountFromDB,
 	getEverythingForAccountFromDB,
 };

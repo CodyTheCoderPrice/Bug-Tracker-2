@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { login, logout } from './authSlice';
 
-export const Login = () => {
+function Login() {
 	const dispatch = useAppDispatch();
 
 	const loginInfoInitialState = {
@@ -67,4 +67,6 @@ export const Login = () => {
 			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
 		</>
 	);
-};
+}
+
+export default Login;

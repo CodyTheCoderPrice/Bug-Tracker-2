@@ -11,9 +11,17 @@ CREATE TABLE
     hash_pass VARCHAR(255),
     first_name VARCHAR(255),
     last_name VARCHAR(255),
-    refresh_token VARCHAR(255) UNIQUE,
     join_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    last_edited timestamptz NOT NULL DEFAULT now()
+    last_edited timestamptz NOT NULL DEFAULT now ()
+  );
+
+CREATE TABLE
+  token (
+    token_id SERIAL PRIMARY KEY,
+    account_id INTEGER,
+    refresh_token VARCHAR(255) UNIQUE,
+    creation_date timestamptz NOT NULL DEFAULT now (),
+    CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
   );
 
 CREATE TABLE
@@ -23,7 +31,7 @@ CREATE TABLE
     name VARCHAR(255),
     description TEXT,
     creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    last_edited timestamptz NOT NULL DEFAULT now(),
+    last_edited timestamptz NOT NULL DEFAULT now (),
     CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
   );
 
@@ -70,7 +78,7 @@ CREATE TABLE
     creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
     due_date DATE,
     completion_date DATE,
-    last_edited timestamptz NOT NULL DEFAULT now(),
+    last_edited timestamptz NOT NULL DEFAULT now (),
     CONSTRAINT fk_project FOREIGN KEY (project_id) REFERENCES project (project_id) ON DELETE CASCADE,
     CONSTRAINT fk_priority FOREIGN KEY (priority_id) REFERENCES priority (priority_id) ON DELETE SET NULL,
     CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status (status_id) ON DELETE SET NULL
@@ -82,6 +90,6 @@ CREATE TABLE
     bug_id INTEGER,
     description TEXT,
     creation_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    last_edited timestamptz NOT NULL DEFAULT now(),
+    last_edited timestamptz NOT NULL DEFAULT now (),
     CONSTRAINT fk_bug FOREIGN KEY (bug_id) REFERENCES bug (bug_id) ON DELETE CASCADE
   );

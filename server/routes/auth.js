@@ -9,7 +9,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const loginAccountValidationSchema = require('../validation/auth/loginScema.js');
 const {
-	updateRefreshTokenInDB,
+	removeRefreshTokenInDB,
+	replaceRefreshTokenInDB,
 	getEverythingForAccountFromDB,
 } = require('../utils/queries.js');
 const {
@@ -85,7 +86,7 @@ router.post(
 		}
 
 		try {
-			await updateRefreshTokenInDB(account.account_id, refreshToken);
+			await replaceRefreshTokenInDB(account.account_id, refreshToken);
 		} catch (err) {
 			console.log(err.message);
 			return res.status(500).json({ errors: { server: 'Server error' } });
@@ -99,7 +100,7 @@ router.post(
 		res.cookie('refreshToken', refreshToken, {
 			secure: true,
 			httpOnly: true,
-			path: ['/api/v1/auth/refresh', '/api/v1/auth/logout'],
+			path: '/api/v1/auth/refresh',
 			sameSite: 'strict',
 		});
 
@@ -117,9 +118,9 @@ router.post('/logout', authenticateToken, async (req, res) => {
 	try {
 		res.clearCookie('token');
 		res.clearCookie('refreshToken', {
-			path: ['/api/v1/auth/refresh', '/api/v1/auth/logout'],
+			path: '/api/v1/auth/refresh',
 		});
-		await updateRefreshTokenInDB(account_id, '');
+		await removeRefreshTokenInDB(account_id);
 	} catch (err) {
 		console.log(err.message);
 		return res.status(503).json({ errors: { server: 'Server error' } });
@@ -154,11 +155,11 @@ router.post('/refresh', async (req, res) => {
 		return res.status(403).json({ errors: { token: 'Invalid refresh token' } });
 	}
 
-	let account;
+	let token;
 	try {
-		account = await pool.query(
+		token = await pool.query(
 			`SELECT refresh_token
-         FROM account
+         FROM token
         WHERE account_id = ($1)`,
 			[decoded.account_id]
 		);
@@ -167,13 +168,13 @@ router.post('/refresh', async (req, res) => {
 		return res.status(503).json({ errors: { server: 'Server error' } });
 	}
 
-	if (account.rows[0].refresh_token == null) {
+	if (token.rows[0].refresh_token == null) {
 		return res
 			.status(401)
 			.json({ errors: { token: 'No refresh token found in DB' } });
 	}
 
-	if (account.rows[0].refresh_token !== refreshToken) {
+	if (token.rows[0].refresh_token !== refreshToken) {
 		return res
 			.status(401)
 			.json({ errors: { token: 'Refresh token does not match DB' } });
@@ -189,7 +190,7 @@ router.post('/refresh', async (req, res) => {
 	}
 
 	try {
-		await updateRefreshTokenInDB(decoded.account_id, newRefreshToken);
+		await replaceRefreshTokenInDB(decoded.account_id, newRefreshToken);
 	} catch (err) {
 		console.log(err.message);
 		return res.status(503).json({ errors: { server: 'Server error' } });
