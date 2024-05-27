@@ -1,9 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import authReducer from '@/features/auth/authSlice';
+import regiisterReducer from '@/features/register/registerSlice';
+import accountReducer from '@/features/account/accountSlice';
 
 const appReducer = combineReducers({
 	auth: authReducer,
-	// Will add more reducers later
+	register: regiisterReducer,
+	account: accountReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

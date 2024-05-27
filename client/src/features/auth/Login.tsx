@@ -5,18 +5,16 @@ import { login, logout } from './authSlice';
 function Login() {
 	const dispatch = useAppDispatch();
 
-	const loginInfoInitialState = {
+	const [loginInfo, setLoginInfo] = useState({
 		email: '',
 		pwd: '',
-	};
-	const [loginInfo, setLoginInfo] = useState(loginInfoInitialState);
+	});
 
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setLoginInfo({ ...loginInfo, [e.target.name]: e.target.value });
 	};
 
 	const handleLogout = () => {
-		setLoginInfo(loginInfoInitialState);
 		dispatch(logout());
 	};
 
@@ -25,14 +23,14 @@ function Login() {
 		dispatch(login(loginInfo));
 	};
 
-	const { loading, account, errors } = useAppSelector((state) => state.auth);
+	const { loading, errors } = useAppSelector((state) => state.auth);
+	const { account } = useAppSelector((state) => state.account);
 
 	return (
 		<>
 			<h1>Login</h1>
 			<form noValidate onSubmit={handleSubmit}>
 				<input
-					autoFocus
 					type='email'
 					name='email'
 					placeholder='Email'

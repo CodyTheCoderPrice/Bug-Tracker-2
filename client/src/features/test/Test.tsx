@@ -24,7 +24,8 @@ function Test() {
 	};
 
 	return (
-		<div style={{ paddingTop: '20px' }}>
+		<>
+			<h1>Tokens</h1>
 			<button type='button' onClick={handleTestToken}>
 				Test Token
 			</button>
@@ -33,7 +34,7 @@ function Test() {
 			</button>
 			<p>{tokenTestOutput}</p>
 			<p>{refreshTestOutput}</p>
-		</div>
+		</>
 	);
 }
 
