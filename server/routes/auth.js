@@ -113,7 +113,7 @@ router.post(
 //========
 // Logout
 //========
-router.post('/logout', authenticateToken, async (req, res) => {
+router.delete('/logout', authenticateToken, async (req, res) => {
 	const account_id = res.locals.account_id;
 	try {
 		res.clearCookie('token');

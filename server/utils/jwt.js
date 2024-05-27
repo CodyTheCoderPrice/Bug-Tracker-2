@@ -52,7 +52,9 @@ function generateRefreshToken(account_id) {
  */
 async function authenticateToken(req, res, next) {
 	if (req.cookies.token == null) {
-		return res.status(401).json({ errors: { token: 'Missing access token' } });
+		return res
+			.status(401)
+			.json({ needRefresh: true, errors: { token: 'Missing access token' } });
 	}
 
 	accessToken = req.cookies.token;
@@ -65,9 +67,11 @@ async function authenticateToken(req, res, next) {
 		if (err.message === 'jwt expired') {
 			return res
 				.status(400)
-				.json({ errors: { token: 'Access token expired' } });
+				.json({ needRefresh: true, errors: { token: 'Access token expired' } });
 		}
-		return res.status(403).json({ errors: { token: 'Invalid access token' } });
+		return res
+			.status(403)
+			.json({ needRefresh: true, errors: { token: 'Invalid access token' } });
 	}
 }
 

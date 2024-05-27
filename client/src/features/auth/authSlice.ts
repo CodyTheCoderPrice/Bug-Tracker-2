@@ -5,7 +5,7 @@ import {
 	PayloadAction,
 	createAction,
 } from '@reduxjs/toolkit';
-import api from '@/services/api';
+import axiosInstance from '@/services/api';
 
 type Account = {
 	account_id: number;
@@ -38,9 +38,7 @@ export const login = createAsyncThunk(
 	'auth/login',
 	async (loginInfo: { email: string; pwd: string }, { rejectWithValue }) => {
 		try {
-			const response = api.post('/api/v1/auth/login', loginInfo, {
-				withCredentials: true,
-			});
+			const response = axiosInstance.post('/api/v1/auth/login', loginInfo);
 			return (await response).data;
 		} catch (err: any) {
 			if (!err.response.data) {
@@ -81,12 +79,12 @@ const reset = createAction('reset');
 export const logout = () => {
 	return async (dispatch: AppDispatch) => {
 		try {
-			await api.post('/api/v1/auth/logout', '', { withCredentials: true });
+			await axiosInstance.delete('/api/v1/auth/logout');
 		} catch (err: any) {
-			if (!err.response.data.errors) {
-				console.log(err.message);
+			if (err.response && err.response.data) {
+				console.log(err.response.data);
 			}
-			console.log(err.response.data.errors);
+			console.log(err.message);
 		}
 		dispatch(reset());
 	};
