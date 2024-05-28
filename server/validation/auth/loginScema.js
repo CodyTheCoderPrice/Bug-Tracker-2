@@ -1,6 +1,6 @@
 const { accountPwdMinLen, accountPwdMaxLen } = require('../constants');
 
-const loginAccountValidationSchema = {
+const loginSchema = {
 	email: {
 		notEmpty: { errorMessage: 'Email cannot be empty' },
 		isString: { errorMessage: 'Email must be a string' },
@@ -16,4 +16,4 @@ const loginAccountValidationSchema = {
 	},
 };
 
-module.exports = loginAccountValidationSchema;
+module.exports = loginSchema;

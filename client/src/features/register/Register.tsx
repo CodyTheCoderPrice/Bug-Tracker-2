@@ -28,7 +28,7 @@ function Register() {
 	return (
 		<>
 			<h1>Register</h1>
-			<form noValidate onSubmit={handleSubmit}>
+			<form noValidate autoComplete='off' onSubmit={handleSubmit}>
 				<input
 					type='email'
 					name='email'
@@ -60,7 +60,7 @@ function Register() {
 				/>
 				<button type='submit'>REGISTER</button>
 			</form>
-			{loading && <h2>Loading...</h2>}
+			{loading && <h3>Loading...</h3>}
 			{success && <p>Account Created</p>}
 			{errors?.email && <p style={{ color: 'red' }}>{errors.email}</p>}
 			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}

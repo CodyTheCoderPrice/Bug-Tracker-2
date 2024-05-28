@@ -61,6 +61,7 @@ const authSlice = createSlice({
 	extraReducers: (builder) => {
 		builder.addCase(login.pending, (state) => {
 			state.loading = true;
+			state.errors = null;
 		});
 		builder.addCase(login.fulfilled, (state) => {
 			state.loading = false;

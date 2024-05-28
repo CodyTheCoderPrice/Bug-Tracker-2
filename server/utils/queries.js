@@ -47,14 +47,14 @@ async function replaceRefreshTokenInDB(account_id, refreshToken) {
  * 	email: string,
  * 	first_name: string,
  * 	last_name: string,
- * 	join_date: Date,
- * 	last_edited: Date
+ * 	create_time: Date,
+ * 	update_time: Date
  * }} Returns Object with account info.
  */
 async function getAccountFromDB(account_id) {
 	try {
 		return await pool.query(
-			`SELECT account_id, email, first_name, last_name, join_date, last_edited
+			`SELECT account_id, email, first_name, last_name, create_time, update_time
 				 FROM account
 				WHERE account_id = $1`,
 			[account_id]

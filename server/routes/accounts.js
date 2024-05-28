@@ -6,8 +6,10 @@ const {
 } = require('express-validator');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
-const registerAccountValidationSchema = require('../validation/account/registerSchema.js');
+const registerAccountSchema = require('../validation/account/registerSchema.js');
+const updateEmailSchema = require('../validation/account/updateEmailSchema.js');
 const { extractValidationErrors } = require('../utils/errorHandling.js');
+const { authenticateToken } = require('../utils/jwt.js');
 
 const router = Router();
 
@@ -16,7 +18,7 @@ const router = Router();
 //==================
 router.post(
 	'/register',
-	checkSchema(registerAccountValidationSchema),
+	checkSchema(registerAccountSchema),
 	async (req, res) => {
 		const result = validationResult(req);
 		if (!result.isEmpty()) {
@@ -63,6 +65,69 @@ router.post(
 			);
 
 			return res.status(201).json({ msg: 'Account created' });
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+	}
+);
+
+//==============
+// Update Email
+//==============
+router.post(
+	'/update-email',
+	authenticateToken,
+	checkSchema(updateEmailSchema),
+	async (req, res) => {
+		const result = validationResult(req);
+		if (!result.isEmpty()) {
+			return res
+				.status(400)
+				.json({ errors: extractValidationErrors(result.array()) });
+		}
+
+		const data = matchedData(req);
+		const { email } = data;
+
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		let emailIsActive;
+		try {
+			emailIsActive =
+				(
+					await pool.query(
+						`SELECT *
+						   FROM account
+						  WHERE LOWER(email) = LOWER($1)`,
+						[email]
+					)
+				).rowCount > 0;
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+
+		if (emailIsActive) {
+			return res
+				.status(400)
+				.json({ errors: { email: 'Email already in use' } });
+		}
+
+		try {
+			const updatedAccount = await pool.query(
+				`UPDATE account SET email = $1
+				 WHERE account_id = $2
+				 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+				[email, account_id]
+			);
+
+			if (updatedAccount.rows[0] === undefined) {
+				throw new Error('Database did not update email');
+			}
+
+			return res.status(200).json({ account: updatedAccount.rows[0] });
 		} catch (err) {
 			console.log(err.message);
 			return res.status(503).json({ errors: { server: 'Server error' } });
