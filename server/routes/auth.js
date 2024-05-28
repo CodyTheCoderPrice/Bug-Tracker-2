@@ -7,16 +7,18 @@ const {
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const loginSchema = require('../validation/auth/loginScema.js');
+const loginSchema = require('../middleware/validation/auth/loginScema.js');
 const {
 	removeRefreshTokenInDB,
 	replaceRefreshTokenInDB,
 	getEverythingForAccountFromDB,
 } = require('../utils/queries.js');
 const {
+	authenticateToken,
+} = require('../middleware/auth/authenticateToken.js');
+const {
 	generateAccessToken,
 	generateRefreshToken,
-	authenticateToken,
 } = require('../utils/jwt.js');
 const { extractValidationErrors } = require('../utils/errorHandling.js');
 
@@ -112,6 +114,12 @@ router.post('/login', checkSchema(loginSchema), async (req, res) => {
 router.delete('/logout', authenticateToken, async (req, res) => {
 	// Declared in authenticateToken middleware
 	const account_id = res.locals.account_id;
+
+	if (account_id == null) {
+		console.log('res.locals missing account_id');
+		return res.status(500).json({ errors: { server: 'Server error' } });
+	}
+
 	try {
 		res.clearCookie('token');
 		res.clearCookie('refreshToken', {

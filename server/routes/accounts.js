@@ -6,10 +6,15 @@ const {
 } = require('express-validator');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
-const registerAccountSchema = require('../validation/account/registerSchema.js');
-const updateEmailSchema = require('../validation/account/updateEmailSchema.js');
+const registerAccountSchema = require('../middleware/validation/account/registerSchema.js');
+const updateEmailSchema = require('../middleware//validation/account/updateEmailSchema.js');
 const { extractValidationErrors } = require('../utils/errorHandling.js');
-const { authenticateToken } = require('../utils/jwt.js');
+const {
+	authenticateToken,
+} = require('../middleware/auth/authenticateToken.js');
+const {
+	authenticatePassword,
+} = require('../middleware/auth/authenticatePassword.js');
 
 const router = Router();
 
@@ -79,19 +84,19 @@ router.post(
 	'/update-email',
 	authenticateToken,
 	checkSchema(updateEmailSchema),
+	authenticatePassword,
 	async (req, res) => {
-		const result = validationResult(req);
-		if (!result.isEmpty()) {
-			return res
-				.status(400)
-				.json({ errors: extractValidationErrors(result.array()) });
-		}
-
+		// validationResult already ran in authenticatePassword middleware
 		const data = matchedData(req);
 		const { email } = data;
 
 		// Declared in authenticateToken middleware
 		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			console.log('res.locals missing account_id');
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
 
 		let emailIsActive;
 		try {
@@ -123,7 +128,7 @@ router.post(
 				[email, account_id]
 			);
 
-			if (updatedAccount.rows[0] === undefined) {
+			if (updatedAccount.rowCount === 0) {
 				throw new Error('Database did not update email');
 			}
 
