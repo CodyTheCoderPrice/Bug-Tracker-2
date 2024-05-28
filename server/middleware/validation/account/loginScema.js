@@ -1,8 +1,8 @@
 const { email, pwd } = require('./shared');
 
-const updateEmailSchema = {
+const loginSchema = {
 	email: email,
 	pwd: pwd('Password'),
 };
 
-module.exports = updateEmailSchema;
+module.exports = loginSchema;

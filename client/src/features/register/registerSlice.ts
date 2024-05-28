@@ -39,10 +39,10 @@ export const register = createAsyncThunk(
 			);
 			return (await response).data;
 		} catch (err: any) {
-			if (!err.response.data) {
+			if (!err.response.data.errors) {
 				return rejectWithValue(null);
 			}
-			return rejectWithValue(err.response.data);
+			return rejectWithValue(err.response.data.errors);
 		}
 	}
 );
@@ -63,7 +63,7 @@ const registerSlice = createSlice({
 		builder.addCase(register.rejected, (state, action: any) => {
 			state.loading = false;
 			state.success = false;
-			state.errors = action.payload.errors;
+			state.errors = action.payload;
 		});
 	},
 });

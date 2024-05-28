@@ -30,10 +30,10 @@ export const login = createAsyncThunk(
 			);
 			return response.data;
 		} catch (err: any) {
-			if (!err.response.data) {
+			if (!err.response.data.errors) {
 				return rejectWithValue(null);
 			}
-			return rejectWithValue(err.response.data);
+			return rejectWithValue(err.response.data.errors);
 		}
 	}
 );
@@ -71,7 +71,7 @@ const authSlice = createSlice({
 		builder.addCase(login.rejected, (state, action: any) => {
 			state.loading = false;
 			state.loggedIn = false;
-			state.errors = action.payload.errors;
+			state.errors = action.payload;
 		});
 	},
 });

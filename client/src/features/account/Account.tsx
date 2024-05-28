@@ -1,5 +1,6 @@
 import { useAppSelector } from '@/app/hooks';
 import UpdateEmail from './UpdateEmail';
+import UpdatePassword from './UpdatePassword';
 
 function Account() {
 	const { loading, errors } = useAppSelector((state) => state.auth);
@@ -22,6 +23,7 @@ function Account() {
 			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
 
 			{account && <UpdateEmail />}
+			{account && <UpdatePassword />}
 		</>
 	);
 }

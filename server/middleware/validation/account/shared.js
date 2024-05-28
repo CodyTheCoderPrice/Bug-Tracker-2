@@ -11,19 +11,19 @@ const email = {
 	isEmail: { errorMessage: 'Email must be valid' },
 };
 
-const newPwd = {
-	notEmpty: { errorMessage: 'Password cannot be empty' },
-	isString: { errorMessage: 'Password must be a string' },
+const pwd = (pwdTitle) => ({
+	notEmpty: { errorMessage: `${pwdTitle} cannot be empty` },
+	isString: { errorMessage: `${pwdTitle} must be a string` },
+});
+
+const pwdWithLength = (pwdTitle) => ({
+	notEmpty: { errorMessage: `${pwdTitle} cannot be empty` },
+	isString: { errorMessage: `${pwdTitle} must be a string` },
 	isLength: {
 		options: { min: accountPwdMinLen, max: accountPwdMaxLen },
-		errorMessage: `password must be ${accountPwdMinLen}-${accountPwdMaxLen} characters`,
+		errorMessage: `${pwdTitle} must be ${accountPwdMinLen}-${accountPwdMaxLen} characters`,
 	},
-};
-
-const currentPwd = {
-	notEmpty: { errorMessage: 'Password cannot be empty' },
-	isString: { errorMessage: 'Password must be a string' },
-};
+});
 
 const first_name = {
 	notEmpty: { errorMessage: 'First name cannot be empty' },
@@ -43,4 +43,10 @@ const last_name = {
 	},
 };
 
-module.exports = { email, newPwd, currentPwd, first_name, last_name };
+module.exports = {
+	email,
+	pwd,
+	pwdWithLength,
+	first_name,
+	last_name,
+};

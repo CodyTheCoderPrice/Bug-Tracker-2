@@ -1,5 +1,4 @@
-const { validationResult, matchedData } = require('express-validator');
-const { extractValidationErrors } = require('../../utils/errorHandling.js');
+const { matchedData } = require('express-validator');
 const pool = require('../../db.js');
 const bcrypt = require('bcrypt');
 // Used to document js
@@ -16,13 +15,6 @@ const express = require('express');
  * @param {express.NextFunction} next - Express next middleware function
  */
 async function authenticatePassword(req, res, next) {
-	const result = validationResult(req);
-	if (!result.isEmpty()) {
-		return res
-			.status(400)
-			.json({ errors: extractValidationErrors(result.array()) });
-	}
-
 	const data = matchedData(req);
 	const { pwd } = data;
 

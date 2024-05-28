@@ -4,10 +4,13 @@ const {
 	matchedData,
 	checkSchema,
 } = require('express-validator');
+const {
+	handleSchemaErrors,
+} = require('../middleware/validation/handleSchemaErrors.js');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const loginSchema = require('../middleware/validation/auth/loginScema.js');
+const loginSchema = require('../middleware/validation/account/loginScema.js');
 const {
 	removeRefreshTokenInDB,
 	replaceRefreshTokenInDB,
@@ -20,93 +23,89 @@ const {
 	generateAccessToken,
 	generateRefreshToken,
 } = require('../utils/jwt.js');
-const { extractValidationErrors } = require('../utils/errorHandling.js');
 
 const router = Router();
 
 //=======
 // Login
 //=======
-router.post('/login', checkSchema(loginSchema), async (req, res) => {
-	const result = validationResult(req);
-	if (!result.isEmpty()) {
-		return res
-			.status(400)
-			.json({ errors: extractValidationErrors(result.array()) });
-	}
+router.post(
+	'/login',
+	[checkSchema(loginSchema), handleSchemaErrors],
+	async (req, res) => {
+		const data = matchedData(req);
+		const { email, pwd } = data;
 
-	const data = matchedData(req);
-	const { email, pwd } = data;
-
-	let idAndHashPass;
-	try {
-		idAndHashPass = await pool.query(
-			`SELECT account_id, hash_pass
+		let idAndHashPass;
+		try {
+			idAndHashPass = await pool.query(
+				`SELECT account_id, hash_pass
 				   FROM account
 					WHERE LOWER(email) = LOWER($1)`,
-			[email]
-		);
-	} catch (err) {
-		console.log(err.message);
-		return res.status(503).json({ errors: { server: 'Server error' } });
+				[email]
+			);
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+
+		if (idAndHashPass.rowCount === 0) {
+			return res.status(401).json({ errors: { email: 'Email unregistered' } });
+		}
+
+		const correctpwd = bcrypt.compareSync(pwd, idAndHashPass.rows[0].hash_pass);
+
+		if (!correctpwd) {
+			return res.status(403).json({ errors: { pwd: 'Incorrect password' } });
+		}
+
+		let account;
+		try {
+			({ account, placeholder1, placeholder2 } =
+				await getEverythingForAccountFromDB(idAndHashPass.rows[0].account_id));
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+
+		if (account.account_id == null) {
+			console.log(err.message);
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		let accessToken, refreshToken;
+		try {
+			accessToken = generateAccessToken(account.account_id);
+			refreshToken = generateRefreshToken(account.account_id);
+		} catch (err) {
+			console.log(err.message);
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		try {
+			await replaceRefreshTokenInDB(account.account_id, refreshToken);
+		} catch (err) {
+			console.log(err.message);
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		res.cookie('token', accessToken, {
+			secure: true,
+			httpOnly: true,
+			sameSite: 'strict',
+		});
+		res.cookie('refreshToken', refreshToken, {
+			secure: true,
+			httpOnly: true,
+			path: '/api/v1/auth/refresh',
+			sameSite: 'strict',
+		});
+
+		return res.json({
+			account: account,
+		});
 	}
-
-	if (idAndHashPass.rowCount === 0) {
-		return res.status(401).json({ errors: { email: 'Email unregistered' } });
-	}
-
-	const correctpwd = bcrypt.compareSync(pwd, idAndHashPass.rows[0].hash_pass);
-
-	if (!correctpwd) {
-		return res.status(403).json({ errors: { pwd: 'Incorrect password' } });
-	}
-
-	let account;
-	try {
-		({ account, placeholder1, placeholder2 } =
-			await getEverythingForAccountFromDB(idAndHashPass.rows[0].account_id));
-	} catch (err) {
-		console.log(err.message);
-		return res.status(503).json({ errors: { server: 'Server error' } });
-	}
-
-	if (account.account_id == null) {
-		console.log(err.message);
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	let accessToken, refreshToken;
-	try {
-		accessToken = generateAccessToken(account.account_id);
-		refreshToken = generateRefreshToken(account.account_id);
-	} catch (err) {
-		console.log(err.message);
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	try {
-		await replaceRefreshTokenInDB(account.account_id, refreshToken);
-	} catch (err) {
-		console.log(err.message);
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	res.cookie('token', accessToken, {
-		secure: true,
-		httpOnly: true,
-		sameSite: 'strict',
-	});
-	res.cookie('refreshToken', refreshToken, {
-		secure: true,
-		httpOnly: true,
-		path: '/api/v1/auth/refresh',
-		sameSite: 'strict',
-	});
-
-	return res.json({
-		account: account,
-	});
-});
+);
 
 //========
 // Logout

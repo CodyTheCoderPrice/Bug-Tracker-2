@@ -16,7 +16,9 @@ function UpdateEmail() {
 		dispatch(updateEmail(emailInfo));
 	};
 
-	const { loading, errors } = useAppSelector((state) => state.account);
+	const { loading, updateEmailSuccess, errors } = useAppSelector(
+		(state) => state.account
+	);
 
 	return (
 		<>
@@ -39,9 +41,16 @@ function UpdateEmail() {
 				<button type='submit'>Update Email</button>
 			</form>
 			{loading && <h3>Loading...</h3>}
-			{errors?.email && <p style={{ color: 'red' }}>{errors.email}</p>}
-			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}
-			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
+			{updateEmailSuccess && <p>Email Updated</p>}
+			{errors?.updateEmail?.email && (
+				<p style={{ color: 'red' }}>{errors.updateEmail.email}</p>
+			)}
+			{errors?.updateEmail?.pwd && (
+				<p style={{ color: 'red' }}>{errors.updateEmail.pwd}</p>
+			)}
+			{errors?.updateEmail?.server && (
+				<p style={{ color: 'red' }}>{errors.updateEmail.server}</p>
+			)}
 		</>
 	);
 }

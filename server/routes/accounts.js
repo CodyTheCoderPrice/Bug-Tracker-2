@@ -4,17 +4,23 @@ const {
 	matchedData,
 	checkSchema,
 } = require('express-validator');
+const {
+	handleSchemaErrors,
+} = require('../middleware/validation/handleSchemaErrors.js');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const registerAccountSchema = require('../middleware/validation/account/registerSchema.js');
 const updateEmailSchema = require('../middleware//validation/account/updateEmailSchema.js');
-const { extractValidationErrors } = require('../utils/errorHandling.js');
+const updatePasswordSchema = require('../middleware/validation/account/updatePasswordSchema.js');
 const {
 	authenticateToken,
 } = require('../middleware/auth/authenticateToken.js');
 const {
 	authenticatePassword,
 } = require('../middleware/auth/authenticatePassword.js');
+const {
+	checkConfirmPwdMatches,
+} = require('../middleware/validation/account/checkConfirmPwdMatches.js');
 
 const router = Router();
 
@@ -23,15 +29,8 @@ const router = Router();
 //==================
 router.post(
 	'/register',
-	checkSchema(registerAccountSchema),
+	[checkSchema(registerAccountSchema), handleSchemaErrors],
 	async (req, res) => {
-		const result = validationResult(req);
-		if (!result.isEmpty()) {
-			return res
-				.status(400)
-				.json({ errors: extractValidationErrors(result.array()) });
-		}
-
 		const data = matchedData(req);
 		const { email, pwd, first_name, last_name } = data;
 
@@ -64,8 +63,8 @@ router.post(
 		try {
 			await pool.query(
 				`INSERT INTO account (email, hash_pass, first_name, last_name)
-						VALUES($1, $2, $3, $4)
-							RETURNING account_id`,
+						  VALUES ($1, $2, $3, $4)
+				   RETURNING account_id`,
 				[email, hash_pass, first_name, last_name]
 			);
 
@@ -83,10 +82,9 @@ router.post(
 router.post(
 	'/update-email',
 	authenticateToken,
-	checkSchema(updateEmailSchema),
+	[checkSchema(updateEmailSchema), handleSchemaErrors],
 	authenticatePassword,
 	async (req, res) => {
-		// validationResult already ran in authenticatePassword middleware
 		const data = matchedData(req);
 		const { email } = data;
 
@@ -122,14 +120,61 @@ router.post(
 
 		try {
 			const updatedAccount = await pool.query(
-				`UPDATE account SET email = $1
-				 WHERE account_id = $2
+				`UPDATE account
+				    SET email = $1
+				  WHERE account_id = $2
 				 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
 				[email, account_id]
 			);
 
 			if (updatedAccount.rowCount === 0) {
-				throw new Error('Database did not update email');
+				throw new Error('Database failed to update account email');
+			}
+
+			return res.status(200).json({ account: updatedAccount.rows[0] });
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+	}
+);
+
+//=================
+// Update Password
+//=================
+router.post(
+	'/update-password',
+	authenticateToken,
+	[checkSchema(updatePasswordSchema), handleSchemaErrors],
+	checkConfirmPwdMatches,
+	authenticatePassword,
+	async (req, res) => {
+		const data = matchedData(req);
+		const { newPwd } = data;
+
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			console.log('res.locals missing account_id');
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		const saltRounds = 10;
+		const salt = bcrypt.genSaltSync(saltRounds);
+		const new_hash_pass = bcrypt.hashSync(newPwd, salt);
+
+		try {
+			const updatedAccount = await pool.query(
+				`UPDATE account
+				    SET hash_pass = $1
+				  WHERE account_id = $2
+				 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+				[new_hash_pass, account_id]
+			);
+
+			if (updatedAccount.rowCount === 0) {
+				throw new Error('Database failed to update account password');
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
