@@ -2,24 +2,25 @@ import { AppDispatch } from '@/app/store';
 import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/services/api';
 
-type LoginError = {
+type TLoginError = {
 	email: string | undefined;
 	pwd: string | undefined;
 	server: string | undefined;
 };
 
-type InitialState = {
+type TInitialState = {
 	loading: boolean;
-	loggedIn: boolean;
-	errors: LoginError | null;
+	isLoggedIn: boolean;
+	errors: TLoginError | null;
 };
 
-const initialState: InitialState = {
+const initialState: TInitialState = {
 	loading: false,
-	loggedIn: false,
+	isLoggedIn: false,
 	errors: null,
 };
 
+// Uses password
 export const login = createAsyncThunk(
 	'auth/login',
 	async (loginInfo: { email: string; pwd: string }, { rejectWithValue }) => {
@@ -28,6 +29,24 @@ export const login = createAsyncThunk(
 				'/api/v1/auth/login',
 				loginInfo
 			);
+			return response.data;
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				return rejectWithValue(null);
+			}
+			return rejectWithValue(err.response.data.errors);
+		}
+	}
+);
+
+// Uses accessToken
+export const relogin = createAsyncThunk(
+	'auth/relogin',
+	async (_, { rejectWithValue }) => {
+		try {
+			console.log('Re-login attempt');
+			const response = await axiosInstance.get('/api/v1/auth/relogin');
+			console.log('Re-login successful');
 			return response.data;
 		} catch (err: any) {
 			if (!err.response.data.errors) {
@@ -65,12 +84,26 @@ const authSlice = createSlice({
 		});
 		builder.addCase(login.fulfilled, (state) => {
 			state.loading = false;
-			state.loggedIn = true;
+			state.isLoggedIn = true;
 			state.errors = null;
 		});
 		builder.addCase(login.rejected, (state, action: any) => {
 			state.loading = false;
-			state.loggedIn = false;
+			state.isLoggedIn = false;
+			state.errors = action.payload;
+		});
+		builder.addCase(relogin.pending, (state) => {
+			state.loading = true;
+			state.errors = null;
+		});
+		builder.addCase(relogin.fulfilled, (state) => {
+			state.loading = false;
+			state.isLoggedIn = true;
+			state.errors = null;
+		});
+		builder.addCase(relogin.rejected, (state, action: any) => {
+			state.loading = false;
+			state.isLoggedIn = false;
 			state.errors = action.payload;
 		});
 	},

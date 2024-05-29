@@ -68,8 +68,8 @@ router.post(
 			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
 
-		if (account.account_id == null) {
-			console.log(err.message);
+		if (account.rowCount === 0 || account.account_id == null) {
+			console.log('getEverythingForAccountFromDB returned without account_id');
 			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
@@ -101,11 +101,42 @@ router.post(
 			sameSite: 'strict',
 		});
 
-		return res.json({
+		return res.status(200).json({
 			account: account,
 		});
 	}
 );
+
+//==========
+// Re-Login
+//==========
+router.get('/relogin', authenticateToken, async (req, res) => {
+	// Declared in authenticateToken middleware
+	const account_id = res.locals.account_id;
+
+	if (account_id == null) {
+		console.log('res.locals missing account_id');
+		return res.status(500).json({ errors: { server: 'Server error' } });
+	}
+
+	let account;
+	try {
+		({ account, placeholder1, placeholder2 } =
+			await getEverythingForAccountFromDB(account_id));
+	} catch (err) {
+		console.log(err.message);
+		return res.status(503).json({ errors: { server: 'Server error' } });
+	}
+
+	if (account.rowCount === 0) {
+		console.log('getEverythingForAccountFromDB returned without account');
+		return res.status(500).json({ errors: { server: 'Server error' } });
+	}
+
+	return res.status(200).json({
+		account: account,
+	});
+});
 
 //========
 // Logout
@@ -120,9 +151,10 @@ router.delete('/logout', authenticateToken, async (req, res) => {
 	}
 
 	try {
-		res.clearCookie('token');
+		res.clearCookie('token', { sameSite: 'strict' });
 		res.clearCookie('refreshToken', {
 			path: '/api/v1/auth/refresh',
+			sameSite: 'strict',
 		});
 		await removeRefreshTokenInDB(account_id);
 	} catch (err) {
@@ -172,7 +204,7 @@ router.post('/refresh', async (req, res) => {
 		return res.status(503).json({ errors: { server: 'Server error' } });
 	}
 
-	if (token.rows[0].refresh_token == null) {
+	if (token.rowCount === 0 || token.rows[0].refresh_token == null) {
 		return res
 			.status(401)
 			.json({ errors: { token: 'No refresh token found in DB' } });

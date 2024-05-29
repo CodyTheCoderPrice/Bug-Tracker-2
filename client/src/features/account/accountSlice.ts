@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/services/api';
-import { login } from '../auth/authSlice';
+import { login, relogin } from '../auth/authSlice';
 
 type TAccount = {
 	account_id: number;
@@ -29,6 +29,7 @@ type TUpdateAccountError = {
 		| undefined;
 	first_name: string | undefined;
 	last_name: string | undefined;
+	server: string | undefined;
 };
 
 type TInitialState = {
@@ -94,6 +95,12 @@ const accountSlice = createSlice({
 		// Login
 		builder.addCase(
 			login.fulfilled,
+			(state, action: PayloadAction<{ account: TAccount }>) => {
+				state.account = action.payload.account;
+			}
+		);
+		builder.addCase(
+			relogin.fulfilled,
 			(state, action: PayloadAction<{ account: TAccount }>) => {
 				state.account = action.payload.account;
 			}

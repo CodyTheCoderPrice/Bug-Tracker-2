@@ -4,8 +4,7 @@ const { extractValidationErrors } = require('../../utils/errorHandling.js');
 const express = require('express');
 
 /**
- * Sends existing schema errors in response. If none exist, then calls next
- * middleware.
+ * Sends schema errors in response. If none exist, then calls next middleware.
  *
  * NOTE: This middleware is intended to run immediately after checkSchema.
  *

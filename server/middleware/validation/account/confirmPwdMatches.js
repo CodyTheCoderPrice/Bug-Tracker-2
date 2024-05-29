@@ -12,7 +12,7 @@ const express = require('express');
  * @param {express.Response} res - Express response object
  * @param {express.NextFunction} next - Express next middleware function
  */
-async function checkConfirmPwdMatches(req, res, next) {
+async function confirmPwdMatches(req, res, next) {
 	const data = matchedData(req);
 	const { newPwd, confirmPwd } = data;
 
@@ -28,5 +28,5 @@ async function checkConfirmPwdMatches(req, res, next) {
 }
 
 module.exports = {
-	checkConfirmPwdMatches,
+	confirmPwdMatches,
 };

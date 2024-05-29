@@ -19,8 +19,8 @@ const {
 	authenticatePassword,
 } = require('../middleware/auth/authenticatePassword.js');
 const {
-	checkConfirmPwdMatches,
-} = require('../middleware/validation/account/checkConfirmPwdMatches.js');
+	confirmPwdMatches,
+} = require('../middleware/validation/account/confirmPwdMatches.js');
 
 const router = Router();
 
@@ -146,7 +146,7 @@ router.post(
 	'/update-password',
 	authenticateToken,
 	[checkSchema(updatePasswordSchema), handleSchemaErrors],
-	checkConfirmPwdMatches,
+	confirmPwdMatches,
 	authenticatePassword,
 	async (req, res) => {
 		const data = matchedData(req);
