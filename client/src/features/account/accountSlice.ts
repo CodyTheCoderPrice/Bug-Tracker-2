@@ -12,6 +12,13 @@ type TAccount = {
 };
 
 type TUpdateAccountError = {
+	updateName:
+		| {
+				first_name: string | undefined;
+				last_name: string | undefined;
+				server: string | undefined;
+		  }
+		| undefined;
 	updateEmail:
 		| {
 				email: string | undefined;
@@ -35,6 +42,7 @@ type TUpdateAccountError = {
 type TInitialState = {
 	loading: boolean;
 	account: TAccount | null;
+	updateNameSuccess: boolean;
 	updateEmailSuccess: boolean;
 	updatePasswordSuccess: boolean;
 	errors: TUpdateAccountError | null;
@@ -43,10 +51,32 @@ type TInitialState = {
 const initialState: TInitialState = {
 	loading: false,
 	account: null,
+	updateNameSuccess: false,
 	updateEmailSuccess: false,
 	updatePasswordSuccess: false,
 	errors: null,
 };
+
+export const updateName = createAsyncThunk(
+	'account/update-name',
+	async (
+		nameInfo: { first_name: string; last_name: string },
+		{ rejectWithValue }
+	) => {
+		try {
+			const response = await axiosInstance.post(
+				'/api/v1/accounts/update-name',
+				nameInfo
+			);
+			return response.data;
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				return rejectWithValue(null);
+			}
+			return rejectWithValue({ updateName: err.response.data.errors });
+		}
+	}
+);
 
 export const updateEmail = createAsyncThunk(
 	'account/update-email',
@@ -105,6 +135,26 @@ const accountSlice = createSlice({
 				state.account = action.payload.account;
 			}
 		);
+		// Update name
+		builder.addCase(updateName.pending, (state) => {
+			state.loading = true;
+			state.updateNameSuccess = false;
+			state.errors = null;
+		});
+		builder.addCase(
+			updateName.fulfilled,
+			(state, action: PayloadAction<{ account: TAccount }>) => {
+				state.loading = false;
+				state.account = action.payload.account;
+				state.updateNameSuccess = true;
+				state.errors = null;
+			}
+		);
+		builder.addCase(updateName.rejected, (state, action: any) => {
+			state.loading = false;
+			state.updateNameSuccess = false;
+			state.errors = action.payload;
+		});
 		// Update email
 		builder.addCase(updateEmail.pending, (state) => {
 			state.loading = true;

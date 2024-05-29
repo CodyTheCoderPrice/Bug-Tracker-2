@@ -15,7 +15,7 @@ axiosInstance.interceptors.response.use(
 		// Access Token was expired
 		if (err.response.data.needRefresh) {
 			try {
-				console.log('Tokens need refresh');
+				console.log('Tokens need refreshing');
 				const rs = await axiosInstance.post('/api/v1/auth/refresh');
 				if (rs.data.msg) {
 					console.log(rs.data.msg);

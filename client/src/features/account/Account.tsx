@@ -1,4 +1,5 @@
 import { useAppSelector } from '@/app/hooks';
+import UpdateName from './UpdateName';
 import UpdateEmail from './UpdateEmail';
 import UpdatePassword from './UpdatePassword';
 
@@ -22,6 +23,7 @@ function Account() {
 			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}
 			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
 
+			{account && <UpdateName />}
 			{account && <UpdateEmail />}
 			{account && <UpdatePassword />}
 		</>

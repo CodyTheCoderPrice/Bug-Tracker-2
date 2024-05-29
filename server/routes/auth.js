@@ -244,7 +244,7 @@ router.post('/refresh', async (req, res) => {
 		sameSite: 'strict',
 	});
 
-	return res.status(200).json({ msg: 'Tokens refreshed' });
+	return res.status(200).json({ msg: 'Token refresh successful' });
 });
 
 //============

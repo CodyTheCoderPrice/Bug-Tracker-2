@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt');
 const registerAccountSchema = require('../middleware/validation/account/registerSchema.js');
 const updateEmailSchema = require('../middleware//validation/account/updateEmailSchema.js');
 const updatePasswordSchema = require('../middleware/validation/account/updatePasswordSchema.js');
+const updateNameSchema = require('../middleware/validation/account/updateNameSchema.js');
 const {
 	authenticateToken,
 } = require('../middleware/auth/authenticateToken.js');
@@ -75,6 +76,45 @@ router.post(
 		}
 	}
 );
+
+//=============
+// Update Name
+//=============
+router.post('/update-name', authenticateToken, [
+	checkSchema(updateNameSchema),
+	handleSchemaErrors,
+	async (req, res) => {
+		const data = matchedData(req);
+		const { first_name, last_name } = data;
+
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			console.log('res.locals missing account_id');
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		try {
+			const updatedAccount = await pool.query(
+				`UPDATE account
+				    SET first_name = $1, last_name = $2
+				  WHERE account_id = $3
+				 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+				[first_name, last_name, account_id]
+			);
+
+			if (updatedAccount.rowCount === 0) {
+				throw new Error('Database failed to update account name');
+			}
+
+			return res.status(200).json({ account: updatedAccount.rows[0] });
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+	},
+]);
 
 //==============
 // Update Email

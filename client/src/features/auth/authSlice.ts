@@ -44,9 +44,8 @@ export const relogin = createAsyncThunk(
 	'auth/relogin',
 	async (_, { rejectWithValue }) => {
 		try {
-			console.log('Re-login attempt');
 			const response = await axiosInstance.get('/api/v1/auth/relogin');
-			console.log('Re-login successful');
+			console.log('Re-login succesful');
 			return response.data;
 		} catch (err: any) {
 			if (!err.response.data.errors) {
