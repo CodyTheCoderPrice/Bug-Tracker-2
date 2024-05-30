@@ -1,4 +1,4 @@
-import axiosInstance from '@/services/api';
+import axiosInstance from '@/API';
 import { useState } from 'react';
 
 function Test() {

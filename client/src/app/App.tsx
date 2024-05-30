@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useAppSelector, useAppDispatch } from './hooks';
 import { relogin } from '@/features/auth/authSlice';
-import Login from '@/features/auth/Login';
-import Register from '@/features/register/Register';
-import Test from '@/features/test/Test';
-import Account from '@/features/account/Account';
+import { Route, Routes } from 'react-router-dom';
+import Navbar from '@/components/Navbar';
+import AccountPage from '@/pages/AccountPage';
+import ProjectsPage from '@/pages/ProjectsPage';
+import CommentsPage from '@/pages/CommentsPage';
+import BugsPage from '@/pages/BugsPage';
 
 function App() {
 	const dispatch = useAppDispatch();
@@ -19,10 +21,13 @@ function App() {
 
 	return (
 		<>
-			<Register />
-			<Login />
-			<Account />
-			<Test />
+			<Navbar />
+			<Routes>
+				<Route path='/' element={<AccountPage />} />
+				<Route path='/Projects' element={<ProjectsPage />} />
+				<Route path='/Bugs' element={<BugsPage />} />
+				<Route path='/Comments' element={<CommentsPage />} />
+			</Routes>
 		</>
 	);
 }

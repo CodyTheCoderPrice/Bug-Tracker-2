@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axiosInstance from '@/services/api';
+import axiosInstance from '@/API';
 import { login, relogin, reset } from '../auth/authSlice';
 
 type TAccount = {

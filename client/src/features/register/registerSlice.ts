@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from '@/services/api';
+import axiosInstance from '@/API';
 
 type TRegisterError = {
 	email: string | undefined;

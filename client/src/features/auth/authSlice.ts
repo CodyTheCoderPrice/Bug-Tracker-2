@@ -1,6 +1,6 @@
 import { AppDispatch } from '@/app/store';
 import { createSlice, createAsyncThunk, createAction } from '@reduxjs/toolkit';
-import axiosInstance from '@/services/api';
+import axiosInstance from '@/API';
 
 type TLoginError = {
 	email: string | undefined;
