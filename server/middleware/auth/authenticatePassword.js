@@ -7,7 +7,7 @@ const express = require('express');
 /**
  * Middleware to authenticate a password matches the DB.
  *
- * NOTE: This middleware relies on authenticateToken and checkSchema being ran
+ * NOTE: This middleware relies on authenticateToken and checkSchema having ran
  * prior.
  *
  * @param {express.Request & {authorization: string}} req - Express request object

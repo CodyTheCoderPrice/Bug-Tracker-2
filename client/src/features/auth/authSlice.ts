@@ -56,7 +56,7 @@ export const relogin = createAsyncThunk(
 	}
 );
 
-const reset = createAction('reset');
+export const reset = createAction('reset');
 
 export const logout = () => {
 	return async (dispatch: AppDispatch) => {
@@ -77,6 +77,7 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
+		// Login
 		builder.addCase(login.pending, (state) => {
 			state.loading = true;
 			state.errors = null;
@@ -91,6 +92,7 @@ const authSlice = createSlice({
 			state.isLoggedIn = false;
 			state.errors = action.payload;
 		});
+		// Relogin
 		builder.addCase(relogin.pending, (state) => {
 			state.loading = true;
 			state.errors = null;

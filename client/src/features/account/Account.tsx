@@ -2,6 +2,7 @@ import { useAppSelector } from '@/app/hooks';
 import UpdateName from './UpdateName';
 import UpdateEmail from './UpdateEmail';
 import UpdatePassword from './UpdatePassword';
+import DeleteAccount from './DeleteAccount';
 
 function Account() {
 	const { loading, errors } = useAppSelector((state) => state.auth);
@@ -26,6 +27,7 @@ function Account() {
 			{account && <UpdateName />}
 			{account && <UpdateEmail />}
 			{account && <UpdatePassword />}
+			{account && <DeleteAccount />}
 		</>
 	);
 }

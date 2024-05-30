@@ -13,6 +13,7 @@ const registerAccountSchema = require('../middleware/validation/account/register
 const updateEmailSchema = require('../middleware//validation/account/updateEmailSchema.js');
 const updatePasswordSchema = require('../middleware/validation/account/updatePasswordSchema.js');
 const updateNameSchema = require('../middleware/validation/account/updateNameSchema.js');
+const deleteAccountSchema = require('../middleware/validation/account/deleteAccountSchema.js');
 const {
 	authenticateToken,
 } = require('../middleware/auth/authenticateToken.js');
@@ -218,6 +219,38 @@ router.post(
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+	}
+);
+
+//=================
+// Delete Acccount
+//=================
+router.delete(
+	'/delete',
+	authenticateToken,
+	[checkSchema(deleteAccountSchema), handleSchemaErrors],
+	authenticatePassword,
+	async (req, res) => {
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			console.log('res.locals missing account_id');
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		try {
+			await pool.query(
+				`DELETE FROM account
+					WHERE account_id = $1`,
+				[account_id]
+			);
+
+			return res.status(200).json({ msg: 'Account deleted' });
 		} catch (err) {
 			console.log(err.message);
 			return res.status(503).json({ errors: { server: 'Server error' } });

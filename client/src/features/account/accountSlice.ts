@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/services/api';
-import { login, relogin } from '../auth/authSlice';
+import { login, relogin, reset } from '../auth/authSlice';
 
 type TAccount = {
 	account_id: number;
@@ -34,9 +34,12 @@ type TUpdateAccountError = {
 				server: string | undefined;
 		  }
 		| undefined;
-	first_name: string | undefined;
-	last_name: string | undefined;
-	server: string | undefined;
+	deleteAccount:
+		| {
+				pwd: string | undefined;
+				server: string | undefined;
+		  }
+		| undefined;
 };
 
 type TInitialState = {
@@ -117,12 +120,36 @@ export const updatePassword = createAsyncThunk(
 	}
 );
 
+export const deleteAccount = createAsyncThunk(
+	'account/delete',
+	async (deleteInfo: { pwd: string }, { dispatch, rejectWithValue }) => {
+		let accountDeleted = false;
+		try {
+			await axiosInstance.delete('/api/v1/accounts/delete', {
+				data: deleteInfo,
+			});
+			accountDeleted = true;
+			console.log('Account deleted');
+			await axiosInstance.delete('/api/v1/auth/logout');
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				return rejectWithValue(null);
+			}
+			return rejectWithValue({ deleteAccount: err.response.data.errors });
+		}
+
+		if (accountDeleted) {
+			dispatch(reset());
+		}
+	}
+);
+
 const accountSlice = createSlice({
 	name: 'account',
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		// Login
+		// Login / Relogin
 		builder.addCase(
 			login.fulfilled,
 			(state, action: PayloadAction<{ account: TAccount }>) => {
@@ -193,6 +220,20 @@ const accountSlice = createSlice({
 		builder.addCase(updatePassword.rejected, (state, action: any) => {
 			state.loading = false;
 			state.updatePasswordSuccess = false;
+			state.errors = action.payload;
+		});
+		// Delete account
+		builder.addCase(deleteAccount.pending, (state) => {
+			state.loading = true;
+			state.errors = null;
+		});
+		builder.addCase(deleteAccount.fulfilled, (state) => {
+			state.loading = false;
+			state.account = null;
+			state.errors = null;
+		});
+		builder.addCase(deleteAccount.rejected, (state, action: any) => {
+			state.loading = false;
 			state.errors = action.payload;
 		});
 	},
