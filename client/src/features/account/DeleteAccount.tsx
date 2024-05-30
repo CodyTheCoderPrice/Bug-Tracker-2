@@ -16,7 +16,9 @@ function DeleteAccount() {
 		dispatch(deleteAccount(deleteInfo));
 	};
 
-	const { loading, errors } = useAppSelector((state) => state.account);
+	const { deleteAccountLoading, deleteAccountErrors } = useAppSelector(
+		(state) => state.account
+	);
 
 	return (
 		<>
@@ -40,12 +42,12 @@ function DeleteAccount() {
 					Delete
 				</button>
 			</form>
-			{loading && <h3>Loading...</h3>}
-			{errors?.deleteAccount?.pwd && (
-				<p style={{ color: 'red' }}>{errors.deleteAccount.pwd}</p>
+			{deleteAccountLoading && <h3>Loading...</h3>}
+			{deleteAccountErrors?.pwd && (
+				<p style={{ color: 'red' }}>{deleteAccountErrors.pwd}</p>
 			)}
-			{errors?.deleteAccount?.server && (
-				<p style={{ color: 'red' }}>{errors.deleteAccount.server}</p>
+			{deleteAccountErrors?.server && (
+				<p style={{ color: 'red' }}>{deleteAccountErrors.server}</p>
 			)}
 		</>
 	);

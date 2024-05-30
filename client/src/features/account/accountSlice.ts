@@ -11,53 +11,58 @@ type TAccount = {
 	update_time: Date;
 };
 
-type TUpdateAccountError = {
-	updateName:
-		| {
-				first_name: string | undefined;
-				last_name: string | undefined;
-				server: string | undefined;
-		  }
-		| undefined;
-	updateEmail:
-		| {
-				email: string | undefined;
-				pwd: string | undefined;
-				server: string | undefined;
-		  }
-		| undefined;
-	updatePassword:
-		| {
-				pwd: string | undefined;
-				newPwd: string | undefined;
-				confirmPwd: string | undefined;
-				server: string | undefined;
-		  }
-		| undefined;
-	deleteAccount:
-		| {
-				pwd: string | undefined;
-				server: string | undefined;
-		  }
-		| undefined;
+type TUpdateNameError = {
+	first_name: string | undefined;
+	last_name: string | undefined;
+	server: string | undefined;
+};
+
+type TUpdateEmailError = {
+	email: string | undefined;
+	pwd: string | undefined;
+	server: string | undefined;
+};
+
+type TUpdatePasswordError = {
+	pwd: string | undefined;
+	newPwd: string | undefined;
+	confirmPwd: string | undefined;
+	server: string | undefined;
+};
+
+type TDeleteAccountError = {
+	pwd: string | undefined;
+	server: string | undefined;
 };
 
 type TInitialState = {
-	loading: boolean;
+	updateNameLoading: boolean;
+	updateEmailLoading: boolean;
+	updatePasswordLoading: boolean;
+	deleteAccountLoading: boolean;
 	account: TAccount | null;
 	updateNameSuccess: boolean;
 	updateEmailSuccess: boolean;
 	updatePasswordSuccess: boolean;
-	errors: TUpdateAccountError | null;
+	updateNameErrors: TUpdateNameError | null;
+	updateEmailErrors: TUpdateEmailError | null;
+	updatePasswordErrors: TUpdatePasswordError | null;
+	deleteAccountErrors: TDeleteAccountError | null;
 };
 
 const initialState: TInitialState = {
-	loading: false,
+	updateNameLoading: false,
+	updateEmailLoading: false,
+	updatePasswordLoading: false,
+	deleteAccountLoading: false,
 	account: null,
 	updateNameSuccess: false,
 	updateEmailSuccess: false,
 	updatePasswordSuccess: false,
-	errors: null,
+	updateNameErrors: null,
+	updateEmailErrors: null,
+	updatePasswordErrors: null,
+	deleteAccountErrors: null,
 };
 
 export const updateName = createAsyncThunk(
@@ -76,7 +81,7 @@ export const updateName = createAsyncThunk(
 			if (!err.response.data.errors) {
 				return rejectWithValue(null);
 			}
-			return rejectWithValue({ updateName: err.response.data.errors });
+			return rejectWithValue(err.response.data.errors);
 		}
 	}
 );
@@ -94,7 +99,7 @@ export const updateEmail = createAsyncThunk(
 			if (!err.response.data.errors) {
 				return rejectWithValue(null);
 			}
-			return rejectWithValue({ updateEmail: err.response.data.errors });
+			return rejectWithValue(err.response.data.errors);
 		}
 	}
 );
@@ -115,7 +120,7 @@ export const updatePassword = createAsyncThunk(
 			if (!err.response.data.errors) {
 				return rejectWithValue(null);
 			}
-			return rejectWithValue({ updatePassword: err.response.data.errors });
+			return rejectWithValue(err.response.data.errors);
 		}
 	}
 );
@@ -135,7 +140,7 @@ export const deleteAccount = createAsyncThunk(
 			if (!err.response.data.errors) {
 				return rejectWithValue(null);
 			}
-			return rejectWithValue({ deleteAccount: err.response.data.errors });
+			return rejectWithValue(err.response.data.errors);
 		}
 
 		if (accountDeleted) {
@@ -164,77 +169,77 @@ const accountSlice = createSlice({
 		);
 		// Update name
 		builder.addCase(updateName.pending, (state) => {
-			state.loading = true;
+			state.updateNameLoading = true;
 			state.updateNameSuccess = false;
-			state.errors = null;
+			state.updateNameErrors = null;
 		});
 		builder.addCase(
 			updateName.fulfilled,
 			(state, action: PayloadAction<{ account: TAccount }>) => {
-				state.loading = false;
+				state.updateNameLoading = false;
 				state.account = action.payload.account;
 				state.updateNameSuccess = true;
-				state.errors = null;
+				state.updateNameErrors = null;
 			}
 		);
 		builder.addCase(updateName.rejected, (state, action: any) => {
-			state.loading = false;
+			state.updateNameLoading = false;
 			state.updateNameSuccess = false;
-			state.errors = action.payload;
+			state.updateNameErrors = action.payload;
 		});
 		// Update email
 		builder.addCase(updateEmail.pending, (state) => {
-			state.loading = true;
+			state.updateEmailLoading = true;
 			state.updateEmailSuccess = false;
-			state.errors = null;
+			state.updateEmailErrors = null;
 		});
 		builder.addCase(
 			updateEmail.fulfilled,
 			(state, action: PayloadAction<{ account: TAccount }>) => {
-				state.loading = false;
+				state.updateEmailLoading = false;
 				state.account = action.payload.account;
 				state.updateEmailSuccess = true;
-				state.errors = null;
+				state.updateEmailErrors = null;
 			}
 		);
 		builder.addCase(updateEmail.rejected, (state, action: any) => {
-			state.loading = false;
+			state.updateEmailLoading = false;
 			state.updateEmailSuccess = false;
-			state.errors = action.payload;
+			state.updateEmailErrors = action.payload;
 		});
 		// Update password
 		builder.addCase(updatePassword.pending, (state) => {
-			state.loading = true;
+			state.updatePasswordLoading = true;
 			state.updatePasswordSuccess = false;
-			state.errors = null;
+			state.updatePasswordErrors = null;
 		});
 		builder.addCase(
 			updatePassword.fulfilled,
 			(state, action: PayloadAction<{ account: TAccount }>) => {
-				state.loading = false;
+				state.updatePasswordLoading = false;
 				state.account = action.payload.account;
 				state.updatePasswordSuccess = true;
-				state.errors = null;
+				state.updatePasswordErrors = null;
 			}
 		);
 		builder.addCase(updatePassword.rejected, (state, action: any) => {
-			state.loading = false;
+			state.updatePasswordLoading = false;
 			state.updatePasswordSuccess = false;
-			state.errors = action.payload;
+			state.updatePasswordErrors = action.payload;
 		});
 		// Delete account
 		builder.addCase(deleteAccount.pending, (state) => {
-			state.loading = true;
-			state.errors = null;
+			state.deleteAccountLoading = true;
+			state.deleteAccountErrors = null;
 		});
 		builder.addCase(deleteAccount.fulfilled, (state) => {
-			state.loading = false;
+			state.deleteAccountLoading = false;
 			state.account = null;
-			state.errors = null;
+			state.deleteAccountErrors = null;
 		});
 		builder.addCase(deleteAccount.rejected, (state, action: any) => {
-			state.loading = false;
-			state.errors = action.payload;
+			state.deleteAccountLoading = false;
+			state.deleteAccountErrors = action.payload;
 		});
 	},
 });

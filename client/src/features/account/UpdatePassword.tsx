@@ -20,9 +20,8 @@ function UpdatePassword() {
 		dispatch(updatePassword(pwdInfo));
 	};
 
-	const { loading, updatePasswordSuccess, errors } = useAppSelector(
-		(state) => state.account
-	);
+	const { updatePasswordLoading, updatePasswordSuccess, updatePasswordErrors } =
+		useAppSelector((state) => state.account);
 
 	return (
 		<>
@@ -51,19 +50,19 @@ function UpdatePassword() {
 				/>
 				<button type='submit'>Update Password</button>
 			</form>
-			{loading && <h3>Loading...</h3>}
+			{updatePasswordLoading && <h3>Loading...</h3>}
 			{updatePasswordSuccess && <p>Password Updated</p>}
-			{errors?.updatePassword?.pwd && (
-				<p style={{ color: 'red' }}>{errors.updatePassword.pwd}</p>
+			{updatePasswordErrors?.pwd && (
+				<p style={{ color: 'red' }}>{updatePasswordErrors.pwd}</p>
 			)}
-			{errors?.updatePassword?.newPwd && (
-				<p style={{ color: 'red' }}>{errors.updatePassword.newPwd}</p>
+			{updatePasswordErrors?.newPwd && (
+				<p style={{ color: 'red' }}>{updatePasswordErrors.newPwd}</p>
 			)}
-			{errors?.updatePassword?.confirmPwd && (
-				<p style={{ color: 'red' }}>{errors.updatePassword.confirmPwd}</p>
+			{updatePasswordErrors?.confirmPwd && (
+				<p style={{ color: 'red' }}>{updatePasswordErrors.confirmPwd}</p>
 			)}
-			{errors?.updatePassword?.server && (
-				<p style={{ color: 'red' }}>{errors.updatePassword.server}</p>
+			{updatePasswordErrors?.server && (
+				<p style={{ color: 'red' }}>{updatePasswordErrors.server}</p>
 			)}
 		</>
 	);

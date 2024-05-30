@@ -16,9 +16,8 @@ function UpdateName() {
 		dispatch(updateName(nameInfo));
 	};
 
-	const { loading, updateNameSuccess, errors } = useAppSelector(
-		(state) => state.account
-	);
+	const { updateNameLoading, updateNameSuccess, updateNameErrors } =
+		useAppSelector((state) => state.account);
 
 	return (
 		<>
@@ -40,16 +39,16 @@ function UpdateName() {
 				/>
 				<button type='submit'>Update Name</button>
 			</form>
-			{loading && <h3>Loading...</h3>}
+			{updateNameLoading && <h3>Loading...</h3>}
 			{updateNameSuccess && <p>Name Updated</p>}
-			{errors?.updateName?.first_name && (
-				<p style={{ color: 'red' }}>{errors.updateName.first_name}</p>
+			{updateNameErrors?.first_name && (
+				<p style={{ color: 'red' }}>{updateNameErrors.first_name}</p>
 			)}
-			{errors?.updateName?.last_name && (
-				<p style={{ color: 'red' }}>{errors.updateName.last_name}</p>
+			{updateNameErrors?.last_name && (
+				<p style={{ color: 'red' }}>{updateNameErrors.last_name}</p>
 			)}
-			{errors?.updateName?.server && (
-				<p style={{ color: 'red' }}>{errors.updateName.server}</p>
+			{updateNameErrors?.server && (
+				<p style={{ color: 'red' }}>{updateNameErrors.server}</p>
 			)}
 		</>
 	);
