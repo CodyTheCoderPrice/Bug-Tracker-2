@@ -23,10 +23,10 @@ function App() {
 		<>
 			<Navbar />
 			<Routes>
-				<Route path='/' element={<AccountPage />} />
-				<Route path='/Projects' element={<ProjectsPage />} />
-				<Route path='/Bugs' element={<BugsPage />} />
-				<Route path='/Comments' element={<CommentsPage />} />
+				<Route path='/account/*' element={<AccountPage />} />
+				<Route path='/projects/*' element={<ProjectsPage />} />
+				<Route path='/bugs' element={<BugsPage />} />
+				<Route path='/comments' element={<CommentsPage />} />
 			</Routes>
 		</>
 	);

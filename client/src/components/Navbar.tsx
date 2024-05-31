@@ -9,7 +9,7 @@ function Navbar() {
 				justifyContent: 'center',
 			}}
 		>
-			<NavLink to='/' style={{ padding: '0px 30px' }}>
+			<NavLink to='/account' style={{ padding: '0px 30px' }}>
 				Account
 			</NavLink>
 			<NavLink to='/projects' style={{ padding: '0px 30px' }}>

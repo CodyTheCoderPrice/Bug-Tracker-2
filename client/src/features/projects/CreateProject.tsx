@@ -34,7 +34,7 @@ function CreateProject() {
 					placeholder='Project name'
 					onChange={handleInput}
 					value={projectInfo.name}
-					style={{ display: 'block' }}
+					style={{ display: 'block', width: '227px' }}
 				/>
 				<textarea
 					name='description'
@@ -42,7 +42,7 @@ function CreateProject() {
 					onChange={handleInput}
 					value={projectInfo.description}
 					rows={4}
-					cols={50}
+					cols={30}
 					style={{ display: 'block' }}
 				/>
 				<button type='submit'>Create</button>
