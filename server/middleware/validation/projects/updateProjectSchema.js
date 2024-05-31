@@ -1,10 +1,7 @@
-const { name, description } = require('./shared');
+const { project_id, name, description } = require('./shared');
 
 const updateProjectSchema = {
-	project_id: {
-		notEmpty: { errorMessage: 'Project_id cannot be empty' },
-		isNumeric: { errorMessage: 'Project_id must be a number' },
-	},
+	project_id: project_id,
 	name: name,
 	description: description,
 };

@@ -10,6 +10,7 @@ const pool = require('../db');
 const createProjectSchema = require('../middleware/validation/projects/createProjectSchema.js');
 const { getProjectsFromDB } = require('../utils/queries.js');
 const updateProjectSchema = require('../middleware/validation/projects/updateProjectSchema.js');
+const deleteProjectSchema = require('../middleware/validation/projects/deleteProjectSchema.js');
 
 const router = Router();
 
@@ -89,6 +90,51 @@ router.post(
 
 			if (createdProject.rowCount === 0) {
 				throw new Error('Database failed to update project');
+			}
+
+			const projects = await getProjectsFromDB(account_id);
+
+			if (projects == null) {
+				console.log('getProjectsFromDB returned without projects');
+				return res.status(500).json({ errors: { server: 'Server error' } });
+			}
+
+			return res.status(200).json({ projects: projects.rows });
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+	}
+);
+
+//================
+// Delete project
+//================
+router.delete(
+	'/delete',
+	authenticateToken,
+	[checkSchema(deleteProjectSchema), handleSchemaErrors],
+	async (req, res) => {
+		const data = matchedData(req);
+		const { project_id } = data;
+
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			console.log('res.locals missing account_id');
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		try {
+			const deletedProject = await pool.query(
+				`DELETE FROM project
+				  WHERE account_id = $1 AND project_id = $2`,
+				[account_id, project_id]
+			);
+
+			if (deletedProject.rowCount === 0) {
+				throw new Error('Database failed to delete project');
 			}
 
 			const projects = await getProjectsFromDB(account_id);

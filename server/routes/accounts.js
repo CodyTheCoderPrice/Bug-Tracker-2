@@ -241,11 +241,15 @@ router.delete(
 		}
 
 		try {
-			await pool.query(
+			const deletedAccount = await pool.query(
 				`DELETE FROM account
 					WHERE account_id = $1`,
 				[account_id]
 			);
+
+			if (deletedAccount.rowCount === 0) {
+				throw new Error('Database failed to delete account');
+			}
 
 			return res.status(200).json({ msg: 'Account deleted' });
 		} catch (err) {
