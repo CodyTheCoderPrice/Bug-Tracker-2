@@ -1,4 +1,5 @@
 import { useAppSelector } from '@/app/hooks';
+import { Link } from 'react-router-dom';
 
 function ProjectList() {
 	const { projects } = useAppSelector((state) => state.projects);
@@ -9,6 +10,7 @@ function ProjectList() {
 			<table>
 				<thead>
 					<tr>
+						<th>Project id</th>
 						<th>Name</th>
 						<th>Description</th>
 						<th>create time</th>
@@ -19,6 +21,7 @@ function ProjectList() {
 					{projects?.map((project, idx) => {
 						return (
 							<tr key={idx}>
+								<td style={{ padding: '0 20px' }}>{project.project_id}</td>
 								<td style={{ padding: '0 20px' }}>{project.name}</td>
 								<td style={{ padding: '0 20px' }}>{project.description}</td>
 								<td style={{ padding: '0 20px' }}>
@@ -26,6 +29,9 @@ function ProjectList() {
 								</td>
 								<td style={{ padding: '0 20px' }}>
 									{project.update_time.toString()}
+								</td>
+								<td style={{ padding: '0 20px' }}>
+									<Link to={`/projects/${project.project_id}`}>Edit</Link>
 								</td>
 							</tr>
 						);

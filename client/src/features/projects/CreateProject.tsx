@@ -46,18 +46,18 @@ function CreateProject() {
 					style={{ display: 'block' }}
 				/>
 				<button type='submit'>Create</button>
-				{createProjectLoading && <h3>Loading...</h3>}
-				{createProjectSuccess && <p>Project Created</p>}
-				{createProjectErrors?.name && (
-					<p style={{ color: 'red' }}>{createProjectErrors.name}</p>
-				)}
-				{createProjectErrors?.description && (
-					<p style={{ color: 'red' }}>{createProjectErrors.description}</p>
-				)}
-				{createProjectErrors?.server && (
-					<p style={{ color: 'red' }}>{createProjectErrors.server}</p>
-				)}
 			</form>
+			{createProjectLoading && <h3>Loading...</h3>}
+			{createProjectSuccess && <p>Project Created</p>}
+			{createProjectErrors?.name && (
+				<p style={{ color: 'red' }}>{createProjectErrors.name}</p>
+			)}
+			{createProjectErrors?.description && (
+				<p style={{ color: 'red' }}>{createProjectErrors.description}</p>
+			)}
+			{createProjectErrors?.server && (
+				<p style={{ color: 'red' }}>{createProjectErrors.server}</p>
+			)}
 		</>
 	);
 }

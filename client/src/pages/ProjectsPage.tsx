@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
 import CreateProject from '@/features/projects/CreateProject';
 import ProjectList from '@/features/projects/ProjectList';
+import UpdateProject from '@/features/projects/UpdateProject';
 
 function ProjectsPage() {
 	const { account } = useAppSelector((state) => state.account);
@@ -21,6 +22,7 @@ function ProjectsPage() {
 					/>
 					<Route path='new' element={<CreateProject />} />
 					<Route path='list' element={<ProjectList />} />
+					<Route path=':id' element={<UpdateProject />} />
 				</Routes>
 			) : loading ? (
 				<h3>Loading</h3>
