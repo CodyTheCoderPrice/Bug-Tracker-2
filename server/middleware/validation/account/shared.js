@@ -1,8 +1,8 @@
 const {
-	accountPwdMinLen,
-	accountPwdMaxLen,
-	accountNameMinLen,
-	accountNameMaxLen,
+	pwdMinLen,
+	pwdMaxLen,
+	nameMinLen,
+	nameMaxLen,
 } = require('../constants');
 
 const email = {
@@ -20,8 +20,8 @@ const pwdWithLength = (pwdTitle) => ({
 	notEmpty: { errorMessage: `${pwdTitle} cannot be empty` },
 	isString: { errorMessage: `${pwdTitle} must be a string` },
 	isLength: {
-		options: { min: accountPwdMinLen, max: accountPwdMaxLen },
-		errorMessage: `${pwdTitle} must be ${accountPwdMinLen}-${accountPwdMaxLen} characters`,
+		options: { min: pwdMinLen, max: pwdMaxLen },
+		errorMessage: `${pwdTitle} must be ${pwdMinLen}-${pwdMaxLen} characters`,
 	},
 });
 
@@ -29,8 +29,8 @@ const first_name = {
 	notEmpty: { errorMessage: 'First name cannot be empty' },
 	isString: { errorMessage: 'First name must be a string' },
 	isLength: {
-		options: { min: accountNameMinLen, max: accountNameMaxLen },
-		errorMessage: `First name must be ${accountNameMinLen}-${accountNameMaxLen} characters`,
+		options: { min: nameMinLen, max: nameMaxLen },
+		errorMessage: `First name must be ${nameMinLen}-${nameMaxLen} characters`,
 	},
 };
 
@@ -38,8 +38,8 @@ const last_name = {
 	notEmpty: { errorMessage: 'Last name cannot be empty' },
 	isString: { errorMessage: 'Last name must be a string' },
 	isLength: {
-		options: { min: accountNameMinLen, max: accountNameMaxLen },
-		errorMessage: `Last name must be ${accountNameMinLen}-${accountNameMaxLen} characters`,
+		options: { min: nameMinLen, max: nameMaxLen },
+		errorMessage: `Last name must be ${nameMinLen}-${nameMaxLen} characters`,
 	},
 };
 

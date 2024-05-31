@@ -59,16 +59,17 @@ router.post(
 			return res.status(403).json({ errors: { pwd: 'Incorrect password' } });
 		}
 
-		let account;
+		let account, projects;
 		try {
-			({ account, placeholder1, placeholder2 } =
-				await getEverythingForAccountFromDB(idAndHashPass.rows[0].account_id));
+			({ account, projects } = await getEverythingForAccountFromDB(
+				idAndHashPass.rows[0].account_id
+			));
 		} catch (err) {
 			console.log(err.message);
 			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
 
-		if (account.rowCount === 0 || account.account_id == null) {
+		if (account.account_id == null) {
 			console.log('getEverythingForAccountFromDB returned without account_id');
 			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
@@ -103,6 +104,7 @@ router.post(
 
 		return res.status(200).json({
 			account: account,
+			projects: projects.rows,
 		});
 	}
 );
@@ -119,22 +121,22 @@ router.get('/relogin', authenticateToken, async (req, res) => {
 		return res.status(500).json({ errors: { server: 'Server error' } });
 	}
 
-	let account;
+	let account, projects;
 	try {
-		({ account, placeholder1, placeholder2 } =
-			await getEverythingForAccountFromDB(account_id));
+		({ account, projects } = await getEverythingForAccountFromDB(account_id));
 	} catch (err) {
 		console.log(err.message);
 		return res.status(503).json({ errors: { server: 'Server error' } });
 	}
 
-	if (account.rowCount === 0) {
+	if (account == null) {
 		console.log('getEverythingForAccountFromDB returned without account');
 		return res.status(500).json({ errors: { server: 'Server error' } });
 	}
 
 	return res.status(200).json({
 		account: account,
+		projects: projects.rows,
 	});
 });
 

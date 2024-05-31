@@ -1,6 +1,6 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { useState } from 'react';
 import { deleteAccount } from './accountSlice';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 function DeleteAccount() {
 	const dispatch = useAppDispatch();

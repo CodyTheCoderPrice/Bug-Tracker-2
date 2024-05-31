@@ -49,6 +49,11 @@ CREATE TABLE
     CONSTRAINT fk_account FOREIGN KEY (account_id) REFERENCES account (account_id) ON DELETE CASCADE
   );
 
+CREATE TRIGGER update_project_update_time
+BEFORE UPDATE ON project
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_update_time_column();
+
 CREATE TABLE
   priority (
     priority_id SERIAL PRIMARY KEY,

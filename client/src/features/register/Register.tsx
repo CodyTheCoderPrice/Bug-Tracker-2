@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { useState } from 'react';
 import { register } from './registerSlice';
 
 function Register() {

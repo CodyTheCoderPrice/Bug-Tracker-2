@@ -1,6 +1,6 @@
 module.exports = {
-	accountPwdMinLen: 6,
-	accountPwdMaxLen: 30,
-	accountNameMinLen: 1,
-	accountNameMaxLen: 35,
+	pwdMinLen: 6,
+	pwdMaxLen: 30,
+	nameMinLen: 1,
+	nameMaxLen: 35,
 };

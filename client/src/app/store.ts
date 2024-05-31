@@ -5,11 +5,13 @@ import { getPersistConfig } from 'redux-deep-persist';
 import authReducer from '@/features/auth/authSlice';
 import registerReducer from '@/features/register/registerSlice';
 import accountReducer from '@/features/account/accountSlice';
+import projectsReducer from '@/features/projects/projectSlice';
 
 const appReducer = combineReducers({
 	auth: authReducer,
 	register: registerReducer,
 	account: accountReducer,
+	projects: projectsReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

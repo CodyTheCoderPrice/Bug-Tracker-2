@@ -1,6 +1,6 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { useState } from 'react';
 import { updateEmail } from './accountSlice';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 function UpdateEmail() {
 	const dispatch = useAppDispatch();

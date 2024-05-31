@@ -1,6 +1,6 @@
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { useState } from 'react';
 import { updateName } from './accountSlice';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
 
 function UpdateName() {
 	const dispatch = useAppDispatch();

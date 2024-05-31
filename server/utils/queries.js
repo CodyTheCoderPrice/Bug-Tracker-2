@@ -49,7 +49,7 @@ async function replaceRefreshTokenInDB(account_id, refreshToken) {
  * 	last_name: string,
  * 	create_time: Date,
  * 	update_time: Date
- * }} Returns Object with account info.
+ * }} Returns object with account info.
  */
 async function getAccountFromDB(account_id) {
 	try {
@@ -57,6 +57,32 @@ async function getAccountFromDB(account_id) {
 			`SELECT account_id, email, first_name, last_name, create_time, update_time
 				 FROM account
 				WHERE account_id = $1`,
+			[account_id]
+		);
+	} catch (err) {
+		throw err;
+	}
+}
+
+/**
+ * Retrieves all projects from database for a specific account.
+ *
+ * @param {number} account_id - Account id.
+ * @returns {{
+ * 	project_id: number,
+ * 	account_id: number,
+ * 	name: string,
+ * 	description: string,
+ * 	create_time: Date,
+ * 	update_time: Date
+ * }[]} Returns an array of project objects.
+ */
+async function getProjectsFromDB(account_id) {
+	try {
+		return await pool.query(
+			`SELECT project_id, account_id, name, description, create_time, update_time
+				FROM project
+			 WHERE account_id = $1`,
 			[account_id]
 		);
 	} catch (err) {
@@ -73,13 +99,12 @@ async function getAccountFromDB(account_id) {
 async function getEverythingForAccountFromDB(account_id) {
 	try {
 		const account = await getAccountFromDB(account_id);
-
+		const projects = await getProjectsFromDB(account_id);
 		// TODO: Retrieve everthing (projects, bugs, comments, etc.)
 
 		return {
 			account: account.rows[0],
-			placeholder1: 'test',
-			placeholder2: 123,
+			projects: projects,
 		};
 	} catch (err) {
 		throw err;
@@ -90,5 +115,6 @@ module.exports = {
 	removeRefreshTokenInDB,
 	replaceRefreshTokenInDB,
 	getAccountFromDB,
+	getProjectsFromDB,
 	getEverythingForAccountFromDB,
 };

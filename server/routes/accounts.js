@@ -1,9 +1,5 @@
 const { Router } = require('express');
-const {
-	validationResult,
-	matchedData,
-	checkSchema,
-} = require('express-validator');
+const { matchedData, checkSchema } = require('express-validator');
 const {
 	handleSchemaErrors,
 } = require('../middleware/validation/handleSchemaErrors.js');
@@ -81,9 +77,10 @@ router.post(
 //=============
 // Update Name
 //=============
-router.post('/update-name', authenticateToken, [
-	checkSchema(updateNameSchema),
-	handleSchemaErrors,
+router.post(
+	'/update-name',
+	authenticateToken,
+	[checkSchema(updateNameSchema), handleSchemaErrors],
 	async (req, res) => {
 		const data = matchedData(req);
 		const { first_name, last_name } = data;
@@ -114,8 +111,8 @@ router.post('/update-name', authenticateToken, [
 			console.log(err.message);
 			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
-	},
-]);
+	}
+);
 
 //==============
 // Update Email
