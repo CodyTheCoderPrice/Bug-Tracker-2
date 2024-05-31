@@ -103,6 +103,11 @@ CREATE TABLE
     CONSTRAINT fk_status FOREIGN KEY (status_id) REFERENCES status (status_id) ON DELETE SET NULL
   );
 
+CREATE TRIGGER update_bug_update_time
+BEFORE UPDATE ON bug
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_update_time_column();
+
 CREATE TABLE
   comment (
     comment_id SERIAL PRIMARY KEY,
@@ -112,3 +117,8 @@ CREATE TABLE
     update_time timestamptz NOT NULL DEFAULT now (),
     CONSTRAINT fk_bug FOREIGN KEY (bug_id) REFERENCES bug (bug_id) ON DELETE CASCADE
   );
+
+CREATE TRIGGER update_comment_update_time
+BEFORE UPDATE ON comment
+FOR EACH ROW
+EXECUTE PROCEDURE trigger_update_time_column();

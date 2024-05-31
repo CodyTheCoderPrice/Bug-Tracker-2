@@ -1,5 +1,5 @@
-import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '@/app/hooks';
+import { Route, Routes } from 'react-router-dom';
 import CreateProject from '@/features/projects/CreateProject';
 import ProjectList from '@/features/projects/ProjectList';
 import UpdateProject from '@/features/projects/UpdateProject';

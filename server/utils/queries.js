@@ -38,6 +38,29 @@ async function replaceRefreshTokenInDB(account_id, refreshToken) {
 }
 
 /**
+ * Determins whether a project belongs to an account.
+ *
+ * @param {number} account_id - Account id.
+ * @param {number} project_id - Project id.
+ * @returns {boolean} whether the project belongs to the account.
+ */
+async function doesProjectBelongToAccountInDB(account_id, project_id) {
+	let projectBelongsToAccount;
+	try {
+		projectBelongsToAccount = await pool.query(
+			`SELECT project_id
+           FROM project
+          WHERE account_id = $1 AND project_id = $2`,
+			[account_id, project_id]
+		);
+	} catch (err) {
+		throw err;
+	}
+
+	return projectBelongsToAccount.rowCount !== 0;
+}
+
+/**
  * Retrieves account table info (excluding password) from database for a
  * specific user.
  *
@@ -91,6 +114,49 @@ async function getProjectsFromDB(account_id) {
 }
 
 /**
+ * Retrieves all bugs from database for a specific account.
+ *
+ * @param {number} account_id - Account id.
+ * @returns {{
+ *  bug_id: number,
+ * 	project_id: number,
+ * 	account_id: number,
+ * 	name: string,
+ * 	description: string,
+ * 	location: string,
+ * 	priority_id: number,
+ * 	priority_name: string,
+ * 	status_id: number,
+ * 	status_name: string,
+ * 	create_time: Date,
+ * 	due_date: Date,
+ * 	complete_date: date,
+ * 	update_time: Date
+ * }[]} Returns an array of bug objects.
+ */
+async function getBugsFromDB(account_id) {
+	try {
+		return await pool.query(
+			`WITH b AS
+				(SELECT * FROM bug WHERE project_id IN
+					(SELECT project_id FROM project WHERE account_id = $1)
+				)
+			SELECT b.bug_id, b.project_id, b.name, b.description, b.location,
+				b.priority_id, b.status_id, b.create_time, b.due_date,
+				b.complete_date, b.update_time,
+				p.name AS priority_name, s.name AS status_name
+					FROM b, priority p, status s
+						WHERE (b.priority_id = p.priority_id)
+							AND (b.status_id = s.status_id)
+								ORDER BY b.bug_id`,
+			[account_id]
+		);
+	} catch (err) {
+		throw err;
+	}
+}
+
+/**
  * TODO: Finish doc
  *
  * @param {*} account_id
@@ -100,11 +166,13 @@ async function getEverythingForAccountFromDB(account_id) {
 	try {
 		const account = await getAccountFromDB(account_id);
 		const projects = await getProjectsFromDB(account_id);
+		const bugs = await getBugsFromDB(account_id);
 		// TODO: Retrieve everthing (projects, bugs, comments, etc.)
 
 		return {
 			account: account.rows[0],
 			projects: projects,
+			bugs: bugs,
 		};
 	} catch (err) {
 		throw err;
@@ -114,7 +182,9 @@ async function getEverythingForAccountFromDB(account_id) {
 module.exports = {
 	removeRefreshTokenInDB,
 	replaceRefreshTokenInDB,
+	doesProjectBelongToAccountInDB,
 	getAccountFromDB,
 	getProjectsFromDB,
+	getBugsFromDB,
 	getEverythingForAccountFromDB,
 };

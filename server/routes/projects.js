@@ -7,15 +7,18 @@ const {
 	authenticateToken,
 } = require('../middleware/auth/authenticateToken.js');
 const pool = require('../db');
+const {
+	getProjectsFromDB,
+	doesProjectBelongToAccountInDB,
+} = require('../utils/queries.js');
 const createProjectSchema = require('../middleware/validation/projects/createProjectSchema.js');
-const { getProjectsFromDB } = require('../utils/queries.js');
 const updateProjectSchema = require('../middleware/validation/projects/updateProjectSchema.js');
 const deleteProjectSchema = require('../middleware/validation/projects/deleteProjectSchema.js');
 
 const router = Router();
 
 //================
-// Create project
+// Create Project
 //================
 router.post(
 	'/create',
@@ -61,7 +64,7 @@ router.post(
 );
 
 //================
-// Update project
+// Update Project
 //================
 router.post(
 	'/update',
@@ -80,7 +83,22 @@ router.post(
 		}
 
 		try {
-			const createdProject = await pool.query(
+			const belongs = await doesProjectBelongToAccountInDB(
+				account_id,
+				project_id
+			);
+			if (!belongs) {
+				return res.status(400).json({
+					errors: { project_id: 'Project ID does not belong to account' },
+				});
+			}
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
+		}
+
+		try {
+			const updatedProject = await pool.query(
 				`UPDATE project
 				    SET name = $1, description = $2
 				  WHERE account_id = $3 AND project_id = $4
@@ -88,7 +106,7 @@ router.post(
 				[name, description, account_id, project_id]
 			);
 
-			if (createdProject.rowCount === 0) {
+			if (updatedProject.rowCount === 0) {
 				throw new Error('Database failed to update project');
 			}
 
@@ -108,7 +126,7 @@ router.post(
 );
 
 //================
-// Delete project
+// Delete Project
 //================
 router.delete(
 	'/delete',
@@ -124,6 +142,21 @@ router.delete(
 		if (account_id == null) {
 			console.log('res.locals missing account_id');
 			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		try {
+			const belongs = await doesProjectBelongToAccountInDB(
+				account_id,
+				project_id
+			);
+			if (!belongs) {
+				return res.status(400).json({
+					errors: { project_id: 'Project ID does not belong to account' },
+				});
+			}
+		} catch (err) {
+			console.log(err.message);
+			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
 
 		try {

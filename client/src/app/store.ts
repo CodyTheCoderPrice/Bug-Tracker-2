@@ -6,12 +6,14 @@ import authReducer from '@/features/auth/authSlice';
 import registerReducer from '@/features/register/registerSlice';
 import accountReducer from '@/features/account/accountSlice';
 import projectsReducer from '@/features/projects/projectSlice';
+import bugsReducer from '@/features/bugs/bugSlice';
 
 const appReducer = combineReducers({
 	auth: authReducer,
 	register: registerReducer,
 	account: accountReducer,
 	projects: projectsReducer,
+	bugs: bugsReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

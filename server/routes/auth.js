@@ -59,9 +59,9 @@ router.post(
 			return res.status(403).json({ errors: { pwd: 'Incorrect password' } });
 		}
 
-		let account, projects;
+		let account, projects, bugs;
 		try {
-			({ account, projects } = await getEverythingForAccountFromDB(
+			({ account, projects, bugs } = await getEverythingForAccountFromDB(
 				idAndHashPass.rows[0].account_id
 			));
 		} catch (err) {
@@ -71,6 +71,16 @@ router.post(
 
 		if (account.account_id == null) {
 			console.log('getEverythingForAccountFromDB returned without account_id');
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		if (projects == null) {
+			console.log('getEverythingForAccountFromDB returned without projects');
+			return res.status(500).json({ errors: { server: 'Server error' } });
+		}
+
+		if (bugs == null) {
+			console.log('getEverythingForAccountFromDB returned without bugss');
 			return res.status(500).json({ errors: { server: 'Server error' } });
 		}
 
@@ -105,6 +115,7 @@ router.post(
 		return res.status(200).json({
 			account: account,
 			projects: projects.rows,
+			bugs: bugs.rows,
 		});
 	}
 );
@@ -121,9 +132,11 @@ router.get('/relogin', authenticateToken, async (req, res) => {
 		return res.status(500).json({ errors: { server: 'Server error' } });
 	}
 
-	let account, projects;
+	let account, projects, bugs;
 	try {
-		({ account, projects } = await getEverythingForAccountFromDB(account_id));
+		({ account, projects, bugs } = await getEverythingForAccountFromDB(
+			account_id
+		));
 	} catch (err) {
 		console.log(err.message);
 		return res.status(503).json({ errors: { server: 'Server error' } });
@@ -134,9 +147,20 @@ router.get('/relogin', authenticateToken, async (req, res) => {
 		return res.status(500).json({ errors: { server: 'Server error' } });
 	}
 
+	if (projects == null) {
+		console.log('getEverythingForAccountFromDB returned without projects');
+		return res.status(500).json({ errors: { server: 'Server error' } });
+	}
+
+	if (bugs == null) {
+		console.log('getEverythingForAccountFromDB returned without bugss');
+		return res.status(500).json({ errors: { server: 'Server error' } });
+	}
+
 	return res.status(200).json({
 		account: account,
 		projects: projects.rows,
+		bugs: bugs.rows,
 	});
 });
 
