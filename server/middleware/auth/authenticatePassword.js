@@ -24,11 +24,9 @@ async function authenticatePassword(req, res, next) {
 		const account_id = res.locals.account_id;
 
 		if (account_id == null) {
-			throw new CustomError(
-				'authenticatePassword: res.locals missing account_id',
-				500,
-				{ errors: { server: 'Server error' } }
-			);
+			throw new CustomError('res.locals missing account_id', 500, {
+				errors: { server: 'Server error' },
+			});
 		}
 
 		const dbPwd = await pool.query(
@@ -39,23 +37,22 @@ async function authenticatePassword(req, res, next) {
 		);
 
 		if (dbPwd.rowCount === 0) {
-			throw new CustomError(
-				'authenticatePassword: No hash_pass for account',
-				500,
-				{ errors: { server: 'Server error' } }
-			);
+			throw new CustomError('No hash_pass for account', 500, {
+				errors: { server: 'Server error' },
+			});
 		}
 
 		const pwdMatch = bcrypt.compareSync(pwd, dbPwd.rows[0].hash_pass);
 
 		if (!pwdMatch) {
-			throw new CustomError('authenticatePassword: Incorrect password', 400, {
+			throw new CustomError('Incorrect password', 400, {
 				errors: { pwd: 'Incorrect password' },
 			});
 		}
 
 		next();
 	} catch (err) {
+		err.message = `authenticatePassword: ${err.message}`;
 		next(err);
 	}
 }

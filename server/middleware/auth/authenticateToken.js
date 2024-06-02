@@ -13,7 +13,7 @@ const { CustomError } = require('../../utils/classes');
 async function authenticateToken(req, res, next) {
 	try {
 		if (req.cookies.token == null) {
-			throw new CustomError('authenticateToken: Missing access token', 401, {
+			throw new CustomError('Missing access token', 401, {
 				needRefresh: true,
 				errors: { token: 'Missing access token' },
 			});
@@ -27,18 +27,19 @@ async function authenticateToken(req, res, next) {
 			next();
 		} catch (err) {
 			if (err.message === 'jwt expired') {
-				throw new CustomError('authenticateToken: Access token expired', 400, {
+				throw new CustomError('Access token expired', 400, {
 					needRefresh: true,
 					errors: { token: 'Access token expired' },
 				});
 			}
-			throw new CustomError('authenticateToken: Invalid access token', 400, {
+			throw new CustomError('Invalid access token', 400, {
 				needRefresh: true,
 				errors: { token: 'Invalid access token' },
 			});
 		}
 	} catch (err) {
-		return next(err);
+		err.message = `authenticateToken: ${err.message}`;
+		next(err);
 	}
 }
 

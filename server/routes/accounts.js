@@ -19,6 +19,7 @@ const {
 const {
 	confirmPwdMatches,
 } = require('../middleware/validation/account/confirmPwdMatches.js');
+const { CustomError } = require('../utils/classes.js');
 
 const router = Router();
 
@@ -28,53 +29,46 @@ const router = Router();
 router.post(
 	'/register',
 	[checkSchema(registerAccountSchema), schemaErrorHandler],
-	async (req, res) => {
-		const data = matchedData(req);
-		const { email, pwd, first_name, last_name } = data;
-
-		let emailIsActive;
+	async (req, res, next) => {
 		try {
-			emailIsActive =
+			const data = matchedData(req);
+			const { email, pwd, first_name, last_name } = data;
+
+			const emailInUse =
 				(
 					await pool.query(
-						`SELECT *
-						   FROM account
-						  WHERE LOWER(email) = LOWER($1)`,
+						`SELECT account_id
+								 FROM account
+								WHERE LOWER(email) = LOWER($1)`,
 						[email]
 					)
 				).rowCount > 0;
-		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
-		}
 
-		if (emailIsActive) {
-			return res
-				.status(400)
-				.json({ errors: { email: 'Email already in use' } });
-		}
+			if (emailInUse) {
+				throw new CustomError('Email already in use', 400, {
+					errors: { email: 'Email already in use' },
+				});
+			}
 
-		const saltRounds = 10;
-		const salt = bcrypt.genSaltSync(saltRounds);
-		const hash_pass = bcrypt.hashSync(pwd, salt);
+			const saltRounds = 10;
+			const salt = bcrypt.genSaltSync(saltRounds);
+			const hash_pass = bcrypt.hashSync(pwd, salt);
 
-		try {
 			await pool.query(
 				`INSERT INTO account (email, hash_pass, first_name, last_name)
 						  VALUES ($1, $2, $3, $4)
 				   RETURNING account_id`,
 				[email, hash_pass, first_name, last_name]
 			);
-		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
-		}
 
-		return res.status(201).json({ msg: 'Account created' });
+			return res.status(201).json({ msg: 'Account created' });
+		} catch (err) {
+			err.message = `register-account: ${err.message}`;
+			next(err);
+		}
 	}
 );
 
-// TODO: Change post to put
 //=============
 // Update Name
 //=============
@@ -82,35 +76,38 @@ router.post(
 	'/update-name',
 	authenticateToken,
 	[checkSchema(updateNameSchema), schemaErrorHandler],
-	async (req, res) => {
-		const data = matchedData(req);
-		const { first_name, last_name } = data;
-
-		// Declared in authenticateToken middleware
-		const account_id = res.locals.account_id;
-
-		if (account_id == null) {
-			console.log('res.locals missing account_id');
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
-
+	async (req, res, next) => {
 		try {
+			const data = matchedData(req);
+			const { first_name, last_name } = data;
+
+			// Declared in authenticateToken middleware
+			const account_id = res.locals.account_id;
+
+			if (account_id == null) {
+				throw new CustomError('res.locals missing account_id', 500, {
+					errors: { server: 'Server error' },
+				});
+			}
+
 			const updatedAccount = await pool.query(
 				`UPDATE account
-				    SET first_name = $1, last_name = $2
-				  WHERE account_id = $3
-				 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+							SET first_name = $1, last_name = $2
+						WHERE account_id = $3
+					 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
 				[first_name, last_name, account_id]
 			);
 
 			if (updatedAccount.rowCount === 0) {
-				throw new Error('Database failed to update account name');
+				throw new CustomError('Database failed to update account name', 500, {
+					errors: { server: 'Server error' },
+				});
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
 		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
+			err.message = `update-name: ${err.message}`;
+			next(err);
 		}
 	}
 );
@@ -123,57 +120,54 @@ router.post(
 	authenticateToken,
 	[checkSchema(updateEmailSchema), schemaErrorHandler],
 	authenticatePassword,
-	async (req, res) => {
-		const data = matchedData(req);
-		const { email } = data;
-
-		// Declared in authenticateToken middleware
-		const account_id = res.locals.account_id;
-
-		if (account_id == null) {
-			console.log('res.locals missing account_id');
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
-
-		let emailIsActive;
+	async (req, res, next) => {
 		try {
-			emailIsActive =
+			const data = matchedData(req);
+			const { email } = data;
+
+			// Declared in authenticateToken middleware
+			const account_id = res.locals.account_id;
+
+			if (account_id == null) {
+				throw new CustomError('res.locals missing account_id', 500, {
+					errors: { server: 'Server error' },
+				});
+			}
+
+			const emailInUse =
 				(
 					await pool.query(
-						`SELECT *
-						   FROM account
-						  WHERE LOWER(email) = LOWER($1)`,
+						`SELECT account_id
+								 FROM account
+								WHERE LOWER(email) = LOWER($1)`,
 						[email]
 					)
 				).rowCount > 0;
-		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
-		}
 
-		if (emailIsActive) {
-			return res
-				.status(400)
-				.json({ errors: { email: 'Email already in use' } });
-		}
+			if (emailInUse) {
+				throw new CustomError('Email already in use', 400, {
+					errors: { email: 'Email already in use' },
+				});
+			}
 
-		try {
 			const updatedAccount = await pool.query(
 				`UPDATE account
-				    SET email = $1
-				  WHERE account_id = $2
-				 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+							SET email = $1
+						WHERE account_id = $2
+					 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
 				[email, account_id]
 			);
 
 			if (updatedAccount.rowCount === 0) {
-				throw new Error('Database failed to update account email');
+				throw new CustomError('Database failed to update account email', 500, {
+					errors: { server: 'Server error' },
+				});
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
 		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
+			err.message = `update-email: ${err.message}`;
+			next(err);
 		}
 	}
 );
@@ -187,39 +181,46 @@ router.post(
 	[checkSchema(updatePasswordSchema), schemaErrorHandler],
 	confirmPwdMatches,
 	authenticatePassword,
-	async (req, res) => {
-		const data = matchedData(req);
-		const { newPwd } = data;
-
-		// Declared in authenticateToken middleware
-		const account_id = res.locals.account_id;
-
-		if (account_id == null) {
-			console.log('res.locals missing account_id');
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
-
-		const saltRounds = 10;
-		const salt = bcrypt.genSaltSync(saltRounds);
-		const new_hash_pass = bcrypt.hashSync(newPwd, salt);
-
+	async (req, res, next) => {
 		try {
+			const data = matchedData(req);
+			const { newPwd } = data;
+
+			// Declared in authenticateToken middleware
+			const account_id = res.locals.account_id;
+
+			if (account_id == null) {
+				throw new CustomError('res.locals missing account_id', 500, {
+					errors: { server: 'Server error' },
+				});
+			}
+
+			const saltRounds = 10;
+			const salt = bcrypt.genSaltSync(saltRounds);
+			const new_hash_pass = bcrypt.hashSync(newPwd, salt);
+
 			const updatedAccount = await pool.query(
 				`UPDATE account
-				    SET hash_pass = $1
-				  WHERE account_id = $2
-				 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+							SET hash_pass = $1
+						WHERE account_id = $2
+					 RETURNING account_id, email, first_name, last_name, create_time, update_time`,
 				[new_hash_pass, account_id]
 			);
 
 			if (updatedAccount.rowCount === 0) {
-				throw new Error('Database failed to update account password');
+				throw new CustomError(
+					'Database failed to update account password',
+					500,
+					{
+						errors: { server: 'Server error' },
+					}
+				);
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
 		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
+			err.message = `update-password: ${err.message}`;
+			next(err);
 		}
 	}
 );
@@ -232,16 +233,17 @@ router.delete(
 	authenticateToken,
 	[checkSchema(deleteAccountSchema), schemaErrorHandler],
 	authenticatePassword,
-	async (req, res) => {
-		// Declared in authenticateToken middleware
-		const account_id = res.locals.account_id;
-
-		if (account_id == null) {
-			console.log('res.locals missing account_id');
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
-
+	async (req, res, next) => {
 		try {
+			// Declared in authenticateToken middleware
+			const account_id = res.locals.account_id;
+
+			if (account_id == null) {
+				throw new CustomError('res.locals missing account_id', 500, {
+					errors: { server: 'Server error' },
+				});
+			}
+
 			const deletedAccount = await pool.query(
 				`DELETE FROM account
 					WHERE account_id = $1`,
@@ -249,13 +251,15 @@ router.delete(
 			);
 
 			if (deletedAccount.rowCount === 0) {
-				throw new Error('Database failed to delete account');
+				throw new CustomError('Database failed to delete account', 500, {
+					errors: { server: 'Server error' },
+				});
 			}
 
 			return res.status(200).json({ msg: 'Account deleted' });
 		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
+			err.message = `delete-account: ${err.message}`;
+			next(err);
 		}
 	}
 );

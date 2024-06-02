@@ -27,15 +27,14 @@ async function schemaErrorHandler(req, res, next) {
 				}
 			});
 
-			throw new CustomError(
-				'schemaErrorHandler: validation errors found',
-				400,
-				{ errors: extractedErrors }
-			);
+			throw new CustomError('validation errors found', 400, {
+				errors: extractedErrors,
+			});
 		}
 
 		next();
 	} catch (err) {
+		err.message = `schemaErrorHandler: ${err.message}`;
 		next(err);
 	}
 }
