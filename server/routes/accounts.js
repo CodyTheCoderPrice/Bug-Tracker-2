@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const { matchedData, checkSchema } = require('express-validator');
 const {
-	handleSchemaErrors,
-} = require('../middleware/validation/handleSchemaErrors.js');
+	schemaErrorHandler,
+} = require('../middleware/errors/schemaErrorHandler.js');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const registerAccountSchema = require('../middleware/validation/account/registerSchema.js');
@@ -27,7 +27,7 @@ const router = Router();
 //==================
 router.post(
 	'/register',
-	[checkSchema(registerAccountSchema), handleSchemaErrors],
+	[checkSchema(registerAccountSchema), schemaErrorHandler],
 	async (req, res) => {
 		const data = matchedData(req);
 		const { email, pwd, first_name, last_name } = data;
@@ -65,22 +65,23 @@ router.post(
 				   RETURNING account_id`,
 				[email, hash_pass, first_name, last_name]
 			);
-
-			return res.status(201).json({ msg: 'Account created' });
 		} catch (err) {
 			console.log(err.message);
 			return res.status(503).json({ errors: { server: 'Server error' } });
 		}
+
+		return res.status(201).json({ msg: 'Account created' });
 	}
 );
 
+// TODO: Change post to put
 //=============
 // Update Name
 //=============
 router.post(
 	'/update-name',
 	authenticateToken,
-	[checkSchema(updateNameSchema), handleSchemaErrors],
+	[checkSchema(updateNameSchema), schemaErrorHandler],
 	async (req, res) => {
 		const data = matchedData(req);
 		const { first_name, last_name } = data;
@@ -120,7 +121,7 @@ router.post(
 router.post(
 	'/update-email',
 	authenticateToken,
-	[checkSchema(updateEmailSchema), handleSchemaErrors],
+	[checkSchema(updateEmailSchema), schemaErrorHandler],
 	authenticatePassword,
 	async (req, res) => {
 		const data = matchedData(req);
@@ -183,7 +184,7 @@ router.post(
 router.post(
 	'/update-password',
 	authenticateToken,
-	[checkSchema(updatePasswordSchema), handleSchemaErrors],
+	[checkSchema(updatePasswordSchema), schemaErrorHandler],
 	confirmPwdMatches,
 	authenticatePassword,
 	async (req, res) => {
@@ -229,7 +230,7 @@ router.post(
 router.delete(
 	'/delete',
 	authenticateToken,
-	[checkSchema(deleteAccountSchema), handleSchemaErrors],
+	[checkSchema(deleteAccountSchema), schemaErrorHandler],
 	authenticatePassword,
 	async (req, res) => {
 		// Declared in authenticateToken middleware

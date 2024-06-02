@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const { matchedData, checkSchema } = require('express-validator');
 const {
-	handleSchemaErrors,
-} = require('../middleware/validation/handleSchemaErrors.js');
+	schemaErrorHandler,
+} = require('../middleware/errors/schemaErrorHandler.js');
 const {
 	authenticateToken,
 } = require('../middleware/auth/authenticateToken.js');
@@ -21,7 +21,7 @@ const router = Router();
 router.post(
 	'/create',
 	authenticateToken,
-	[checkSchema(createBugSchema), handleSchemaErrors],
+	[checkSchema(createBugSchema), schemaErrorHandler],
 	async (req, res) => {
 		const data = matchedData(req);
 		const {

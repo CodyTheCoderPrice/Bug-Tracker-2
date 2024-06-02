@@ -17,7 +17,7 @@ function generateAccessToken(account_id) {
 		account_id: account_id,
 	};
 
-	// TODO: Extend expiresIn (currently 15s for testing purposes)
+	// TODO: Extend expiresIn (currently 10s for testing purposes)
 	return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
 		expiresIn: '10s',
 	});

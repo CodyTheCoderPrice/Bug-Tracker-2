@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const { matchedData, checkSchema } = require('express-validator');
 const {
-	handleSchemaErrors,
-} = require('../middleware/validation/handleSchemaErrors.js');
+	schemaErrorHandler,
+} = require('../middleware/errors/schemaErrorHandler.js');
 const {
 	authenticateToken,
 } = require('../middleware/auth/authenticateToken.js');
@@ -23,7 +23,7 @@ const router = Router();
 router.post(
 	'/create',
 	authenticateToken,
-	[checkSchema(createProjectSchema), handleSchemaErrors],
+	[checkSchema(createProjectSchema), schemaErrorHandler],
 	async (req, res) => {
 		const data = matchedData(req);
 		const { name, description } = data;
@@ -69,7 +69,7 @@ router.post(
 router.post(
 	'/update',
 	authenticateToken,
-	[checkSchema(updateProjectSchema), handleSchemaErrors],
+	[checkSchema(updateProjectSchema), schemaErrorHandler],
 	async (req, res) => {
 		const data = matchedData(req);
 		const { project_id, name, description } = data;
@@ -131,7 +131,7 @@ router.post(
 router.delete(
 	'/delete',
 	authenticateToken,
-	[checkSchema(deleteProjectSchema), handleSchemaErrors],
+	[checkSchema(deleteProjectSchema), schemaErrorHandler],
 	async (req, res) => {
 		const data = matchedData(req);
 		const { project_id } = data;

@@ -5,8 +5,8 @@ const {
 	checkSchema,
 } = require('express-validator');
 const {
-	handleSchemaErrors,
-} = require('../middleware/validation/handleSchemaErrors.js');
+	schemaErrorHandler,
+} = require('../middleware/errors/schemaErrorHandler.js');
 const pool = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -31,7 +31,7 @@ const router = Router();
 //=======
 router.post(
 	'/login',
-	[checkSchema(loginSchema), handleSchemaErrors],
+	[checkSchema(loginSchema), schemaErrorHandler],
 	async (req, res) => {
 		const data = matchedData(req);
 		const { email, pwd } = data;

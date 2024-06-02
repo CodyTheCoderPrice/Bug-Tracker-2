@@ -22,7 +22,7 @@ axiosInstance.interceptors.response.use(
 				}
 				return axiosInstance(config);
 			} catch (_err: any) {
-				if (err.response.data.errors) {
+				if (_err.response.data.errors) {
 					console.log(_err.response.data.errors);
 				}
 				return Promise.reject(_err);

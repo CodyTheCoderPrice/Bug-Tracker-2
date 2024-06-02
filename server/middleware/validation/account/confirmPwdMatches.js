@@ -6,7 +6,7 @@ const express = require('express');
  * Checks if confirmPwd matches newPwd andsends a response with an error message
  * if they do not. Otherwise, calls next middleware.
  *
- * NOTE: This middleware is intended to run after checkSchema and handleSchemaErrors.
+ * NOTE: This middleware is intended to run after checkSchema and schemaErrorHandler.
  *
  * @param {express.Request & {authorization: string}} req - Express request object
  * @param {express.Response} res - Express response object

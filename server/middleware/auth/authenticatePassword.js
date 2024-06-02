@@ -1,6 +1,7 @@
 const { matchedData } = require('express-validator');
 const pool = require('../../db.js');
 const bcrypt = require('bcrypt');
+const { CustomError } = require('../../utils/classes.js');
 // Used to document js
 const express = require('express');
 
@@ -15,42 +16,48 @@ const express = require('express');
  * @param {express.NextFunction} next - Express next middleware function
  */
 async function authenticatePassword(req, res, next) {
-	const data = matchedData(req);
-	const { pwd } = data;
-
-	// Declared in authenticateToken middleware
-	const account_id = res.locals.account_id;
-
-	if (account_id == null) {
-		console.log('res.locals missing account_id');
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	let dbPwd;
 	try {
-		dbPwd = await pool.query(
+		const data = matchedData(req);
+		const { pwd } = data;
+
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			throw new CustomError(
+				'authenticatePassword: res.locals missing account_id',
+				500,
+				{ errors: { server: 'Server error' } }
+			);
+		}
+
+		const dbPwd = await pool.query(
 			`SELECT hash_pass
          FROM account
         WHERE account_id = $1`,
 			[account_id]
 		);
+
+		if (dbPwd.rowCount === 0) {
+			throw new CustomError(
+				'authenticatePassword: No hash_pass for account',
+				500,
+				{ errors: { server: 'Server error' } }
+			);
+		}
+
+		const pwdMatch = bcrypt.compareSync(pwd, dbPwd.rows[0].hash_pass);
+
+		if (!pwdMatch) {
+			throw new CustomError('authenticatePassword: Incorrect password', 400, {
+				errors: { pwd: 'Incorrect password' },
+			});
+		}
+
+		next();
 	} catch (err) {
-		console.log(err.message);
-		return res.status(503).json({ errors: { server: 'Server error' } });
+		next(err);
 	}
-
-	if (dbPwd.rowCount === 0) {
-		console.log('No hash_pass for account');
-		return res.status(503).json({ errors: { server: 'Server error' } });
-	}
-
-	const pwdMatch = bcrypt.compareSync(pwd, dbPwd.rows[0].hash_pass);
-
-	if (!pwdMatch) {
-		return res.status(400).json({ errors: { pwd: 'Incorrect password' } });
-	}
-
-	next();
 }
 
 module.exports = {
