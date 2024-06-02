@@ -85,9 +85,7 @@ router.post(
 			const account_id = res.locals.account_id;
 
 			if (account_id == null) {
-				throw new CustomError('res.locals missing account_id', 500, {
-					errors: { server: 'Server error' },
-				});
+				throw new Error('res.locals missing account_id');
 			}
 
 			const updatedAccount = await pool.query(
@@ -99,9 +97,7 @@ router.post(
 			);
 
 			if (updatedAccount.rowCount === 0) {
-				throw new CustomError('Database failed to update account name', 500, {
-					errors: { server: 'Server error' },
-				});
+				throw new Error('Database failed to update account name');
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
@@ -129,9 +125,7 @@ router.post(
 			const account_id = res.locals.account_id;
 
 			if (account_id == null) {
-				throw new CustomError('res.locals missing account_id', 500, {
-					errors: { server: 'Server error' },
-				});
+				throw new Error('res.locals missing account_id');
 			}
 
 			const emailInUse =
@@ -159,9 +153,7 @@ router.post(
 			);
 
 			if (updatedAccount.rowCount === 0) {
-				throw new CustomError('Database failed to update account email', 500, {
-					errors: { server: 'Server error' },
-				});
+				throw new Error('Database failed to update account email');
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
@@ -190,9 +182,7 @@ router.post(
 			const account_id = res.locals.account_id;
 
 			if (account_id == null) {
-				throw new CustomError('res.locals missing account_id', 500, {
-					errors: { server: 'Server error' },
-				});
+				throw new Error('res.locals missing account_id');
 			}
 
 			const saltRounds = 10;
@@ -208,13 +198,7 @@ router.post(
 			);
 
 			if (updatedAccount.rowCount === 0) {
-				throw new CustomError(
-					'Database failed to update account password',
-					500,
-					{
-						errors: { server: 'Server error' },
-					}
-				);
+				throw new Error('Database failed to update account password');
 			}
 
 			return res.status(200).json({ account: updatedAccount.rows[0] });
@@ -239,9 +223,7 @@ router.delete(
 			const account_id = res.locals.account_id;
 
 			if (account_id == null) {
-				throw new CustomError('res.locals missing account_id', 500, {
-					errors: { server: 'Server error' },
-				});
+				throw new Error('res.locals missing account_id');
 			}
 
 			const deletedAccount = await pool.query(
@@ -251,9 +233,7 @@ router.delete(
 			);
 
 			if (deletedAccount.rowCount === 0) {
-				throw new CustomError('Database failed to delete account', 500, {
-					errors: { server: 'Server error' },
-				});
+				throw new Error('Database failed to delete account');
 			}
 
 			return res.status(200).json({ msg: 'Account deleted' });

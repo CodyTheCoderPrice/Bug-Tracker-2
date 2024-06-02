@@ -32,7 +32,7 @@ async function authenticateToken(req, res, next) {
 					errors: { token: 'Access token expired' },
 				});
 			}
-			throw new CustomError('Invalid access token', 400, {
+			throw new CustomError('Invalid access token', 403, {
 				needRefresh: true,
 				errors: { token: 'Invalid access token' },
 			});

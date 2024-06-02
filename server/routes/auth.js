@@ -1,9 +1,5 @@
 const { Router } = require('express');
-const {
-	validationResult,
-	matchedData,
-	checkSchema,
-} = require('express-validator');
+const { matchedData, checkSchema } = require('express-validator');
 const {
 	schemaErrorHandler,
 } = require('../middleware/errors/schemaErrorHandler.js');
@@ -23,6 +19,7 @@ const {
 	generateAccessToken,
 	generateRefreshToken,
 } = require('../utils/jwt.js');
+const { CustomError } = require('../utils/classes.js');
 
 const router = Router();
 
@@ -32,245 +29,232 @@ const router = Router();
 router.post(
 	'/login',
 	[checkSchema(loginSchema), schemaErrorHandler],
-	async (req, res) => {
-		const data = matchedData(req);
-		const { email, pwd } = data;
-
-		let idAndHashPass;
+	async (req, res, next) => {
 		try {
-			idAndHashPass = await pool.query(
+			const data = matchedData(req);
+			const { email, pwd } = data;
+
+			const idAndHashPass = await pool.query(
 				`SELECT account_id, hash_pass
-				   FROM account
-					WHERE LOWER(email) = LOWER($1)`,
+						 FROM account
+						WHERE LOWER(email) = LOWER($1)`,
 				[email]
 			);
-		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
-		}
 
-		if (idAndHashPass.rowCount === 0) {
-			return res.status(401).json({ errors: { email: 'Email unregistered' } });
-		}
+			if (idAndHashPass.rowCount === 0) {
+				throw new CustomError('Email unregistered', 401, {
+					errors: { email: 'Email unregistered' },
+				});
+			}
 
-		const correctpwd = bcrypt.compareSync(pwd, idAndHashPass.rows[0].hash_pass);
+			const correctpwd = bcrypt.compareSync(
+				pwd,
+				idAndHashPass.rows[0].hash_pass
+			);
 
-		if (!correctpwd) {
-			return res.status(403).json({ errors: { pwd: 'Incorrect password' } });
-		}
+			if (!correctpwd) {
+				throw new CustomError('Incorrect password', 403, {
+					errors: { pwd: 'Incorrect password' },
+				});
+			}
 
-		let account, projects, bugs;
-		try {
-			({ account, projects, bugs } = await getEverythingForAccountFromDB(
+			const { account, projects, bugs } = await getEverythingForAccountFromDB(
 				idAndHashPass.rows[0].account_id
-			));
-		} catch (err) {
-			console.log(err.message);
-			return res.status(503).json({ errors: { server: 'Server error' } });
-		}
+			);
 
-		if (account.account_id == null) {
-			console.log('getEverythingForAccountFromDB returned without account_id');
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
+			if (account.account_id == null) {
+				throw new Error(
+					'getEverythingForAccountFromDB returned without account_id'
+				);
+			}
 
-		if (projects == null) {
-			console.log('getEverythingForAccountFromDB returned without projects');
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
+			if (projects == null) {
+				throw new Error(
+					'getEverythingForAccountFromDB returned without projects array'
+				);
+			}
 
-		if (bugs == null) {
-			console.log('getEverythingForAccountFromDB returned without bugss');
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
+			if (bugs == null) {
+				throw new Error(
+					'getEverythingForAccountFromDB returned without bugs array'
+				);
+			}
 
-		let accessToken, refreshToken;
-		try {
-			accessToken = generateAccessToken(account.account_id);
-			refreshToken = generateRefreshToken(account.account_id);
-		} catch (err) {
-			console.log(err.message);
-			return res.status(500).json({ errors: { server: 'Server error' } });
-		}
+			const accessToken = generateAccessToken(account.account_id);
+			const refreshToken = generateRefreshToken(account.account_id);
 
-		try {
 			await replaceRefreshTokenInDB(account.account_id, refreshToken);
+
+			res.cookie('token', accessToken, {
+				secure: true,
+				httpOnly: true,
+				sameSite: 'strict',
+			});
+			res.cookie('refreshToken', refreshToken, {
+				secure: true,
+				httpOnly: true,
+				path: '/api/v1/auth/refresh',
+				sameSite: 'strict',
+			});
+
+			return res.status(200).json({
+				account: account,
+				projects: projects.rows,
+				bugs: bugs.rows,
+			});
 		} catch (err) {
-			console.log(err.message);
-			return res.status(500).json({ errors: { server: 'Server error' } });
+			err.message = `login: ${err.message}`;
+			next(err);
 		}
-
-		res.cookie('token', accessToken, {
-			secure: true,
-			httpOnly: true,
-			sameSite: 'strict',
-		});
-		res.cookie('refreshToken', refreshToken, {
-			secure: true,
-			httpOnly: true,
-			path: '/api/v1/auth/refresh',
-			sameSite: 'strict',
-		});
-
-		return res.status(200).json({
-			account: account,
-			projects: projects.rows,
-			bugs: bugs.rows,
-		});
 	}
 );
 
 //==========
 // Re-Login
 //==========
-router.get('/relogin', authenticateToken, async (req, res) => {
-	// Declared in authenticateToken middleware
-	const account_id = res.locals.account_id;
-
-	if (account_id == null) {
-		console.log('res.locals missing account_id');
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	let account, projects, bugs;
+router.get('/relogin', authenticateToken, async (req, res, next) => {
 	try {
-		({ account, projects, bugs } = await getEverythingForAccountFromDB(
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			throw new Error('res.locals missing account_id');
+		}
+
+		const { account, projects, bugs } = await getEverythingForAccountFromDB(
 			account_id
-		));
+		);
+
+		if (account.account_id == null) {
+			throw new Error(
+				'getEverythingForAccountFromDB returned without account_id'
+			);
+		}
+
+		if (projects == null) {
+			throw new Error(
+				'getEverythingForAccountFromDB returned without projects array'
+			);
+		}
+
+		if (bugs == null) {
+			throw new Error(
+				'getEverythingForAccountFromDB returned without bugs array'
+			);
+		}
+
+		return res.status(200).json({
+			account: account,
+			projects: projects.rows,
+			bugs: bugs.rows,
+		});
 	} catch (err) {
-		console.log(err.message);
-		return res.status(503).json({ errors: { server: 'Server error' } });
+		err.message = `relogin: ${err.message}`;
+		next(err);
 	}
-
-	if (account == null) {
-		console.log('getEverythingForAccountFromDB returned without account');
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	if (projects == null) {
-		console.log('getEverythingForAccountFromDB returned without projects');
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	if (bugs == null) {
-		console.log('getEverythingForAccountFromDB returned without bugss');
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
-	return res.status(200).json({
-		account: account,
-		projects: projects.rows,
-		bugs: bugs.rows,
-	});
 });
 
 //========
 // Logout
 //========
-router.delete('/logout', authenticateToken, async (req, res) => {
-	// Declared in authenticateToken middleware
-	const account_id = res.locals.account_id;
-
-	if (account_id == null) {
-		console.log('res.locals missing account_id');
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
-
+router.delete('/logout', authenticateToken, async (req, res, next) => {
 	try {
+		// Declared in authenticateToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			throw new Error('res.locals missing account_id');
+		}
+
 		res.clearCookie('token', { sameSite: 'strict' });
 		res.clearCookie('refreshToken', {
 			path: '/api/v1/auth/refresh',
 			sameSite: 'strict',
 		});
-		await removeRefreshTokenInDB(account_id);
-	} catch (err) {
-		console.log(err.message);
-		return res.status(503).json({ errors: { server: 'Server error' } });
-	}
 
-	return res.status(200).json({ msg: 'Logout successful' });
+		await removeRefreshTokenInDB(account_id);
+
+		return res.status(200).json({ msg: 'Logout successful' });
+	} catch (err) {
+		err.message = `logout: ${err.message}`;
+		next(err);
+	}
 });
 
 //===============
 // Refresh Token
 //===============
-router.post('/refresh', async (req, res) => {
-	if (req.cookies.refreshToken == null) {
-		return res.status(401).json({ errors: { token: 'Missing refresh token' } });
-	}
-
-	const refreshToken = req.cookies.refreshToken;
-
-	let decoded;
+router.post('/refresh', async (req, res, next) => {
 	try {
-		decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-	} catch (err) {
-		if (err.message === 'jwt expired') {
-			return res
-				.status(400)
-				.json({ errors: { token: 'Refresh token expired' } });
+		if (req.cookies.refreshToken == null) {
+			throw new CustomError('Missing refresh token', 401, {
+				errors: { token: 'Missing refresh token' },
+			});
 		}
-		return res.status(403).json({ errors: { token: 'Invalid refresh token' } });
-	}
 
-	if (decoded.account_id == null) {
-		return res.status(403).json({ errors: { token: 'Invalid refresh token' } });
-	}
+		const refreshToken = req.cookies.refreshToken;
 
-	let token;
-	try {
-		token = await pool.query(
+		let decoded;
+		try {
+			decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+		} catch (err) {
+			if (err.message === 'jwt expired') {
+				throw new CustomError('Refresh token expired', 400, {
+					errors: { token: 'Refresh token expired' },
+				});
+			}
+			throw new CustomError('Invalid refresh token', 403, {
+				errors: { token: 'Invalid refresh token' },
+			});
+		}
+
+		if (decoded.account_id == null) {
+			throw new CustomError('Invalid refresh token', 403, {
+				errors: { token: 'Invalid refresh token' },
+			});
+		}
+
+		const dbToken = await pool.query(
 			`SELECT refresh_token
-         FROM token
-        WHERE account_id = ($1)`,
+					 FROM token
+					WHERE account_id = ($1)`,
 			[decoded.account_id]
 		);
-	} catch (err) {
-		console.log(err.message);
-		return res.status(503).json({ errors: { server: 'Server error' } });
-	}
 
-	if (token.rowCount === 0 || token.rows[0].refresh_token == null) {
-		return res
-			.status(401)
-			.json({ errors: { token: 'No refresh token found in DB' } });
-	}
+		if (dbToken.rowCount === 0 || dbToken.rows[0].refresh_token == null) {
+			throw new CustomError('No refresh token found in DB', 401, {
+				errors: { token: 'No refresh token found in DB' },
+			});
+		}
 
-	if (token.rows[0].refresh_token !== refreshToken) {
-		return res
-			.status(401)
-			.json({ errors: { token: 'Refresh token does not match DB' } });
-	}
+		if (dbToken.rows[0].refresh_token !== refreshToken) {
+			throw new CustomError('Refresh token does not match DB', 403, {
+				errors: { token: 'Refresh token does not match DB' },
+			});
+		}
 
-	let newAccessToken, newRefreshToken;
-	try {
-		newAccessToken = generateAccessToken(decoded.account_id);
-		newRefreshToken = generateRefreshToken(decoded.account_id);
-	} catch (err) {
-		console.log(err.message);
-		return res.status(500).json({ errors: { server: 'Server error' } });
-	}
+		const newAccessToken = generateAccessToken(decoded.account_id);
+		const newRefreshToken = generateRefreshToken(decoded.account_id);
 
-	try {
 		await replaceRefreshTokenInDB(decoded.account_id, newRefreshToken);
+
+		res.cookie('token', newAccessToken, {
+			secure: true,
+			httpOnly: true,
+			sameSite: 'strict',
+		});
+		res.cookie('refreshToken', newRefreshToken, {
+			secure: true,
+			httpOnly: true,
+			path: '/api/v1/auth/refresh',
+			sameSite: 'strict',
+		});
+
+		return res.status(200).json({ msg: 'Token refresh successful' });
 	} catch (err) {
-		console.log(err.message);
-		return res.status(503).json({ errors: { server: 'Server error' } });
+		err.message = `refresh-token: ${err.message}`;
+		next(err);
 	}
-
-	res.cookie('token', newAccessToken, {
-		secure: true,
-		httpOnly: true,
-		sameSite: 'strict',
-	});
-	res.cookie('refreshToken', newRefreshToken, {
-		secure: true,
-		httpOnly: true,
-		path: '/api/v1/auth/refresh',
-		sameSite: 'strict',
-	});
-
-	return res.status(200).json({ msg: 'Token refresh successful' });
 });
 
 //============
