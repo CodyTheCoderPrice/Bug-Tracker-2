@@ -1,26 +1,20 @@
 const { matchedData } = require('express-validator');
-const pool = require('../../db.js');
+const pool = require('../../database/db.js');
 const bcrypt = require('bcrypt');
 const { CustomError } = require('../../utils/classes.js');
-// Used to document js
-const express = require('express');
 
 /**
  * Middleware to authenticate a password matches the DB.
  *
- * NOTE: This middleware relies on authenticateToken and checkSchema having ran
- * prior.
- *
- * @param {express.Request & {authorization: string}} req - Express request object
- * @param {express.Response} res - Express response object
- * @param {express.NextFunction} next - Express next middleware function
+ * NOTE: This middleware is intended to run after authToken, checkSchema
+ * and schemaErrorHandler.
  */
-async function authenticatePassword(req, res, next) {
+async function authPassword(req, res, next) {
 	try {
 		const data = matchedData(req);
 		const { pwd } = data;
 
-		// Declared in authenticateToken middleware
+		// Declared in authToken middleware
 		const account_id = res.locals.account_id;
 
 		if (account_id == null) {
@@ -48,11 +42,11 @@ async function authenticatePassword(req, res, next) {
 
 		next();
 	} catch (err) {
-		err.message = `authenticatePassword: ${err.message}`;
+		err.message = `authPassword: ${err.message}`;
 		next(err);
 	}
 }
 
 module.exports = {
-	authenticatePassword,
+	authPassword,
 };

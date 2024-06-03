@@ -1,16 +1,10 @@
 const { validationResult } = require('express-validator');
 const { CustomError } = require('../../utils/classes');
-// Used to document js
-const express = require('express');
 
 /**
  * Sends schema errors in response. If none exist, then calls next middleware.
  *
  * NOTE: This middleware is intended to run immediately after checkSchema.
- *
- * @param {express.Request & {authorization: string}} req - Express request object
- * @param {express.Response} res - Express response object
- * @param {express.NextFunction} next - Express next middleware function
  */
 async function schemaErrorHandler(req, res, next) {
 	try {

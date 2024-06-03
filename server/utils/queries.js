@@ -1,4 +1,4 @@
-const pool = require('../db');
+const pool = require('../database/db');
 
 /**
  * Remove the refresh_token for an account from the database

@@ -1,16 +1,10 @@
 const jwt = require('jsonwebtoken');
-// Used to document js
-const express = require('express');
 const { CustomError } = require('../../utils/classes');
 
 /**
  * Middleware to authenticate an accessToken.
- *
- * @param {express.Request & {authorization: string}} req - Express request object
- * @param {express.Response} res - Express response object
- * @param {express.NextFunction} next - Express next middleware function
  */
-async function authenticateToken(req, res, next) {
+async function authToken(req, res, next) {
 	try {
 		if (req.cookies.token == null) {
 			throw new CustomError('Missing access token', 401, {
@@ -38,11 +32,11 @@ async function authenticateToken(req, res, next) {
 			});
 		}
 	} catch (err) {
-		err.message = `authenticateToken: ${err.message}`;
+		err.message = `authToken: ${err.message}`;
 		next(err);
 	}
 }
 
 module.exports = {
-	authenticateToken,
+	authToken,
 };

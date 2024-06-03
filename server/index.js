@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const {
 	globalErrorHandler,
-} = require('./middleware/errors/globalErrorHandler.js');
+} = require('./middleware/errors/globalErrorHandler.middleware.js');
 const { routes } = require('./routes');
 
 const app = express();

@@ -1,3 +1,8 @@
+/**
+ * Middleware for all express errors to be handled by.
+ *
+ * NOTE: Should be passed last to app.use()
+ */
 function globalErrorHandler(err, req, res, next) {
 	err.statusCode = err.statusCode || 500;
 	err.json = err.json || { errors: { server: 'Server error' } };

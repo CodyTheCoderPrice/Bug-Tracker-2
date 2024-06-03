@@ -1,8 +1,8 @@
 const { Router } = require('express');
-const { authRouter } = require('./auth.js');
-const { accountRouter } = require('./accounts.js');
-const { projectsRouter } = require('./projects.js');
-const { bugsRouter } = require('./bugs.js');
+const { authRouter } = require('./auth.routes.js');
+const { accountRouter } = require('./account.routes.js');
+const { projectsRouter } = require('./project.routes.js');
+const { bugsRouter } = require('./bug.routes.js');
 
 const router = Router();
 
