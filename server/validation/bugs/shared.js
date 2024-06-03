@@ -27,12 +27,18 @@ const location = {
 
 const priority_id = {
 	notEmpty: { errorMessage: 'Priority ID cannot be empty' },
-	isInt: { errorMessage: 'Priority ID must be an integer' },
+	isInt: {
+		options: { min: 1, max: 3 },
+		errorMessage: 'Priority ID must be an integer between 1-3',
+	},
 };
 
 const status_id = {
 	notEmpty: { errorMessage: 'Status ID cannot be empty' },
-	isInt: { errorMessage: 'Status ID must be an integer' },
+	isInt: {
+		options: { min: 1, max: 4 },
+		errorMessage: 'Status ID must be an integer between 1-4',
+	},
 };
 
 const due_date = {

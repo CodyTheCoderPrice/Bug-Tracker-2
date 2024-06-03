@@ -83,7 +83,6 @@ function CreateBug() {
 					defaultValue={bugInfo.priority_id}
 					style={{ display: 'block' }}
 				>
-					{/*TODO: Get from DB */}
 					<option value={1}>Low</option>
 					<option value={2}>Medium</option>
 					<option value={3}>High</option>

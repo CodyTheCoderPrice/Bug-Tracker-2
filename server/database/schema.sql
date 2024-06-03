@@ -62,11 +62,11 @@ CREATE TABLE
   );
 
 INSERT INTO
-  priority (name, order_number)
+  priority (name)
 VALUES
-  ('Low', 0),
-  ('Medium', 1),
-  ('High', 2);
+  ('Low'),
+  ('Medium'),
+  ('High');
 
 CREATE TABLE
   status (
@@ -78,12 +78,12 @@ CREATE TABLE
   );
 
 INSERT INTO
-  status (name, order_number, marks_completed)
+  status (name)
 VALUES
-  ('Open', 0, false),
-  ('In Progress', 1, false),
-  ('Testing', 2, false),
-  ('Closed', 3, true);
+  ('Open'),
+  ('In Progress'),
+  ('Testing'),
+  ('Closed');
 
 CREATE TABLE
   bug (
