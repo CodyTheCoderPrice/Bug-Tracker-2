@@ -72,7 +72,7 @@ export const updateName = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const response = await axiosInstance.post(
+			const response = await axiosInstance.put(
 				'/api/v1/accounts/update-name',
 				nameInfo
 			);
@@ -90,7 +90,7 @@ export const updateEmail = createAsyncThunk(
 	'account/update-email',
 	async (emailInfo: { email: string }, { rejectWithValue }) => {
 		try {
-			const response = await axiosInstance.post(
+			const response = await axiosInstance.put(
 				'/api/v1/accounts/update-email',
 				emailInfo
 			);
@@ -111,7 +111,7 @@ export const updatePassword = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const response = await axiosInstance.post(
+			const response = await axiosInstance.put(
 				'/api/v1/accounts/update-password',
 				pwdInfo
 			);

@@ -25,13 +25,13 @@ router.post('/register', [
 	accountController.registerAccount,
 ]);
 
-router.post('/update-name', authToken, [
+router.put('/update-name', authToken, [
 	checkSchema(updateNameSchema),
 	schemaErrorHandler,
 	accountController.updateAccountName,
 ]);
 
-router.post(
+router.put(
 	'/update-email',
 	authToken,
 	[checkSchema(updateEmailSchema), schemaErrorHandler],
@@ -39,7 +39,7 @@ router.post(
 	accountController.updateAccountEmail
 );
 
-router.post(
+router.put(
 	'/update-password',
 	authToken,
 	[checkSchema(updatePasswordSchema), schemaErrorHandler],

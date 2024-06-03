@@ -83,7 +83,7 @@ export const updateProject = createAsyncThunk(
 		{ rejectWithValue }
 	) => {
 		try {
-			const response = await axiosInstance.post(
+			const response = await axiosInstance.put(
 				'/api/v1/projects/update',
 				projectInfo
 			);

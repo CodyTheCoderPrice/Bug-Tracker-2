@@ -23,7 +23,7 @@ router.post('/create', authToken, [
 //================
 // Update Project
 //================
-router.post('/update', authToken, [
+router.put('/update', authToken, [
 	checkSchema(updateProjectSchema),
 	schemaErrorHandler,
 	projectController.updateProject,
