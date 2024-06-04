@@ -17,7 +17,7 @@ function App() {
 		if (isLoggedIn) {
 			dispatch(relogin());
 		}
-	}, [dispatch, isLoggedIn]);
+	}, []);
 
 	return (
 		<>

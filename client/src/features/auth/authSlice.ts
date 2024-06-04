@@ -63,10 +63,7 @@ export const logout = () => {
 		try {
 			await axiosInstance.delete('/api/v1/auth/logout');
 		} catch (err: any) {
-			if (err.response && err.response.data) {
-				console.log(err.response.data);
-			}
-			console.log(err.message);
+			console.log('Logout api call failed');
 		}
 		dispatch(reset());
 	};

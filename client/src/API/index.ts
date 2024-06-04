@@ -12,19 +12,18 @@ axiosInstance.interceptors.response.use(
 	async (err) => {
 		const config = err.config;
 
+		if (err.response.data.log) {
+			console.log(err.response.data.log);
+		}
+
 		// Access Token was expired
 		if (err.response.data.needRefresh) {
 			try {
-				console.log('Tokens need refreshing');
-				const rs = await axiosInstance.post('/api/v1/auth/refresh');
-				if (rs.data.msg) {
-					console.log(rs.data.msg);
-				}
+				console.log('Token needs refreshing');
+				await axiosInstance.post('/api/v1/auth/refresh');
+				console.log('Token refreshed');
 				return axiosInstance(config);
 			} catch (_err: any) {
-				if (_err.response.data.errors) {
-					console.log(_err.response.data.errors);
-				}
 				return Promise.reject(_err);
 			}
 		}
