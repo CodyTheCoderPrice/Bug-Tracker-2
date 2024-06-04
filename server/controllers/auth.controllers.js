@@ -25,8 +25,8 @@ const login = async (req, res, next) => {
 
 		const idAndHashPass = await pool.query(
 			`SELECT account_id, hash_pass
-           FROM account
-          WHERE LOWER(email) = LOWER($1)`,
+         FROM account
+        WHERE LOWER(email) = LOWER($1)`,
 			[email]
 		);
 
@@ -205,8 +205,8 @@ const refreshTokens = async (req, res, next) => {
 
 		const dbToken = await pool.query(
 			`SELECT refresh_token
-					 FROM token
-					WHERE account_id = ($1)`,
+				 FROM token
+			  WHERE account_id = ($1)`,
 			[decoded.account_id]
 		);
 

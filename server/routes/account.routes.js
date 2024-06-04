@@ -19,17 +19,18 @@ const accountController = require('../controllers/account.controllers.js');
 
 const router = Router();
 
-router.post('/register', [
-	checkSchema(registerAccountSchema),
-	schemaErrorHandler,
-	accountController.registerAccount,
-]);
+router.post(
+	'/register',
+	[checkSchema(registerAccountSchema), schemaErrorHandler],
+	accountController.registerAccount
+);
 
-router.put('/update-name', authToken, [
-	checkSchema(updateNameSchema),
-	schemaErrorHandler,
-	accountController.updateAccountName,
-]);
+router.put(
+	'/update-name',
+	authToken,
+	[checkSchema(updateNameSchema), schemaErrorHandler],
+	accountController.updateAccountName
+);
 
 router.put(
 	'/update-email',

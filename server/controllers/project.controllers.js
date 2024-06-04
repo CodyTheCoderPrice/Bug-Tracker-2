@@ -25,8 +25,8 @@ const createProject = async (req, res, next) => {
 
 		const createdProject = await pool.query(
 			`INSERT INTO project (account_id, name, description)
-              VALUES ($1, $2, $3)
-           RETURNING project_id`,
+            VALUES ($1, $2, $3)
+         RETURNING project_id`,
 			[account_id, name, description]
 		);
 
@@ -77,10 +77,10 @@ const updateProject = async (req, res, next) => {
 
 		const updatedProject = await pool.query(
 			`UPDATE project
-            SET name = $1, description = $2
-          WHERE account_id = $3 AND project_id = $4
-         RETURNING project_id`,
-			[name, description, account_id, project_id]
+          SET name = $1, description = $2
+        WHERE project_id = $3
+       RETURNING project_id`,
+			[name, description, project_id]
 		);
 
 		if (updatedProject.rowCount === 0) {
@@ -130,7 +130,7 @@ const deleteProject = async (req, res, next) => {
 
 		const deletedProject = await pool.query(
 			`DELETE FROM project
-          WHERE account_id = $1 AND project_id = $2`,
+        WHERE account_id = $1 AND project_id = $2`,
 			[account_id, project_id]
 		);
 

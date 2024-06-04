@@ -45,19 +45,49 @@ async function replaceRefreshTokenInDB(account_id, refreshToken) {
  * @returns {boolean} whether the project belongs to the account.
  */
 async function doesProjectBelongToAccountInDB(account_id, project_id) {
-	let projectBelongsToAccount;
 	try {
-		projectBelongsToAccount = await pool.query(
-			`SELECT project_id
+		const projectBelongsToAccount =
+			(
+				await pool.query(
+					`SELECT project_id
            FROM project
-          WHERE account_id = $1 AND project_id = $2`,
-			[account_id, project_id]
-		);
+          WHERE project_id = $1 and account_id = $2`,
+					[project_id, account_id]
+				)
+			).rowCount > 0;
+
+		return projectBelongsToAccount;
 	} catch (err) {
 		throw err;
 	}
+}
 
-	return projectBelongsToAccount.rowCount !== 0;
+/**
+ * Determins whether a bug belongs to an account.
+ *
+ * @param {number} account_id - Account id.
+ * @param {number} bug_id - Bug id.
+ * @returns {boolean} whether the bug belongs to the account.
+ */
+async function doesBugBelongToAccountInDB(account_id, bug_id) {
+	try {
+		const bugBelongsToAccount =
+			(
+				await pool.query(
+					`SELECT bug_id
+			   FROM bug
+				WHERE bug_id = $1 and project_id IN (
+																SELECT project_id
+																  FROM project
+						 										 WHERE account_id = $2)`,
+					[bug_id, account_id]
+				)
+			).rowCount > 0;
+
+		return bugBelongsToAccount;
+	} catch (err) {
+		throw err;
+	}
 }
 
 /**
@@ -183,6 +213,7 @@ module.exports = {
 	removeRefreshTokenInDB,
 	replaceRefreshTokenInDB,
 	doesProjectBelongToAccountInDB,
+	doesBugBelongToAccountInDB,
 	getAccountFromDB,
 	getProjectsFromDB,
 	getBugsFromDB,

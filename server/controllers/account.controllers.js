@@ -17,8 +17,8 @@ const registerAccount = async (req, res, next) => {
 			(
 				await pool.query(
 					`SELECT account_id
-               FROM account
-              WHERE LOWER(email) = LOWER($1)`,
+             FROM account
+            WHERE LOWER(email) = LOWER($1)`,
 					[email]
 				)
 			).rowCount > 0;
@@ -66,9 +66,9 @@ const updateAccountName = async (req, res, next) => {
 
 		const updatedAccount = await pool.query(
 			`UPDATE account
-            SET first_name = $1, last_name = $2
-          WHERE account_id = $3
-         RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+          SET first_name = $1, last_name = $2
+        WHERE account_id = $3
+       RETURNING account_id, email, first_name, last_name, create_time, update_time`,
 			[first_name, last_name, account_id]
 		);
 
@@ -105,8 +105,8 @@ const updateAccountEmail = async (req, res, next) => {
 			(
 				await pool.query(
 					`SELECT account_id
-               FROM account
-              WHERE LOWER(email) = LOWER($1)`,
+             FROM account
+            WHERE LOWER(email) = LOWER($1)`,
 					[email]
 				)
 			).rowCount > 0;
@@ -119,9 +119,9 @@ const updateAccountEmail = async (req, res, next) => {
 
 		const updatedAccount = await pool.query(
 			`UPDATE account
-            SET email = $1
-          WHERE account_id = $2
-         RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+          SET email = $1
+        WHERE account_id = $2
+       RETURNING account_id, email, first_name, last_name, create_time, update_time`,
 			[email, account_id]
 		);
 
@@ -160,9 +160,9 @@ const updateAccountPassword = async (req, res, next) => {
 
 		const updatedAccount = await pool.query(
 			`UPDATE account
-            SET hash_pass = $1
-          WHERE account_id = $2
-         RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+          SET hash_pass = $1
+        WHERE account_id = $2
+       RETURNING account_id, email, first_name, last_name, create_time, update_time`,
 			[new_hash_pass, account_id]
 		);
 

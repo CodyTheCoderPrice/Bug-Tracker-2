@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { Link } from 'react-router-dom';
 
 function BugList() {
 	const { projects } = useAppSelector((state) => state.projects);
@@ -13,7 +14,6 @@ function BugList() {
 				<p>No bugs</p>
 			) : (
 				<>
-					{' '}
 					<table>
 						<thead>
 							<tr>
@@ -54,6 +54,9 @@ function BugList() {
 										</td>
 										<td style={{ padding: '0 20px' }}>
 											{bug.update_time.toString()}
+										</td>
+										<td style={{ padding: '0 20px' }}>
+											<Link to={`/bugs/${bug.bug_id}`}>Edit</Link>
 										</td>
 									</tr>
 								);

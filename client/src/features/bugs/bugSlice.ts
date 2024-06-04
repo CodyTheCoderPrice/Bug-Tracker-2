@@ -13,10 +13,10 @@ type TBug = {
 	priority_name: string;
 	status_id: number;
 	status_name: string;
-	create_time: Date;
-	due_date: Date | null;
-	complete_date: Date | null;
-	update_time: Date;
+	create_time: string;
+	due_date: string | null;
+	complete_date: string | null;
+	update_time: string;
 };
 
 type TCreateBugError = {
@@ -31,18 +31,37 @@ type TCreateBugError = {
 	server: string | undefined;
 };
 
+type TUpdateBugError = {
+	bug_id: string | undefined;
+	project_id: string | undefined;
+	name: string | undefined;
+	description: string | undefined;
+	location: string | undefined;
+	priority_id: string | undefined;
+	status_id: string | undefined;
+	due_date: string | undefined;
+	complete_date: string | undefined;
+	server: string | undefined;
+};
+
 type TInitialState = {
 	createBugLoading: boolean;
+	updateBugLoading: boolean;
 	bugs: TBug[] | null;
 	createBugSuccess: boolean;
+	updateBugSuccess: boolean;
 	createBugErrors: TCreateBugError | null;
+	updateBugErrors: TUpdateBugError | null;
 };
 
 const initialState: TInitialState = {
 	createBugLoading: false,
+	updateBugLoading: false,
 	bugs: null,
 	createBugSuccess: false,
+	updateBugSuccess: false,
 	createBugErrors: null,
+	updateBugErrors: null,
 };
 
 export const createBug = createAsyncThunk(
@@ -62,6 +81,34 @@ export const createBug = createAsyncThunk(
 	) => {
 		try {
 			const response = await axiosInstance.post('/api/v1/bugs/create', bugInfo);
+			return response.data;
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				return rejectWithValue(null);
+			}
+			return rejectWithValue(err.response.data.errors);
+		}
+	}
+);
+
+export const updateBug = createAsyncThunk(
+	'bugs/update',
+	async (
+		bugInfo: {
+			bug_id: number;
+			project_id: number;
+			name: string;
+			description: string;
+			location: string;
+			priority_id: number;
+			status_id: number;
+			due_date: string | null;
+			complete_date: string | null;
+		},
+		{ rejectWithValue }
+	) => {
+		try {
+			const response = await axiosInstance.put('/api/v1/bugs/update', bugInfo);
 			return response.data;
 		} catch (err: any) {
 			if (!err.response.data.errors) {
@@ -109,6 +156,26 @@ const bugSlice = createSlice({
 			state.createBugLoading = false;
 			state.createBugSuccess = false;
 			state.createBugErrors = action.payload;
+		});
+		// Update
+		builder.addCase(updateBug.pending, (state) => {
+			state.updateBugLoading = true;
+			state.updateBugSuccess = false;
+			state.updateBugErrors = null;
+		});
+		builder.addCase(
+			updateBug.fulfilled,
+			(state, action: PayloadAction<{ bugs: TBug[] }>) => {
+				state.updateBugLoading = false;
+				state.bugs = action.payload.bugs;
+				state.updateBugSuccess = true;
+				state.updateBugErrors = null;
+			}
+		);
+		builder.addCase(updateBug.rejected, (state, action: any) => {
+			state.updateBugLoading = false;
+			state.updateBugSuccess = false;
+			state.updateBugErrors = action.payload;
 		});
 	},
 });

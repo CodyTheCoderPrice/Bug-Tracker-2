@@ -14,8 +14,8 @@ function CreateBug() {
 		location: '',
 		priority_id: 1,
 		status_id: 1,
-		due_date: null,
-		complete_date: null,
+		due_date: '',
+		complete_date: '',
 	});
 
 	const handleInput = (

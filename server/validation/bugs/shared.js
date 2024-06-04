@@ -42,15 +42,15 @@ const status_id = {
 };
 
 const due_date = {
-	optional: { options: { nullable: true } },
-	isDate: {
+	optional: { options: { nullable: true, checkFalsy: true } },
+	isISO8601: {
 		errorMessage: 'Due date must be a date object',
 	},
 };
 
 const complete_date = {
-	optional: { options: { nullable: true } },
-	isDate: {
+	optional: { options: { nullable: true, checkFalsy: true } },
+	isISO8601: {
 		errorMessage: 'Completion date must be a date object',
 	},
 };

@@ -11,31 +11,25 @@ const projectController = require('../controllers/project.controllers.js');
 
 const router = Router();
 
-//================
-// Create Project
-//================
-router.post('/create', authToken, [
-	checkSchema(createProjectSchema),
-	schemaErrorHandler,
-	projectController.createProject,
-]);
+router.post(
+	'/create',
+	authToken,
+	[checkSchema(createProjectSchema), schemaErrorHandler],
+	projectController.createProject
+);
 
-//================
-// Update Project
-//================
-router.put('/update', authToken, [
-	checkSchema(updateProjectSchema),
-	schemaErrorHandler,
-	projectController.updateProject,
-]);
+router.put(
+	'/update',
+	authToken,
+	[checkSchema(updateProjectSchema), schemaErrorHandler],
+	projectController.updateProject
+);
 
-//================
-// Delete Project
-//================
-router.delete('/delete', authToken, [
-	checkSchema(deleteProjectSchema),
-	schemaErrorHandler,
-	projectController.deleteProject,
-]);
+router.delete(
+	'/delete',
+	authToken,
+	[checkSchema(deleteProjectSchema), schemaErrorHandler],
+	projectController.deleteProject
+);
 
 module.exports = { projectsRouter: router };

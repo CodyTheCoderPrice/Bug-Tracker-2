@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { updateProject } from './projectSlice';
 
 function UpdateProject() {
@@ -14,7 +14,7 @@ function UpdateProject() {
 	});
 
 	const [projectInfo, setProjectInfo] = useState({
-		project_id: Number(id),
+		project_id: project?.project_id ? project.project_id : -1,
 		name: project?.name ? project.name : '',
 		description: project?.description ? project.description : '',
 	});
