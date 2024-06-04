@@ -1,9 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Link } from 'react-router-dom';
+import { deleteBug } from './bugSlice';
 
 function BugList() {
+	const dispatch = useAppDispatch();
+
 	const { projects } = useAppSelector((state) => state.projects);
-	const { bugs } = useAppSelector((state) => state.bugs);
+	const { bugs, deleteBugLoading, deleteBugSuccess, deleteBugErrors } =
+		useAppSelector((state) => state.bugs);
 
 	return (
 		<>
@@ -58,11 +62,29 @@ function BugList() {
 										<td style={{ padding: '0 20px' }}>
 											<Link to={`/bugs/${bug.bug_id}`}>Edit</Link>
 										</td>
+										<td style={{ padding: '0 20px' }}>
+											<button
+												type='button'
+												onClick={() =>
+													dispatch(deleteBug({ bug_id: bug.bug_id }))
+												}
+											>
+												Delete
+											</button>
+										</td>
 									</tr>
 								);
 							})}
 						</tbody>
 					</table>
+					{deleteBugLoading && <h3>Loading...</h3>}
+					{deleteBugSuccess && <p>Bug Deleted</p>}
+					{deleteBugErrors?.bug_id && (
+						<p style={{ color: 'red' }}>{deleteBugErrors.bug_id}</p>
+					)}
+					{deleteBugErrors?.server && (
+						<p style={{ color: 'red' }}>{deleteBugErrors.server}</p>
+					)}
 				</>
 			)}
 		</>

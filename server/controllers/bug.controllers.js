@@ -160,4 +160,52 @@ const updateBug = async (req, res, next) => {
 	}
 };
 
-module.exports = { createBug, updateBug };
+/**
+ * Controller to delete a bug in the DB.
+ *
+ * NOTE: Intended to run after authToken, checkSchema and schemaErrorHandler.
+ */
+const deleteBug = async (req, res, next) => {
+	try {
+		const data = matchedData(req);
+		const { bug_id } = data;
+
+		// Declared in authToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			throw new Error('res.locals missing account_id');
+		}
+
+		const bugBelongs = await doesBugBelongToAccountInDB(account_id, bug_id);
+
+		if (!bugBelongs) {
+			throw new CustomError('Bug ID does not belong to account', 403, {
+				errors: { bug_id: 'Bug ID does not belong to account' },
+			});
+		}
+
+		const deletedBug = await pool.query(
+			`DELETE FROM bug
+        WHERE bug_id = $1`,
+			[bug_id]
+		);
+
+		if (deletedBug.rowCount === 0) {
+			throw new Error('Database failed to delete bug');
+		}
+
+		const bugs = await getBugsFromDB(account_id);
+
+		if (bugs == null) {
+			throw new Error('getBugsFromDB returned without bugs array');
+		}
+
+		return res.status(200).json({ bugs: bugs.rows });
+	} catch (err) {
+		err.message = `delete-bug: ${err.message}`;
+		next(err);
+	}
+};
+
+module.exports = { createBug, updateBug, deleteBug };

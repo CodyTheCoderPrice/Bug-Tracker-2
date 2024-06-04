@@ -44,24 +44,35 @@ type TUpdateBugError = {
 	server: string | undefined;
 };
 
+type TDeleteBugError = {
+	bug_id: string | undefined;
+	server: string | undefined;
+};
+
 type TInitialState = {
 	createBugLoading: boolean;
 	updateBugLoading: boolean;
+	deleteBugLoading: boolean;
 	bugs: TBug[] | null;
 	createBugSuccess: boolean;
 	updateBugSuccess: boolean;
+	deleteBugSuccess: boolean;
 	createBugErrors: TCreateBugError | null;
 	updateBugErrors: TUpdateBugError | null;
+	deleteBugErrors: TDeleteBugError | null;
 };
 
 const initialState: TInitialState = {
 	createBugLoading: false,
 	updateBugLoading: false,
+	deleteBugLoading: false,
 	bugs: null,
 	createBugSuccess: false,
 	updateBugSuccess: false,
+	deleteBugSuccess: false,
 	createBugErrors: null,
 	updateBugErrors: null,
+	deleteBugErrors: null,
 };
 
 export const createBug = createAsyncThunk(
@@ -109,6 +120,23 @@ export const updateBug = createAsyncThunk(
 	) => {
 		try {
 			const response = await axiosInstance.put('/api/v1/bugs/update', bugInfo);
+			return response.data;
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				return rejectWithValue(null);
+			}
+			return rejectWithValue(err.response.data.errors);
+		}
+	}
+);
+
+export const deleteBug = createAsyncThunk(
+	'bugs/delete',
+	async (bugInfo: { bug_id: number }, { rejectWithValue }) => {
+		try {
+			const response = await axiosInstance.delete('/api/v1/bugs/delete', {
+				data: bugInfo,
+			});
 			return response.data;
 		} catch (err: any) {
 			if (!err.response.data.errors) {
@@ -176,6 +204,26 @@ const bugSlice = createSlice({
 			state.updateBugLoading = false;
 			state.updateBugSuccess = false;
 			state.updateBugErrors = action.payload;
+		});
+		// delete
+		builder.addCase(deleteBug.pending, (state) => {
+			state.deleteBugLoading = true;
+			state.deleteBugSuccess = false;
+			state.deleteBugErrors = null;
+		});
+		builder.addCase(
+			deleteBug.fulfilled,
+			(state, action: PayloadAction<{ bugs: TBug[] }>) => {
+				state.deleteBugLoading = false;
+				state.bugs = action.payload.bugs;
+				state.deleteBugSuccess = true;
+				state.deleteBugErrors = null;
+			}
+		);
+		builder.addCase(deleteBug.rejected, (state, action: any) => {
+			state.deleteBugLoading = false;
+			state.deleteBugSuccess = false;
+			state.deleteBugErrors = action.payload;
 		});
 	},
 });

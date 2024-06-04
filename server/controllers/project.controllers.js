@@ -130,8 +130,8 @@ const deleteProject = async (req, res, next) => {
 
 		const deletedProject = await pool.query(
 			`DELETE FROM project
-        WHERE account_id = $1 AND project_id = $2`,
-			[account_id, project_id]
+        WHERE project_id = $1`,
+			[project_id]
 		);
 
 		if (deletedProject.rowCount === 0) {
