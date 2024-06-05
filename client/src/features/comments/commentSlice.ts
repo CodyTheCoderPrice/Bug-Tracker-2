@@ -18,18 +18,31 @@ type TCreateCommentError = {
 	server: string | undefined;
 };
 
+type TUpdateCommentError = {
+	comment_id: string | undefined;
+	bug_id: string | undefined;
+	description: string | undefined;
+	server: string | undefined;
+};
+
 type TInitialState = {
 	createCommentLoading: boolean;
+	updateCommentLoading: boolean;
 	comments: TComment[] | null;
 	createCommentSuccess: boolean;
+	updateCommentSuccess: boolean;
 	createCommentErrors: TCreateCommentError | null;
+	updateCommentErrors: TUpdateCommentError | null;
 };
 
 const initialState: TInitialState = {
 	createCommentLoading: false,
+	updateCommentLoading: false,
 	comments: null,
 	createCommentSuccess: false,
+	updateCommentSuccess: false,
 	createCommentErrors: null,
+	updateCommentErrors: null,
 };
 
 export const createComment = createAsyncThunk(
@@ -44,6 +57,31 @@ export const createComment = createAsyncThunk(
 		try {
 			const response = await axiosInstance.post(
 				'/api/v1/comments/create',
+				commentInfo
+			);
+			return response.data;
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				return rejectWithValue(null);
+			}
+			return rejectWithValue(err.response.data.errors);
+		}
+	}
+);
+
+export const updateComment = createAsyncThunk(
+	'comments/update',
+	async (
+		commentInfo: {
+			comment_id: number;
+			bug_id: number;
+			description: string;
+		},
+		{ rejectWithValue }
+	) => {
+		try {
+			const response = await axiosInstance.put(
+				'/api/v1/comments/update',
 				commentInfo
 			);
 			return response.data;
@@ -106,6 +144,26 @@ const commentSlice = createSlice({
 			state.createCommentLoading = false;
 			state.createCommentSuccess = false;
 			state.createCommentErrors = action.payload;
+		});
+		// update
+		builder.addCase(updateComment.pending, (state) => {
+			state.updateCommentLoading = true;
+			state.updateCommentSuccess = false;
+			state.updateCommentErrors = null;
+		});
+		builder.addCase(
+			updateComment.fulfilled,
+			(state, action: PayloadAction<{ comments: TComment[] }>) => {
+				state.updateCommentLoading = false;
+				state.comments = action.payload.comments;
+				state.updateCommentSuccess = true;
+				state.updateCommentErrors = null;
+			}
+		);
+		builder.addCase(updateComment.rejected, (state, action: any) => {
+			state.updateCommentLoading = false;
+			state.updateCommentSuccess = false;
+			state.updateCommentErrors = action.payload;
 		});
 	},
 });

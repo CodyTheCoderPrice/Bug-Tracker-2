@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import { Link } from 'react-router-dom';
 
 function CommentList() {
 	const { bugs } = useAppSelector((state) => state.bugs);
@@ -37,6 +38,9 @@ function CommentList() {
 										</td>
 										<td style={{ padding: '0 20px' }}>
 											{comment.update_time.toString()}
+										</td>
+										<td style={{ padding: '0 20px' }}>
+											<Link to={`/comments/${comment.comment_id}`}>Edit</Link>
 										</td>
 									</tr>
 								);

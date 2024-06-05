@@ -8,6 +8,7 @@ const createCommentSchema = require('../validation/comments/createCommentSchema.
 //const updateBugSchema = require('../validation/bugs/updateBugSchema.js');
 //const deleteBugSchema = require('../validation/bugs/deleteBugSchema.js');
 const commentController = require('../controllers/comment.controller.js');
+const updateCommentSchema = require('../validation/comments/updateCommentSchema.js');
 
 const router = Router();
 
@@ -16,6 +17,13 @@ router.post(
 	authToken,
 	[checkSchema(createCommentSchema), schemaErrorHandler],
 	commentController.createComment
+);
+
+router.put(
+	'/update',
+	authToken,
+	[checkSchema(updateCommentSchema), schemaErrorHandler],
+	commentController.updateComment
 );
 
 module.exports = { commentsRouter: router };

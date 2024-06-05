@@ -16,7 +16,7 @@ function UpdateBug() {
 
 	const [bugInfo, setBugInfo] = useState({
 		bug_id: bug?.bug_id ? bug.bug_id : -1,
-		project_id: bugs ? bugs[0].project_id : -1,
+		project_id: bug?.project_id ? bug.project_id : -1,
 		name: bug?.name ? bug.name : '',
 		description: bug?.description ? bug.description : '',
 		location: bug?.location ? bug.location : '',
@@ -43,6 +43,7 @@ function UpdateBug() {
 		dispatch(updateBug(bugInfo));
 	};
 
+	const { projects } = useAppSelector((state) => state.projects);
 	const { updateBugLoading, updateBugSuccess, updateBugErrors } =
 		useAppSelector((state) => state.bugs);
 
@@ -53,15 +54,15 @@ function UpdateBug() {
 					<h1>Update Bug</h1>
 					<form noValidate autoComplete='off' onSubmit={handleSubmit}>
 						<select
-							name='bug_id'
+							name='project_id'
 							onChange={handleInput}
-							defaultValue={bugInfo.bug_id}
+							defaultValue={bugInfo.project_id}
 							style={{ display: 'block' }}
 						>
-							{bugs?.map((bug, idx) => {
+							{projects?.map((project, idx) => {
 								return (
-									<option key={idx} value={bug.bug_id}>
-										{bug.name}
+									<option key={idx} value={project.project_id}>
+										{project.name}
 									</option>
 								);
 							})}

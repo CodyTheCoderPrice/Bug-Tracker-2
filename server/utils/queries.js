@@ -91,6 +91,35 @@ async function doesBugBelongToAccountInDB(account_id, bug_id) {
 }
 
 /**
+ * Determins whether a comment belongs to an account.
+ *
+ * @param {number} account_id - Account id.
+ * @param {number} comment_id - Comment id.
+ * @returns {boolean} whether the comment belongs to the account.
+ */
+async function doesCommentBelongToAccountInDB(account_id, comment_id) {
+	try {
+		const commentBelongsToAccount =
+			(
+				await pool.query(
+					`WITH b AS (
+						SELECT bug_id FROM bug WHERE project_id IN (
+							SELECT project_id FROM project WHERE account_id = $1)
+						)
+					SELECT comment_id
+			  		FROM comment
+					 WHERE comment_id = $2 and bug_id IN (SELECT bug_id FROM b)`,
+					[account_id, comment_id]
+				)
+			).rowCount > 0;
+
+		return commentBelongsToAccount;
+	} catch (err) {
+		throw err;
+	}
+}
+
+/**
  * Retrieves account table info (excluding password) from database for a
  * specific user.
  *
@@ -285,6 +314,7 @@ module.exports = {
 	replaceRefreshTokenInDB,
 	doesProjectBelongToAccountInDB,
 	doesBugBelongToAccountInDB,
+	doesCommentBelongToAccountInDB,
 	getAccountFromDB,
 	getProjectsFromDB,
 	getBugsFromDB,
