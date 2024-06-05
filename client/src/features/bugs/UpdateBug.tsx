@@ -135,8 +135,8 @@ function UpdateBug() {
 					{updateBugErrors?.bug_id && (
 						<p style={{ color: 'red' }}>{updateBugErrors.bug_id}</p>
 					)}
-					{updateBugErrors?.bug_id && (
-						<p style={{ color: 'red' }}>{updateBugErrors.bug_id}</p>
+					{updateBugErrors?.project_id && (
+						<p style={{ color: 'red' }}>{updateBugErrors.project_id}</p>
 					)}
 					{updateBugErrors?.name && (
 						<p style={{ color: 'red' }}>{updateBugErrors.name}</p>

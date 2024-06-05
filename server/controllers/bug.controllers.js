@@ -47,8 +47,8 @@ const createBug = async (req, res, next) => {
 		const createdBug = await pool.query(
 			`INSERT INTO bug (project_id, name, description, location, priority_id,
                           status_id, due_date, complete_date)
-              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-           RETURNING bug_id`,
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         RETURNING bug_id`,
 			[
 				project_id,
 				name,

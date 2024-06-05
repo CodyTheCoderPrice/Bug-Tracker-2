@@ -115,7 +115,7 @@ function CreateBug() {
 				<button type='submit'>Create</button>
 			</form>
 			{createBugLoading && <h3>Loading...</h3>}
-			{createBugSuccess && <p>Project Created</p>}
+			{createBugSuccess && <p>Bug Created</p>}
 			{createBugErrors?.project_id && (
 				<p style={{ color: 'red' }}>{createBugErrors.project_id}</p>
 			)}

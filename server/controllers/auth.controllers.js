@@ -44,9 +44,8 @@ const login = async (req, res, next) => {
 			});
 		}
 
-		const { account, projects, bugs } = await getEverythingForAccountFromDB(
-			idAndHashPass.rows[0].account_id
-		);
+		const { account, projects, bugs, comments } =
+			await getEverythingForAccountFromDB(idAndHashPass.rows[0].account_id);
 
 		if (account.account_id == null) {
 			throw new Error(
@@ -63,6 +62,12 @@ const login = async (req, res, next) => {
 		if (bugs == null) {
 			throw new Error(
 				'getEverythingForAccountFromDB returned without bugs array'
+			);
+		}
+
+		if (comments == null) {
+			throw new Error(
+				'getEverythingForAccountFromDB returned without comments array'
 			);
 		}
 
@@ -87,6 +92,7 @@ const login = async (req, res, next) => {
 			account: account,
 			projects: projects.rows,
 			bugs: bugs.rows,
+			comments: comments.rows,
 		});
 	} catch (err) {
 		err.message = `login: ${err.message}`;
@@ -108,9 +114,8 @@ const relogin = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const { account, projects, bugs } = await getEverythingForAccountFromDB(
-			account_id
-		);
+		const { account, projects, bugs, comments } =
+			await getEverythingForAccountFromDB(account_id);
 
 		if (account.account_id == null) {
 			throw new Error(
@@ -130,10 +135,17 @@ const relogin = async (req, res, next) => {
 			);
 		}
 
+		if (comments == null) {
+			throw new Error(
+				'getEverythingForAccountFromDB returned without comments array'
+			);
+		}
+
 		return res.status(200).json({
 			account: account,
 			projects: projects.rows,
 			bugs: bugs.rows,
+			comments: comments.rows,
 		});
 	} catch (err) {
 		err.message = `relogin: ${err.message}`;

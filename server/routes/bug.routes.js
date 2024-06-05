@@ -6,8 +6,8 @@ const {
 const { authToken } = require('../middleware/auth/authToken.middleware.js');
 const createBugSchema = require('../validation/bugs/createBugSchema.js');
 const updateBugSchema = require('../validation/bugs/updateBugSchema.js');
-const bugController = require('../controllers/bug.controllers.js');
 const deleteBugSchema = require('../validation/bugs/deleteBugSchema.js');
+const bugController = require('../controllers/bug.controllers.js');
 
 const router = Router();
 

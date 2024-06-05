@@ -20,7 +20,6 @@ const initialState: TInitialState = {
 	errors: null,
 };
 
-// Uses password
 export const login = createAsyncThunk(
 	'auth/login',
 	async (loginInfo: { email: string; pwd: string }, { rejectWithValue }) => {
@@ -39,9 +38,9 @@ export const login = createAsyncThunk(
 	}
 );
 
-// Uses accessToken
 export const relogin = createAsyncThunk(
 	'auth/relogin',
+	// Uses accessToken instead of password
 	async (_, { rejectWithValue }) => {
 		try {
 			const response = await axiosInstance.get('/api/v1/auth/relogin');

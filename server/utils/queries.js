@@ -74,13 +74,13 @@ async function doesBugBelongToAccountInDB(account_id, bug_id) {
 		const bugBelongsToAccount =
 			(
 				await pool.query(
-					`SELECT bug_id
-			   FROM bug
-				WHERE bug_id = $1 and project_id IN (
-																SELECT project_id
-																  FROM project
-						 										 WHERE account_id = $2)`,
-					[bug_id, account_id]
+					`WITH p AS (
+						SELECT project_id FROM project WHERE account_id = $1
+					)
+					SELECT bug_id
+			  		FROM bug
+					 WHERE bug_id = $2 and project_id IN (SELECT project_id FROM p)`,
+					[account_id, bug_id]
 				)
 			).rowCount > 0;
 
@@ -135,7 +135,8 @@ async function getProjectsFromDB(account_id) {
 		return await pool.query(
 			`SELECT project_id, account_id, name, description, create_time, update_time
 				FROM project
-			 WHERE account_id = $1`,
+			 WHERE account_id = $1
+			 ORDER BY project_id`,
 			[account_id]
 		);
 	} catch (err) {
@@ -150,7 +151,6 @@ async function getProjectsFromDB(account_id) {
  * @returns {{
  *  bug_id: number,
  * 	project_id: number,
- * 	account_id: number,
  * 	name: string,
  * 	description: string,
  * 	location: string,
@@ -175,10 +175,9 @@ async function getBugsFromDB(account_id) {
 				b.priority_id, b.status_id, b.create_time, b.due_date,
 				b.complete_date, b.update_time,
 				p.name AS priority_name, s.name AS status_name
-					FROM b, priority p, status s
-						WHERE (b.priority_id = p.priority_id)
-							AND (b.status_id = s.status_id)
-								ORDER BY b.bug_id`,
+			  FROM b, priority p, status s
+			 WHERE (b.priority_id = p.priority_id) AND (b.status_id = s.status_id)
+			 ORDER BY b.bug_id`,
 			[account_id]
 		);
 	} catch (err) {
@@ -187,22 +186,94 @@ async function getBugsFromDB(account_id) {
 }
 
 /**
- * TODO: Finish doc
+ * Retrieves all comments from database for a specific account.
  *
- * @param {*} account_id
- * @returns
+ * @param {number} account_id - Account id.
+ * @returns {{
+ *  comment_id: number,
+ * 	bug_id: number,
+ * 	description: string,
+ * 	create_time: Date,
+ * 	update_time: Date
+ * }[]} Returns an array of comment objects.
+ */
+async function getCommentsFromDB(account_id) {
+	try {
+		return await pool.query(
+			`WITH c AS
+			 (SELECT * FROM comment WHERE bug_id IN
+				(SELECT bug_id FROM bug WHERE project_id IN
+					(SELECT project_id FROM project WHERE account_id = $1)
+				)
+			 )
+			 SELECT *
+		     FROM c
+			  ORDER BY c.comment_id`,
+			[account_id]
+		);
+	} catch (err) {
+		throw err;
+	}
+}
+
+/**
+ * Retrieves account table info (excluding password) from database for a
+ * specific user. Along with all projects, bugs, and comments for their account.
+ *
+ * @param {number} account_id - Account id.
+ * @returns {{
+ * 	account: {
+ * 	account_id: number,
+ * 	email: string,
+ * 	first_name: string,
+ * 	last_name: string,
+ * 	create_time: Date,
+ * 	update_time: Date
+ * },
+ * projects: {
+ * 	project_id: number,
+ * 	account_id: number,
+ * 	name: string,
+ * 	description: string,
+ * 	create_time: Date,
+ * 	update_time: Date
+ * }[],
+ * bugs: {
+ *  bug_id: number,
+ * 	project_id: number,
+ * 	name: string,
+ * 	description: string,
+ * 	location: string,
+ * 	priority_id: number,
+ * 	priority_name: string,
+ * 	status_id: number,
+ * 	status_name: string,
+ * 	create_time: Date,
+ * 	due_date: Date,
+ * 	complete_date: date,
+ * 	update_time: Date
+ * }[],
+ * comments: {
+ *  comment_id: number,
+ * 	bug_id: number,
+ * 	description: string,
+ * 	create_time: Date,
+ * 	update_time: Date
+ * }[]
+ * }} - Object containing account info, projects, bugs, and comments.
  */
 async function getEverythingForAccountFromDB(account_id) {
 	try {
 		const account = await getAccountFromDB(account_id);
 		const projects = await getProjectsFromDB(account_id);
 		const bugs = await getBugsFromDB(account_id);
-		// TODO: Retrieve everthing (projects, bugs, comments, etc.)
+		const comments = await getCommentsFromDB(account_id);
 
 		return {
 			account: account.rows[0],
 			projects: projects,
 			bugs: bugs,
+			comments: comments,
 		};
 	} catch (err) {
 		throw err;
@@ -217,5 +288,6 @@ module.exports = {
 	getAccountFromDB,
 	getProjectsFromDB,
 	getBugsFromDB,
+	getCommentsFromDB,
 	getEverythingForAccountFromDB,
 };
