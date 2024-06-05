@@ -117,4 +117,55 @@ const updateComment = async (req, res, next) => {
 	}
 };
 
-module.exports = { createComment, updateComment };
+/**
+ * Controller to delete a comment in the DB.
+ *
+ * NOTE: Intended to run after authToken, checkSchema and schemaErrorHandler.
+ */
+const deleteComment = async (req, res, next) => {
+	try {
+		const data = matchedData(req);
+		const { comment_id } = data;
+
+		// Declared in authToken middleware
+		const account_id = res.locals.account_id;
+
+		if (account_id == null) {
+			throw new Error('res.locals missing account_id');
+		}
+
+		const commentBelongs = await doesCommentBelongToAccountInDB(
+			account_id,
+			comment_id
+		);
+
+		if (!commentBelongs) {
+			throw new CustomError('Comment ID does not belong to account', 403, {
+				errors: { bug_id: 'Comment ID does not belong to account' },
+			});
+		}
+
+		const deletedComment = await pool.query(
+			`DELETE FROM comment
+        WHERE comment_id = $1`,
+			[comment_id]
+		);
+
+		if (deletedComment.rowCount === 0) {
+			throw new Error('Database failed to delete comment');
+		}
+
+		const comments = await getCommentsFromDB(account_id);
+
+		if (comments == null) {
+			throw new Error('getCommentsFromDB returned without comments array');
+		}
+
+		return res.status(200).json({ comments: comments.rows });
+	} catch (err) {
+		err.message = `delete-comment: ${err.message}`;
+		next(err);
+	}
+};
+
+module.exports = { createComment, updateComment, deleteComment };

@@ -25,24 +25,35 @@ type TUpdateCommentError = {
 	server: string | undefined;
 };
 
+type TDeleteCommentError = {
+	comment_id: string | undefined;
+	server: string | undefined;
+};
+
 type TInitialState = {
 	createCommentLoading: boolean;
 	updateCommentLoading: boolean;
+	deleteCommentLoading: boolean;
 	comments: TComment[] | null;
 	createCommentSuccess: boolean;
 	updateCommentSuccess: boolean;
+	deleteCommentSuccess: boolean;
 	createCommentErrors: TCreateCommentError | null;
 	updateCommentErrors: TUpdateCommentError | null;
+	deleteCommentErrors: TDeleteCommentError | null;
 };
 
 const initialState: TInitialState = {
 	createCommentLoading: false,
 	updateCommentLoading: false,
+	deleteCommentLoading: false,
 	comments: null,
 	createCommentSuccess: false,
 	updateCommentSuccess: false,
+	deleteCommentSuccess: false,
 	createCommentErrors: null,
 	updateCommentErrors: null,
+	deleteCommentErrors: null,
 };
 
 export const createComment = createAsyncThunk(
@@ -84,6 +95,23 @@ export const updateComment = createAsyncThunk(
 				'/api/v1/comments/update',
 				commentInfo
 			);
+			return response.data;
+		} catch (err: any) {
+			if (!err.response.data.errors) {
+				return rejectWithValue(null);
+			}
+			return rejectWithValue(err.response.data.errors);
+		}
+	}
+);
+
+export const deleteComment = createAsyncThunk(
+	'comments/delete',
+	async (commentInfo: { comment_id: number }, { rejectWithValue }) => {
+		try {
+			const response = await axiosInstance.delete('/api/v1/comments/delete', {
+				data: commentInfo,
+			});
 			return response.data;
 		} catch (err: any) {
 			if (!err.response.data.errors) {
@@ -164,6 +192,26 @@ const commentSlice = createSlice({
 			state.updateCommentLoading = false;
 			state.updateCommentSuccess = false;
 			state.updateCommentErrors = action.payload;
+		});
+		// delete
+		builder.addCase(deleteComment.pending, (state) => {
+			state.deleteCommentLoading = true;
+			state.deleteCommentSuccess = false;
+			state.deleteCommentErrors = null;
+		});
+		builder.addCase(
+			deleteComment.fulfilled,
+			(state, action: PayloadAction<{ comments: TComment[] }>) => {
+				state.deleteCommentLoading = false;
+				state.comments = action.payload.comments;
+				state.deleteCommentSuccess = true;
+				state.deleteCommentErrors = null;
+			}
+		);
+		builder.addCase(deleteComment.rejected, (state, action: any) => {
+			state.deleteCommentLoading = false;
+			state.deleteCommentSuccess = false;
+			state.deleteCommentErrors = action.payload;
 		});
 	},
 });
