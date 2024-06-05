@@ -1,6 +1,8 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '@/API';
 import { login, relogin } from '../auth/authSlice';
+import { deleteProject } from '../projects/projectSlice';
+import { deleteBug } from '../bugs/bugSlice';
 
 type TComment = {
 	comment_id: number;
@@ -68,6 +70,19 @@ const commentSlice = createSlice({
 		);
 		builder.addCase(
 			relogin.fulfilled,
+			(state, action: PayloadAction<{ comments: TComment[] }>) => {
+				state.comments = action.payload.comments;
+			}
+		);
+		// delete project / bug
+		builder.addCase(
+			deleteProject.fulfilled,
+			(state, action: PayloadAction<{ comments: TComment[] }>) => {
+				state.comments = action.payload.comments;
+			}
+		);
+		builder.addCase(
+			deleteBug.fulfilled,
 			(state, action: PayloadAction<{ comments: TComment[] }>) => {
 				state.comments = action.payload.comments;
 			}

@@ -4,6 +4,7 @@ const {
 	doesProjectBelongToAccountInDB,
 	doesBugBelongToAccountInDB,
 	getBugsFromDB,
+	getCommentsFromDB,
 } = require('../utils/queries.js');
 const { CustomError } = require('../utils/classes.js');
 
@@ -196,12 +197,17 @@ const deleteBug = async (req, res, next) => {
 		}
 
 		const bugs = await getBugsFromDB(account_id);
+		const comments = await getCommentsFromDB(account_id);
 
 		if (bugs == null) {
 			throw new Error('getBugsFromDB returned without bugs array');
 		}
 
-		return res.status(200).json({ bugs: bugs.rows });
+		if (comments == null) {
+			throw new Error('getCommentsFromDB returned without comments array');
+		}
+
+		return res.status(200).json({ bugs: bugs.rows, comments: comments.rows });
 	} catch (err) {
 		err.message = `delete-bug: ${err.message}`;
 		next(err);

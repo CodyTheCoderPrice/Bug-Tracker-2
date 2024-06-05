@@ -3,6 +3,8 @@ const pool = require('../database/db.js');
 const {
 	getProjectsFromDB,
 	doesProjectBelongToAccountInDB,
+	getBugsFromDB,
+	getCommentsFromDB,
 } = require('../utils/queries.js');
 const { CustomError } = require('../utils/classes.js');
 
@@ -139,12 +141,28 @@ const deleteProject = async (req, res, next) => {
 		}
 
 		const projects = await getProjectsFromDB(account_id);
+		const bugs = await getBugsFromDB(account_id);
+		const comments = await getCommentsFromDB(account_id);
 
 		if (projects == null) {
 			throw new Error('getProjectsFromDB returned without projects');
 		}
 
-		return res.status(200).json({ projects: projects.rows });
+		if (bugs == null) {
+			throw new Error('getBugsFromDB returned without bugs array');
+		}
+
+		if (comments == null) {
+			throw new Error('getCommentsFromDB returned without comments array');
+		}
+
+		return res
+			.status(200)
+			.json({
+				projects: projects.rows,
+				bugs: bugs.rows,
+				comments: comments.rows,
+			});
 	} catch (err) {
 		err.message = `delete-project: ${err.message}`;
 		next(err);

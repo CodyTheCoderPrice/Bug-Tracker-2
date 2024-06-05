@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '@/API';
 import { login, relogin } from '../auth/authSlice';
+import { deleteProject } from '../projects/projectSlice';
 
 type TBug = {
 	bug_id: number;
@@ -161,6 +162,13 @@ const bugSlice = createSlice({
 		);
 		builder.addCase(
 			relogin.fulfilled,
+			(state, action: PayloadAction<{ bugs: TBug[] }>) => {
+				state.bugs = action.payload.bugs;
+			}
+		);
+		// delete project
+		builder.addCase(
+			deleteProject.fulfilled,
 			(state, action: PayloadAction<{ bugs: TBug[] }>) => {
 				state.bugs = action.payload.bugs;
 			}

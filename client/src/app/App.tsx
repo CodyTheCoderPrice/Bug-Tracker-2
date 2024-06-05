@@ -26,7 +26,7 @@ function App() {
 				<Route path='/account/*' element={<AccountPage />} />
 				<Route path='/projects/*' element={<ProjectsPage />} />
 				<Route path='/bugs/*' element={<BugsPage />} />
-				<Route path='/comments' element={<CommentsPage />} />
+				<Route path='/comments/*' element={<CommentsPage />} />
 			</Routes>
 		</>
 	);
