@@ -1,17 +1,14 @@
 import { useAppSelector } from '@/app/hooks';
-import UpdateName from './UpdateName';
-import UpdateEmail from './UpdateEmail';
-import UpdatePassword from './UpdatePassword';
-import DeleteAccount from './DeleteAccount';
 
-function Account() {
+function AccountInfo() {
 	const { loading, errors } = useAppSelector((state) => state.auth);
 	const { account } = useAppSelector((state) => state.account);
 
 	return (
 		<>
+			<h1>Account Info</h1>
 			{loading && <h3>Loading...</h3>}
-			{account && (
+			{account ? (
 				<>
 					<p>{account.email}</p>
 					<p>{account.first_name}</p>
@@ -19,17 +16,14 @@ function Account() {
 					<p>{account.create_time.toString()}</p>
 					<p>{account.update_time.toString()}</p>
 				</>
+			) : (
+				<p>No account info</p>
 			)}
 			{errors?.email && <p style={{ color: 'red' }}>{errors.email}</p>}
 			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}
 			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
-
-			{account && <UpdateName />}
-			{account && <UpdateEmail />}
-			{account && <UpdatePassword />}
-			{account && <DeleteAccount />}
 		</>
 	);
 }
 
-export default Account;
+export default AccountInfo;

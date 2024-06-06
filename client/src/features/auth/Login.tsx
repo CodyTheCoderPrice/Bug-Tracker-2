@@ -1,8 +1,12 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/app/hooks';
 import { useState } from 'react';
-import { login, logout } from './authSlice';
+import { login } from './authSlice';
 
 function Login() {
+	const navigate = useNavigate();
+	const location = useLocation();
+
 	const dispatch = useAppDispatch();
 
 	const [loginInfo, setLoginInfo] = useState({
@@ -17,10 +21,6 @@ function Login() {
 	const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		dispatch(login(loginInfo));
-	};
-
-	const handleLogout = () => {
-		dispatch(logout());
 	};
 
 	return (
@@ -42,9 +42,6 @@ function Login() {
 					value={loginInfo.pwd}
 				/>
 				<button type='submit'>LOGIN</button>
-				<button type='button' onClick={handleLogout}>
-					LOGOUT
-				</button>
 			</form>
 		</>
 	);
