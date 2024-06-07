@@ -9,6 +9,9 @@ function Navbar() {
 				justifyContent: 'center',
 			}}
 		>
+			<NavLink to='/home' style={{ padding: '0px 30px' }}>
+				Home
+			</NavLink>
 			<NavLink to='/account' style={{ padding: '0px 30px' }}>
 				Account
 			</NavLink>
