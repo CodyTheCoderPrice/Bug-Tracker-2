@@ -11,7 +11,7 @@ const { CustomError } = require('../utils/classes.js');
 const registerAccount = async (req, res, next) => {
 	try {
 		const data = matchedData(req);
-		const { email, pwd, first_name, last_name } = data;
+		const { email, pwd, name } = data;
 
 		const emailInUse =
 			(
@@ -34,10 +34,10 @@ const registerAccount = async (req, res, next) => {
 		const hash_pass = bcrypt.hashSync(pwd, salt);
 
 		await pool.query(
-			`INSERT INTO account (email, hash_pass, first_name, last_name)
-            VALUES ($1, $2, $3, $4)
+			`INSERT INTO account (email, hash_pass, name)
+            VALUES ($1, $2, $3)
          RETURNING account_id`,
-			[email, hash_pass, first_name, last_name]
+			[email, hash_pass, name]
 		);
 
 		return res.status(201).json({ msg: 'Account created' });
@@ -55,7 +55,7 @@ const registerAccount = async (req, res, next) => {
 const updateAccountName = async (req, res, next) => {
 	try {
 		const data = matchedData(req);
-		const { first_name, last_name } = data;
+		const { name } = data;
 
 		// Declared in authToken middleware
 		const account_id = res.locals.account_id;
@@ -66,10 +66,10 @@ const updateAccountName = async (req, res, next) => {
 
 		const updatedAccount = await pool.query(
 			`UPDATE account
-          SET first_name = $1, last_name = $2
-        WHERE account_id = $3
-       RETURNING account_id, email, first_name, last_name, create_time, update_time`,
-			[first_name, last_name, account_id]
+          SET name = $1
+        WHERE account_id = $2
+       RETURNING account_id, email, name, create_time, update_time`,
+			[name, account_id]
 		);
 
 		if (updatedAccount.rowCount === 0) {
@@ -121,7 +121,7 @@ const updateAccountEmail = async (req, res, next) => {
 			`UPDATE account
           SET email = $1
         WHERE account_id = $2
-       RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+       RETURNING account_id, email, name, create_time, update_time`,
 			[email, account_id]
 		);
 
@@ -162,7 +162,7 @@ const updateAccountPassword = async (req, res, next) => {
 			`UPDATE account
           SET hash_pass = $1
         WHERE account_id = $2
-       RETURNING account_id, email, first_name, last_name, create_time, update_time`,
+       RETURNING account_id, email, name, create_time, update_time`,
 			[new_hash_pass, account_id]
 		);
 

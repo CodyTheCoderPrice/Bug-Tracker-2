@@ -4,8 +4,7 @@ import axiosInstance from '@/API';
 type TRegisterError = {
 	email: string | undefined;
 	pwd: string | undefined;
-	first_name: string | undefined;
-	last_name: string | undefined;
+	name: string | undefined;
 	server: string | undefined;
 };
 
@@ -27,8 +26,7 @@ export const register = createAsyncThunk(
 		registerInfo: {
 			email: string;
 			pwd: string;
-			first_name: string;
-			last_name: string;
+			name: string;
 		},
 		{ rejectWithValue }
 	) => {

@@ -127,8 +127,7 @@ async function doesCommentBelongToAccountInDB(account_id, comment_id) {
  * @returns {{
  * 	account_id: number,
  * 	email: string,
- * 	first_name: string,
- * 	last_name: string,
+ * 	name: string,
  * 	create_time: Date,
  * 	update_time: Date
  * }} Returns object with account info.
@@ -136,7 +135,7 @@ async function doesCommentBelongToAccountInDB(account_id, comment_id) {
 async function getAccountFromDB(account_id) {
 	try {
 		return await pool.query(
-			`SELECT account_id, email, first_name, last_name, create_time, update_time
+			`SELECT account_id, email, name, create_time, update_time
 				 FROM account
 				WHERE account_id = $1`,
 			[account_id]
@@ -254,8 +253,7 @@ async function getCommentsFromDB(account_id) {
  * 	account: {
  * 	account_id: number,
  * 	email: string,
- * 	first_name: string,
- * 	last_name: string,
+ * 	name: string,
  * 	create_time: Date,
  * 	update_time: Date
  * },

@@ -1,12 +1,8 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { useState } from 'react';
 import { login } from './authSlice';
 
 function Login() {
-	const navigate = useNavigate();
-	const location = useLocation();
-
 	const dispatch = useAppDispatch();
 
 	const [loginInfo, setLoginInfo] = useState({
@@ -22,6 +18,8 @@ function Login() {
 		e.preventDefault();
 		dispatch(login(loginInfo));
 	};
+
+	const { errors } = useAppSelector((state) => state.auth);
 
 	return (
 		<>
@@ -43,6 +41,9 @@ function Login() {
 				/>
 				<button type='submit'>LOGIN</button>
 			</form>
+			{errors?.email && <p style={{ color: 'red' }}>{errors.email}</p>}
+			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}
+			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
 		</>
 	);
 }

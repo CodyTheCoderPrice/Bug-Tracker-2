@@ -8,8 +8,7 @@ function Register() {
 	const [registerInfo, setRegisterInfo] = useState({
 		email: '',
 		pwd: '',
-		first_name: '',
-		last_name: '',
+		name: '',
 	});
 
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,17 +45,10 @@ function Register() {
 				/>
 				<input
 					type='text'
-					name='first_name'
-					placeholder='First Name'
+					name='name'
+					placeholder='Name'
 					onChange={handleInput}
-					value={registerInfo.first_name}
-				/>
-				<input
-					type='text'
-					name='last_name'
-					placeholder='Last Name'
-					onChange={handleInput}
-					value={registerInfo.last_name}
+					value={registerInfo.name}
 				/>
 				<button type='submit'>REGISTER</button>
 			</form>
@@ -64,10 +56,7 @@ function Register() {
 			{success && <p>Account Created</p>}
 			{errors?.email && <p style={{ color: 'red' }}>{errors.email}</p>}
 			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}
-			{errors?.first_name && (
-				<p style={{ color: 'red' }}>{errors.first_name}</p>
-			)}
-			{errors?.last_name && <p style={{ color: 'red' }}>{errors.last_name}</p>}
+			{errors?.name && <p style={{ color: 'red' }}>{errors.name}</p>}
 			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
 		</>
 	);

@@ -5,7 +5,7 @@ import { updateName } from './accountSlice';
 function UpdateName() {
 	const dispatch = useAppDispatch();
 
-	const [nameInfo, setNameInfo] = useState({ first_name: '', last_name: '' });
+	const [nameInfo, setNameInfo] = useState({ name: '' });
 
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setNameInfo({ ...nameInfo, [e.target.name]: e.target.value });
@@ -25,27 +25,17 @@ function UpdateName() {
 			<form noValidate autoComplete='off' onSubmit={handleSubmit}>
 				<input
 					type='text'
-					name='first_name'
-					placeholder='First Name'
+					name='name'
+					placeholder='Name'
 					onChange={handleInput}
-					value={nameInfo.first_name}
-				/>
-				<input
-					type='text'
-					name='last_name'
-					placeholder='Last Name'
-					onChange={handleInput}
-					value={nameInfo.last_name}
+					value={nameInfo.name}
 				/>
 				<button type='submit'>Update Name</button>
 			</form>
 			{updateNameLoading && <h3>Loading...</h3>}
 			{updateNameSuccess && <p>Name Updated</p>}
-			{updateNameErrors?.first_name && (
-				<p style={{ color: 'red' }}>{updateNameErrors.first_name}</p>
-			)}
-			{updateNameErrors?.last_name && (
-				<p style={{ color: 'red' }}>{updateNameErrors.last_name}</p>
+			{updateNameErrors?.name && (
+				<p style={{ color: 'red' }}>{updateNameErrors.name}</p>
 			)}
 			{updateNameErrors?.server && (
 				<p style={{ color: 'red' }}>{updateNameErrors.server}</p>

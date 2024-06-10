@@ -1,10 +1,9 @@
-const { email, pwdWithLength, first_name, last_name } = require('./shared');
+const { email, pwdWithLength, name } = require('./shared');
 
 const registerAccountSchema = {
 	email: email,
 	pwd: pwdWithLength('Password'),
-	first_name: first_name,
-	last_name: last_name,
+	name: name,
 };
 
 module.exports = registerAccountSchema;

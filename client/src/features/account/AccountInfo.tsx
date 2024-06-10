@@ -11,8 +11,7 @@ function AccountInfo() {
 			{account ? (
 				<>
 					<p>{account.email}</p>
-					<p>{account.first_name}</p>
-					<p>{account.last_name}</p>
+					<p>{account.name}</p>
 					<p>{account.create_time.toString()}</p>
 					<p>{account.update_time.toString()}</p>
 				</>
