@@ -1,7 +1,8 @@
-const { name } = require('./shared');
+const { first_name, last_name } = require('./shared');
 
 const updateNameSchema = {
-	name: name,
+	first_name: first_name,
+	last_name: last_name,
 };
 
 module.exports = updateNameSchema;

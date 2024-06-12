@@ -2,9 +2,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '@/API';
 
 type TRegisterError = {
+	first_name: string | undefined;
+	last_name: string | undefined;
 	email: string | undefined;
 	pwd: string | undefined;
-	name: string | undefined;
 	server: string | undefined;
 };
 
@@ -24,9 +25,10 @@ export const register = createAsyncThunk(
 	'register/register',
 	async (
 		registerInfo: {
+			first_name: string;
+			last_name: string;
 			email: string;
 			pwd: string;
-			name: string;
 		},
 		{ rejectWithValue }
 	) => {

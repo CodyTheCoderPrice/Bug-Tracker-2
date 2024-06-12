@@ -18,7 +18,8 @@ CREATE TABLE
     account_id SERIAL PRIMARY KEY,
     email VARCHAR(255) UNIQUE,
     hash_pass VARCHAR(255),
-    name VARCHAR(255),
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
     create_time timestamptz NOT NULL DEFAULT now (),
     update_time timestamptz NOT NULL DEFAULT now ()
   );

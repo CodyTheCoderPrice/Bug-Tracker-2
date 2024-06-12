@@ -6,9 +6,10 @@ function Register() {
 	const dispatch = useAppDispatch();
 
 	const [registerInfo, setRegisterInfo] = useState({
+		first_name: '',
+		last_name: '',
 		email: '',
 		pwd: '',
-		name: '',
 	});
 
 	const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,6 +30,20 @@ function Register() {
 			<h1>Register</h1>
 			<form noValidate autoComplete='off' onSubmit={handleSubmit}>
 				<input
+					type='text'
+					name='first_name'
+					placeholder='First name'
+					onChange={handleInput}
+					value={registerInfo.first_name}
+				/>
+				<input
+					type='text'
+					name='last_name'
+					placeholder='Last name'
+					onChange={handleInput}
+					value={registerInfo.last_name}
+				/>
+				<input
 					type='email'
 					name='email'
 					placeholder='Email'
@@ -43,20 +58,16 @@ function Register() {
 					onChange={handleInput}
 					value={registerInfo.pwd}
 				/>
-				<input
-					type='text'
-					name='name'
-					placeholder='Name'
-					onChange={handleInput}
-					value={registerInfo.name}
-				/>
 				<button type='submit'>REGISTER</button>
 			</form>
 			{loading && <h3>Loading...</h3>}
 			{success && <p>Account Created</p>}
+			{errors?.first_name && (
+				<p style={{ color: 'red' }}>{errors.first_name}</p>
+			)}
+			{errors?.last_name && <p style={{ color: 'red' }}>{errors.last_name}</p>}
 			{errors?.email && <p style={{ color: 'red' }}>{errors.email}</p>}
 			{errors?.pwd && <p style={{ color: 'red' }}>{errors.pwd}</p>}
-			{errors?.name && <p style={{ color: 'red' }}>{errors.name}</p>}
 			{errors?.server && <p style={{ color: 'red' }}>{errors.server}</p>}
 		</>
 	);

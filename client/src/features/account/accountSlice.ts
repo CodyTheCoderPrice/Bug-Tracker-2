@@ -4,14 +4,16 @@ import { login, relogin, reset } from '../auth/authSlice';
 
 type TAccount = {
 	account_id: number;
+	first_name: string;
+	last_name: string;
 	email: string;
-	name: string;
 	create_time: Date;
 	update_time: Date;
 };
 
 type TUpdateNameError = {
-	name: string | undefined;
+	first_name: string | undefined;
+	last_name: string | undefined;
 	server: string | undefined;
 };
 
@@ -65,7 +67,10 @@ const initialState: TInitialState = {
 
 export const updateName = createAsyncThunk(
 	'account/update-name',
-	async (nameInfo: { name: string }, { rejectWithValue }) => {
+	async (
+		nameInfo: { first_name: string; last_name: string },
+		{ rejectWithValue }
+	) => {
 		try {
 			const response = await axiosInstance.put(
 				'/api/v1/accounts/update-name',

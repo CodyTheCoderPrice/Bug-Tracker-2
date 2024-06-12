@@ -1,9 +1,27 @@
 const {
-	pwdMinLen,
-	pwdMaxLen,
 	nameMinLen,
 	nameMaxLen,
+	pwdMinLen,
+	pwdMaxLen,
 } = require('../constants');
+
+const first_name = {
+	notEmpty: { errorMessage: 'First name cannot be empty' },
+	isString: { errorMessage: 'First name must be a string' },
+	isLength: {
+		options: { min: nameMinLen, max: nameMaxLen },
+		errorMessage: `First name must be ${nameMinLen}-${nameMaxLen} characters`,
+	},
+};
+
+const last_name = {
+	notEmpty: { errorMessage: 'Last name cannot be empty' },
+	isString: { errorMessage: 'Last name must be a string' },
+	isLength: {
+		options: { min: nameMinLen, max: nameMaxLen },
+		errorMessage: `Last name must be ${nameMinLen}-${nameMaxLen} characters`,
+	},
+};
 
 const email = {
 	notEmpty: { errorMessage: 'Email cannot be empty' },
@@ -25,18 +43,10 @@ const pwdWithLength = (pwdTitle) => ({
 	},
 });
 
-const name = {
-	notEmpty: { errorMessage: 'Name cannot be empty' },
-	isString: { errorMessage: 'Name must be a string' },
-	isLength: {
-		options: { min: nameMinLen, max: nameMaxLen * 2 },
-		errorMessage: `Name must be ${nameMinLen}-${nameMaxLen * 2} characters`,
-	},
-};
-
 module.exports = {
+	first_name,
+	last_name,
 	email,
 	pwd,
 	pwdWithLength,
-	name,
 };
