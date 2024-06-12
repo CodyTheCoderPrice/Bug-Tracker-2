@@ -20,7 +20,6 @@ const createBug = async (req, res, next) => {
 			project_id,
 			name,
 			description,
-			location,
 			priority_id,
 			status_id,
 			due_date,
@@ -46,15 +45,14 @@ const createBug = async (req, res, next) => {
 		}
 
 		const createdBug = await pool.query(
-			`INSERT INTO bug (project_id, name, description, location, priority_id,
+			`INSERT INTO bug (project_id, name, description, priority_id,
                           status_id, due_date, complete_date)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
          RETURNING bug_id`,
 			[
 				project_id,
 				name,
 				description,
-				location,
 				priority_id,
 				status_id,
 				due_date,
@@ -92,7 +90,6 @@ const updateBug = async (req, res, next) => {
 			project_id,
 			name,
 			description,
-			location,
 			priority_id,
 			status_id,
 			due_date,
@@ -127,15 +124,14 @@ const updateBug = async (req, res, next) => {
 
 		const updatedBug = await pool.query(
 			`UPDATE bug
-          SET project_id = $1, name = $2, description = $3, location = $4,
-							priority_id = $5, status_id = $6, due_date = $7, complete_date = $8
-        WHERE bug_id = $9
+          SET project_id = $1, name = $2, description = $3, priority_id = $4,
+					status_id = $5, due_date = $6, complete_date = $7
+        WHERE bug_id = $8
        RETURNING bug_id`,
 			[
 				project_id,
 				name,
 				description,
-				location,
 				priority_id,
 				status_id,
 				due_date,

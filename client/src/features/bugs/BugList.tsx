@@ -25,7 +25,6 @@ function BugList() {
 								<th>Project id</th>
 								<th>Name</th>
 								<th>Description</th>
-								<th>Location</th>
 								<th>Priority</th>
 								<th>Status</th>
 								<th>create time</th>
@@ -42,7 +41,6 @@ function BugList() {
 										<td style={{ padding: '5px 20px' }}>{bug.project_id}</td>
 										<td style={{ padding: '0 20px' }}>{bug.name}</td>
 										<td style={{ padding: '0 20px' }}>{bug.description}</td>
-										<td style={{ padding: '0 20px' }}>{bug.location}</td>
 										<td style={{ padding: '0 20px' }}>{bug.priority_name}</td>
 										<td style={{ padding: '0 20px' }}>{bug.status_name}</td>
 										<td style={{ padding: '0 20px' }}>

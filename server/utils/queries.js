@@ -182,7 +182,6 @@ async function getProjectsFromDB(account_id) {
  * 	project_id: number,
  * 	name: string,
  * 	description: string,
- * 	location: string,
  * 	priority_id: number,
  * 	priority_name: string,
  * 	status_id: number,
@@ -200,7 +199,7 @@ async function getBugsFromDB(account_id) {
 				(SELECT * FROM bug WHERE project_id IN
 					(SELECT project_id FROM project WHERE account_id = $1)
 				)
-			SELECT b.bug_id, b.project_id, b.name, b.description, b.location,
+			SELECT b.bug_id, b.project_id, b.name, b.description,
 				b.priority_id, b.status_id, b.create_time, b.due_date,
 				b.complete_date, b.update_time,
 				p.name AS priority_name, s.name AS status_name
@@ -272,7 +271,6 @@ async function getCommentsFromDB(account_id) {
  * 	project_id: number,
  * 	name: string,
  * 	description: string,
- * 	location: string,
  * 	priority_id: number,
  * 	priority_name: string,
  * 	status_id: number,

@@ -9,7 +9,6 @@ type TBug = {
 	account_id: number;
 	name: string;
 	description: string;
-	location: string;
 	priority_id: number;
 	priority_name: string;
 	status_id: number;
@@ -24,7 +23,6 @@ type TCreateBugError = {
 	project_id: string | undefined;
 	name: string | undefined;
 	description: string | undefined;
-	location: string | undefined;
 	priority_id: string | undefined;
 	status_id: string | undefined;
 	due_date: string | undefined;
@@ -37,7 +35,6 @@ type TUpdateBugError = {
 	project_id: string | undefined;
 	name: string | undefined;
 	description: string | undefined;
-	location: string | undefined;
 	priority_id: string | undefined;
 	status_id: string | undefined;
 	due_date: string | undefined;
@@ -83,7 +80,6 @@ export const createBug = createAsyncThunk(
 			project_id: number;
 			name: string;
 			description: string;
-			location: string;
 			priority_id: number;
 			status_id: number;
 			due_date: string | null;
@@ -111,7 +107,6 @@ export const updateBug = createAsyncThunk(
 			project_id: number;
 			name: string;
 			description: string;
-			location: string;
 			priority_id: number;
 			status_id: number;
 			due_date: string | null;

@@ -19,7 +19,6 @@ function UpdateBug() {
 		project_id: bug?.project_id ? bug.project_id : -1,
 		name: bug?.name ? bug.name : '',
 		description: bug?.description ? bug.description : '',
-		location: bug?.location ? bug.location : '',
 		priority_id: bug?.priority_id ? bug.priority_id : 1,
 		status_id: bug?.status_id ? bug.status_id : 1,
 		due_date: bug?.due_date
@@ -84,14 +83,6 @@ function UpdateBug() {
 							cols={30}
 							style={{ display: 'block' }}
 						/>
-						<input
-							type='text'
-							name='location'
-							placeholder='Location'
-							onChange={handleInput}
-							value={bugInfo.location}
-							style={{ display: 'block', width: '227px' }}
-						/>
 						<select
 							name='priority_id'
 							onChange={handleInput}
@@ -144,9 +135,6 @@ function UpdateBug() {
 					)}
 					{updateBugErrors?.description && (
 						<p style={{ color: 'red' }}>{updateBugErrors.description}</p>
-					)}
-					{updateBugErrors?.location && (
-						<p style={{ color: 'red' }}>{updateBugErrors.location}</p>
 					)}
 					{updateBugErrors?.priority_id && (
 						<p style={{ color: 'red' }}>{updateBugErrors.priority_id}</p>

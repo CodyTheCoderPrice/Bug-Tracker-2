@@ -17,14 +17,6 @@ const description = {
 	},
 };
 
-const location = {
-	isString: { errorMessage: 'Location must be a string' },
-	isLength: {
-		options: { max: 100 },
-		errorMessage: 'Location is too long (100 character limit)',
-	},
-};
-
 const priority_id = {
 	notEmpty: { errorMessage: 'Priority ID cannot be empty' },
 	isInt: {
@@ -58,7 +50,6 @@ const complete_date = {
 module.exports = {
 	name,
 	description,
-	location,
 	priority_id,
 	status_id,
 	due_date,

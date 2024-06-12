@@ -11,7 +11,6 @@ function CreateBug() {
 		project_id: projects && projects.length > 0 ? projects[0].project_id : -1,
 		name: '',
 		description: '',
-		location: '',
 		priority_id: 1,
 		status_id: 1,
 		due_date: '',
@@ -73,14 +72,6 @@ function CreateBug() {
 							cols={30}
 							style={{ display: 'block' }}
 						/>
-						<input
-							type='text'
-							name='location'
-							placeholder='Location'
-							onChange={handleInput}
-							value={bugInfo.location}
-							style={{ display: 'block', width: '227px' }}
-						/>
 						<select
 							name='priority_id'
 							onChange={handleInput}
@@ -130,9 +121,6 @@ function CreateBug() {
 					)}
 					{createBugErrors?.description && (
 						<p style={{ color: 'red' }}>{createBugErrors.description}</p>
-					)}
-					{createBugErrors?.location && (
-						<p style={{ color: 'red' }}>{createBugErrors.location}</p>
 					)}
 					{createBugErrors?.priority_id && (
 						<p style={{ color: 'red' }}>{createBugErrors.priority_id}</p>

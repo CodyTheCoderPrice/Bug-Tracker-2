@@ -91,7 +91,6 @@ CREATE TABLE
     project_id INTEGER,
     name VARCHAR(255),
     description TEXT,
-    location TEXT,
     priority_id SMALLINT NOT NULL,
     status_id SMALLINT NOT NULL,
     create_time timestamptz NOT NULL DEFAULT now (),
