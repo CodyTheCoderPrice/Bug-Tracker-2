@@ -1,14 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function LandingPage() {
-	return (
-		<>
-			<Link to='/login' style={{ padding: '0px 30px' }}>
-				Login
-			</Link>
-			<p style={{ padding: '0px 30px' }}>Explain details about website...</p>
-		</>
-	);
+  return (
+    <>
+      <Link to="/login" className="px-[30px]">
+        Login
+      </Link>
+      <p className="px-[30px]">Explain details about website...</p>
+    </>
+  );
 }
 
 export default LandingPage;
