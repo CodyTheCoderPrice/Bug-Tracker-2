@@ -4,18 +4,15 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        blueGeoBg: "url('./assets/BlueGeoBG_1920.jpg')",
+        blueGeoBg1280: "url('./assets/BlueGeoBG_1280.jpg')",
+        blueGeoBg1920: "url('./assets/BlueGeoBG_1920.jpg')",
       },
       colors: {
-        "gray-20": "#F8F4EB",
-        "gray-50": "#EFE6E6",
-        "gray-100": "#DFCCCC",
-        "gray-500": "#5E0000",
-        "primary-100": "#FFE1E0",
-        "primary-300": "#FFA6A3",
-        "primary-500": "#FF6B66",
-        "secondary-400": "#FFCD5B",
-        "secondary-500": "#FFC132",
+        "primary-1": "#668299",
+        "primary-2": "#355166",
+        "secondary-1": "#89a7b3",
+        "secondary-2": "#527e90",
+        "error-red": "rgb(240, 40, 73)",
       },
     },
     screens: {

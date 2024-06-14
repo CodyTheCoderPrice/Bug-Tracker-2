@@ -1,6 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { login } from "./authSlice";
+import SubmitButton from "@/components/onboarding/SubmitButton";
+import InputField from "@/components/onboarding/InputField";
+import ErrorMessage from "@/components/onboarding/ErrorMessage";
+import Header from "@/components/onboarding/Header";
 
 function Login() {
   const dispatch = useAppDispatch();
@@ -23,27 +27,34 @@ function Login() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold">Login</h1>
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <input
+      <Header text="Sign In" />
+      <form
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+        className="pt-6"
+      >
+        <InputField
           type="email"
           name="email"
           placeholder="Email"
           onChange={handleInput}
           value={loginInfo.email}
+          hasError={!!errors?.email}
         />
-        <input
+        <ErrorMessage message={errors?.email} />
+        <InputField
           type="password"
           name="pwd"
           placeholder="Password"
           onChange={handleInput}
           value={loginInfo.pwd}
+          hasError={!!errors?.pwd}
         />
-        <button type="submit">LOGIN</button>
+        <ErrorMessage message={errors?.pwd} />
+        <SubmitButton text="LOGIN" />
       </form>
-      {errors?.email && <p className="text-red-500">{errors.email}</p>}
-      {errors?.pwd && <p className="text-red-500">{errors.pwd}</p>}
-      {errors?.server && <p className="text-red-500">{errors.server}</p>}
+      <ErrorMessage message={errors?.server} />
     </>
   );
 }

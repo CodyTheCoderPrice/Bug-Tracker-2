@@ -1,13 +1,17 @@
+import Intro from "@/components/onboarding/Intro";
 import Login from "@/features/auth/Login";
-import { Link } from "react-router-dom";
+import Divider from "@/components/onboarding/Divider";
+import LinkButton from "@/components/onboarding/LinkButton";
 
 function LoginPage() {
   return (
-    <div className="h-full bg-blueGeoBg">
-      <Login />
-      <Link to="/register" className="block py-[20px]">
-        Create an account
-      </Link>
+    <div className="flex h-full">
+      <Intro />
+      <div className="w-[600px] p-12 shadow-md">
+        <Login />
+        <Divider text="OR" />
+        <LinkButton to="/register" text="SIGN UP" />
+      </div>
     </div>
   );
 }
