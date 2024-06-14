@@ -9,7 +9,7 @@ function LinkButton(props: Props) {
   return (
     <Link
       to={props.to}
-      className="border-primary-1 text-primary-1 hover:bg-secondary-2 mt-6 block w-full rounded border bg-transparent px-4 py-2 text-center font-semibold hover:border-transparent hover:text-white"
+      className="hover:bg-secondary-3 mx-auto mt-6 block w-[95%] rounded-lg border border-secondary-2 bg-transparent px-4 py-2 text-center font-semibold text-secondary-2 hover:border-transparent hover:text-white"
     >
       {props.text}
     </Link>

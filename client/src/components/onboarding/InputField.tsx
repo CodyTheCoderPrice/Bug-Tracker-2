@@ -22,7 +22,7 @@ function InputField(props: Props) {
         "border-gray mt-6 block w-full rounded border border-solid p-2 " +
         props.className +
         (props.hasError
-          ? " border-error-red focus:outline-error-red focus:outline focus:outline-1"
+          ? " border-error-red focus:outline focus:outline-1 focus:outline-error-red"
           : " border-gray-400")
       }
     />
