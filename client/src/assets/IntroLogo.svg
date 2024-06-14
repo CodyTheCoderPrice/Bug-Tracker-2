@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="183.287mm"
+   width="167.315mm"
    height="140.162mm"
-   viewBox="0 0 183.287 140.162"
+   viewBox="0 0 167.315 140.162"
    version="1.1"
    id="svg5"
    inkscape:export-filename="logo_with_text.png"
@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.0544998"
-     inkscape:cx="322.90192"
-     inkscape:cy="263.63211"
+     inkscape:zoom="0.74564396"
+     inkscape:cx="480.79247"
+     inkscape:cy="276.27127"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -55,6 +55,17 @@
          id="tspan1191-6">Created by Cody Price</tspan></text>
     <text
        xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:31.3972px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:start;text-anchor:start;display:inline;fill:#ffffff;stroke:#ffffff;stroke-width:0.794;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="-0.49377668"
+       y="107.66759"
+       id="text1087-8-3"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.3972px;font-family:Impact;-inkscape-font-specification:Impact;text-align:start;text-anchor:start;fill:#000000;stroke:#ffffff;stroke-width:0.794;stroke-dasharray:none;stroke-opacity:1"
+         x="-0.49377668"
+         y="107.66759"
+         id="tspan1191-6-0">BUG TRACKER</tspan></text>
+    <text
+       xml:space="preserve"
        style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:#000000;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        x="0.18844993"
        y="118.13452"
@@ -69,20 +80,8 @@
          x="0.18844993"
          y="126.95397"
          id="tspan1273">FOR YOUR SOFTWARE PROJECT NEEDS</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:31.4003px;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:#ffffff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       x="-0.92606014"
-       y="115.20475"
-       id="text1087-2"
-       transform="scale(1.0968162,0.91172979)"><tspan
-         sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:31.4003px;font-family:Impact;-inkscape-font-specification:'Impact Bold';text-align:start;text-anchor:start;fill:#000000;stroke:#ffffff;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
-         x="-0.92606014"
-         y="115.20475"
-         id="tspan1191-2">BUG TRACKER</tspan></text>
     <g
-       transform="matrix(0.45368059,0.22756744,-0.2275648,0.45367532,84.019428,13.096518)"
+       transform="matrix(0.45368059,0.22756744,-0.2275648,0.45367532,76.743072,13.096518)"
        id="g1680"
        style="display:inline"
        inkscape:label="bug">
@@ -112,7 +111,7 @@
     </g>
     <path
        fill="#000000"
-       d="M 89.927848,0.39687499 V 4.282511 c -17.36901,0.768422 -31.33989,14.738967 -32.10798,32.107981 h -3.88563 v 3.01342 h 3.88563 c 0.76842,17.36901 14.73897,31.33988 32.10798,32.10796 v 3.88564 h 3.01342 v -3.88564 c 17.369012,-0.76842 31.339892,-14.73895 32.107972,-32.10796 h 3.88565 v -3.01342 h -3.88565 C 124.28082,19.021478 110.31028,5.050597 92.941268,4.282511 V 0.39687499 Z m 0,6.90123101 v 9.170335 h 3.01342 V 7.298106 c 15.736752,0.759549 28.332832,13.35564 29.092382,29.092386 h -9.17033 v 3.01342 h 9.17033 c -0.75955,15.73674 -13.35563,28.33282 -29.092382,29.09237 v -9.17033 h -3.01342 v 9.17033 c -15.73674,-0.75955 -28.33283,-13.35563 -29.09238,-29.09237 h 9.17034 v -3.01342 h -9.17034 C 61.595018,20.653746 74.191108,8.057655 89.927848,7.298106 Z"
+       d="M 82.651492,0.39687499 V 4.282511 c -17.36901,0.768422 -31.33989,14.738967 -32.10798,32.107981 h -3.88563 v 3.01342 h 3.88563 c 0.76842,17.36901 14.73897,31.33988 32.10798,32.10796 v 3.88564 h 3.01342 v -3.88564 c 17.369018,-0.76842 31.339898,-14.73895 32.107978,-32.10796 h 3.88565 v -3.01342 h -3.88565 C 117.00447,19.021478 103.03393,5.050597 85.664912,4.282511 V 0.39687499 Z m 0,6.90123101 v 9.170335 h 3.01342 V 7.298106 c 15.736758,0.759549 28.332838,13.35564 29.092388,29.092386 h -9.17033 v 3.01342 h 9.17033 c -0.75955,15.73674 -13.35563,28.33282 -29.092388,29.09237 v -9.17033 h -3.01342 v 9.17033 c -15.73674,-0.75955 -28.33283,-13.35563 -29.09238,-29.09237 h 9.17034 v -3.01342 h -9.17034 C 54.318662,20.653746 66.914752,8.057655 82.651492,7.298106 Z"
        id="path2574"
        style="display:inline;stroke:#ffffff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        sodipodi:nodetypes="cccccccccccccccccccccccccccccccccc"
