@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { login } from "./authSlice";
-import SubmitButton from "@/components/onboarding/SubmitButton";
+import Header from "@/components/onboarding/Header";
 import InputField from "@/components/onboarding/InputField";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
-import Header from "@/components/onboarding/Header";
+import SubmitButton from "@/components/onboarding/SubmitButton";
 
 function Login() {
   const dispatch = useAppDispatch();
@@ -40,6 +40,7 @@ function Login() {
           placeholder="Email"
           onChange={handleInput}
           value={loginInfo.email}
+          autoComplete="off"
           hasError={!!errors?.email}
         />
         <ErrorMessage message={errors?.email} />

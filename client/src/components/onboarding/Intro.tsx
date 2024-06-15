@@ -6,8 +6,8 @@ function Intro() {
   return (
     <div
       className={
-        "flex flex-1 justify-center" +
-        (height > 850 ? " bg-blueGeoBg1920" : " bg-blueGeoBg1280")
+        "flex flex-1 justify-center bg-blueGeoBg1280" +
+        (height > 850 ? " bg-blueGeoBg1920" : "")
       }
     >
       <img
