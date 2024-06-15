@@ -32,7 +32,12 @@ function Register() {
   return (
     <>
       <Header text="Register" />
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+      <form
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+        className="pt-6"
+      >
         <div className="float-left">
           <InputField
             type="text"

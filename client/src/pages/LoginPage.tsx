@@ -1,9 +1,20 @@
+import { useAppDispatch } from "@/app/hooks";
+import { clearAuthErrors } from "@/features/auth/authSlice";
+import { useEffect } from "react";
 import Intro from "@/components/onboarding/Intro";
 import Login from "@/features/auth/Login";
 import Divider from "@/components/onboarding/Divider";
 import LinkButton from "@/components/onboarding/LinkButton";
 
 function LoginPage() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAuthErrors());
+    };
+  }, []);
+
   return (
     <div className="flex h-full">
       <Intro />
