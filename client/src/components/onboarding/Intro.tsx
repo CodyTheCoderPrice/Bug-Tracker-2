@@ -6,8 +6,9 @@ function Intro() {
       <img
         src={IntroLogo}
         alt="Bug Tracker Logo"
-        className="mb-[10%] w-[500px]"
+        className="laptop:visible invisible mb-[10%] w-[450px]"
       />
+      <div className="pointer-events-none absolute left-[-600px] h-full w-full bg-black/5" />
     </div>
   );
 }
