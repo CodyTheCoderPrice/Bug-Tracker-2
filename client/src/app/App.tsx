@@ -25,8 +25,10 @@ function App() {
     }
   }, []);
 
+  const { darkMode } = useAppSelector((state) => state.system);
+
   return (
-    <>
+    <div className={"h-full w-full" + (darkMode ? " dark" : "")}>
       <Routes>
         <Route element={<UnprotectedRoutes />}>
           <Route path="/" element={<LandingPage />} />
@@ -42,7 +44,7 @@ function App() {
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </>
+    </div>
   );
 }
 
