@@ -3,16 +3,16 @@ import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { toggleSearchBar, toggleDarkMode } from "@/features/system/systemSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMoon, faUser } from "@fortawesome/free-regular-svg-icons";
+import { faMoon, faSun, faUser } from "@fortawesome/free-regular-svg-icons";
 
 function TopBar() {
   const dispatch = useAppDispatch();
 
-  const { searchBar } = useAppSelector((state) => state.system);
+  const { searchBar, darkMode } = useAppSelector((state) => state.system);
   return (
     <>
       {searchBar && <SearchBar />}
-      <nav className="flex h-[40px] items-center bg-gray-100">
+      <nav className="flex h-[60px] items-center bg-gray-100">
         <div>
           <span
             onClick={() => {
@@ -30,7 +30,11 @@ function TopBar() {
             }}
             className="mr-6 cursor-pointer"
           >
-            <FontAwesomeIcon icon={faMoon} size="lg" />
+            {darkMode ? (
+              <FontAwesomeIcon icon={faSun} size="lg" />
+            ) : (
+              <FontAwesomeIcon icon={faMoon} size="lg" />
+            )}
           </span>
           <Link to="/account" className="mr-6">
             <FontAwesomeIcon icon={faUser} size="lg" />
