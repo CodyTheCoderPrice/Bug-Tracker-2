@@ -21,6 +21,9 @@ module.exports = {
       laptop: "1024px",
       desktop: "1280px",
     },
+    transitionProperty: {
+      width: "width",
+    },
   },
   plugins: [],
   darkMode: "class",

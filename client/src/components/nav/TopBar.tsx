@@ -16,6 +16,8 @@ function TopBar() {
         return "Projects";
       case "/bugs":
         return "Bugs";
+      case "/account":
+        return "Edit Account";
       default:
         return "Unknown";
     }
