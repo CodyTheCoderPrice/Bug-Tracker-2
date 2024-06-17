@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { toggleSearchBar, toggleDarkMode } from "@/features/system/systemSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,23 +7,35 @@ import { faMoon, faSun, faUser } from "@fortawesome/free-regular-svg-icons";
 
 function TopBar() {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const getPageName = () => {
+    switch (location.pathname) {
+      case "/home":
+        return "Home";
+      case "/projects":
+        return "Projects";
+      case "/bugs":
+        return "Bugs";
+      default:
+        return "Unknown";
+    }
+  };
 
   const { searchBar, darkMode } = useAppSelector((state) => state.system);
   return (
     <>
       {searchBar && <SearchBar />}
-      <nav className="flex h-[60px] items-center bg-gray-100">
-        <div>
+      <nav className="h-top-bar flex items-center bg-gray-100">
+        <h1 className="ml-4 font-semibold">{getPageName()}</h1>
+        <div className="ml-auto">
           <span
             onClick={() => {
               dispatch(toggleSearchBar());
             }}
-            className="ml-5 h-full w-[100px] cursor-pointer rounded-xl border border-black px-10 py-1"
+            className="ml-5 mr-6 h-full w-[100px] cursor-pointer rounded-xl border border-black px-10 py-1"
           >
-            Search Bar
+            Search...
           </span>
-        </div>
-        <div className="ml-auto">
           <span
             onClick={() => {
               dispatch(toggleDarkMode());

@@ -30,6 +30,10 @@ body,
   background: #2a2b2f;
 }
 
+.h-top-bar {
+  @apply h-[60px]
+}
+
 .border-color {
   @apply border-black dark:border-gray-200
 }
