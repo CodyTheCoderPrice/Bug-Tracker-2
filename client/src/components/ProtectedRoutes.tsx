@@ -9,7 +9,7 @@ function ProtectedRoutes() {
   return isLoggedIn ? (
     <div className="flex h-full w-full">
       <SideNavbar />
-      <div className="flex-1">
+      <div className="flex flex-1 flex-col">
         <TopBar />
         <Outlet />
       </div>

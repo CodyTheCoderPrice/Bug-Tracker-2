@@ -56,7 +56,7 @@ function SearchBar() {
               value={searchText}
               className="flex-1 px-2"
             />
-            <button className="w-10 rounded-r-lg bg-secondary-2">
+            <button className="w-10 rounded-r-lg bg-primary-1">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
                 size="lg"

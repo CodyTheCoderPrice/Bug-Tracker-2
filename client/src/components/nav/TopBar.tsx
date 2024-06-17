@@ -11,7 +11,7 @@ function TopBar() {
   const getPageName = () => {
     switch (location.pathname) {
       case "/home":
-        return "Home";
+        return "Home Dashboard";
       case "/projects":
         return "Projects";
       case "/bugs":
@@ -27,14 +27,14 @@ function TopBar() {
   return (
     <>
       {searchBar && <SearchBar />}
-      <nav className="h-top-bar flex items-center bg-gray-100">
+      <nav className="h-top-bar bg-plain-1 flex items-center">
         <h1 className="ml-4 font-semibold">{getPageName()}</h1>
         <div className="ml-auto">
           <span
             onClick={() => {
               dispatch(toggleSearchBar());
             }}
-            className="ml-5 mr-6 h-full w-[100px] cursor-pointer rounded-xl border border-black px-10 py-1"
+            className="bg-plain-2 ml-5 mr-6 h-full w-[100px] cursor-pointer rounded border border-black px-10 py-1"
           >
             Search...
           </span>
