@@ -1,8 +1,8 @@
 import { MouseEventHandler } from "react";
-import openBugIcon from "@/assets/OpenBugIcon.png";
-import inProgressBugIcon from "@/assets/InProgressBugIcon.png";
-import inTestingBugIcon from "@/assets/InTestingBugIcon.png";
-import closedBugIcon from "@/assets/ClosedBugIcon.png";
+import openBugIcon from "@/assets/icons/icon_bug_open.svg";
+import inProgressBugIcon from "@/assets/icons/icon_bug_progress.svg";
+import inTestingBugIcon from "@/assets/icons/icon_bug_testing.svg";
+import closedBugIcon from "@/assets/icons/icon_bug_closed.svg";
 
 const bugStatusButton = (
   src: string,

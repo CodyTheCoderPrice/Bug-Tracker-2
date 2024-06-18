@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="50"
+   height="50"
+   viewBox="0 0 13.229166 13.229167"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="icon_open.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="5.9651515"
+     inkscape:cx="35.791212"
+     inkscape:cy="2.514605"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g102057"
+       style="display:inline"
+       transform="matrix(0.63074752,0,0,0.63074752,-81.618754,-40.790032)">
+      <rect
+         style="fill:#c83737;fill-opacity:1;stroke:none;stroke-width:1.51393;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="rect90066"
+         width="20.973791"
+         height="20.973791"
+         x="129.40004"
+         y="64.66935" />
+      <path
+         id="path88560"
+         data-name="exclamation-circle-Regular"
+         class="cls-1"
+         d="m 139.95814,68.41415 a 6.8240438,6.8240438 0 1 0 6.82404,6.824044 6.8317427,6.8317427 0 0 0 -6.82404,-6.824044 z m 0,12.598235 a 5.7741909,5.7741909 0 1 1 5.7742,-5.774191 5.7804901,5.7804901 0 0 1 -5.7742,5.774191 z m 0.69991,-2.974584 a 0.69990193,0.69990193 0 1 1 -0.69991,-0.699901 0.69990193,0.69990193 0 0 1 0.69991,0.699901 z m -1.22484,-2.799607 v -2.799609 a 0.52493,0.52493 0 0 1 1.04986,0 v 2.799609 a 0.52493,0.52493 0 0 1 -1.04986,0 z"
+         style="display:inline;fill:#ffffff;stroke-width:0.699901" />
+    </g>
+  </g>
+</svg>

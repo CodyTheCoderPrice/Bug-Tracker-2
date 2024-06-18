@@ -1,13 +1,12 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import logo from "@/assets/logo_bug_tracker.svg";
 import { toggleNavbarExpanded } from "@/features/system/systemSlice";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHouse,
-  faClipboard,
-  faBug,
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import menuHomeIcon from "@/assets/icons/icon_menu_home.svg";
+import menuProjectsIcon from "@/assets/icons/icon_menu_projects.svg";
+import menuBugsIcon from "@/assets/icons/icon_menu_bugs.svg";
 
 function SideNavbar() {
   const dispatch = useAppDispatch();
@@ -16,15 +15,19 @@ function SideNavbar() {
   return (
     <div
       className={
-        "bg-primary-1 text-white shadow transition-width" +
-        (navbarExpanded ? " w-[250px]" : " w-[66px]")
+        "bg-primary-2 text-gray-50 shadow transition-width" +
+        (navbarExpanded ? " w-[260px]" : " w-[66px]")
       }
     >
       {navbarExpanded ? (
         <>
           {/* Navbar expanded */}
           <div className="h-top-bar flex items-center justify-between">
-            <h1 className="ml-5 text-2xl font-bold">LOGO</h1>
+            <img
+              src={logo}
+              alt="LOGO: Bug Tracker"
+              className="ml-3 w-[170px]"
+            />
             <button
               onClick={() => dispatch(toggleNavbarExpanded())}
               className="mr-5"
@@ -33,23 +36,43 @@ function SideNavbar() {
             </button>
           </div>
           <nav className="flex flex-col">
-            <Link to="/home" className="ml-6 mt-4 text-nowrap text-lg">
-              <FontAwesomeIcon icon={faHouse} size="sm" className="mr-2 w-4" />
+            <Link
+              to="/home"
+              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+            >
+              <img
+                src={menuHomeIcon}
+                alt="home icon"
+                className="mr-3 inline-block w-6"
+              />
               Home
             </Link>
-            <Link to="/projects" className="ml-6 mt-4 text-nowrap text-lg">
-              <FontAwesomeIcon
-                icon={faClipboard}
-                size="sm"
-                className="mr-2 w-4"
+            <Link
+              to="/projects"
+              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+            >
+              <img
+                src={menuProjectsIcon}
+                alt="projects icon"
+                className="mr-3 inline-block w-6"
               />
               Projects
             </Link>
-            <Link to="/bugs" className="ml-6 mt-4 text-nowrap text-lg">
-              <FontAwesomeIcon icon={faBug} size="sm" className="mr-2 w-4" />
+            <Link
+              to="/bugs"
+              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+            >
+              <img
+                src={menuBugsIcon}
+                alt="bugs icon"
+                className="mr-3 inline-block w-6"
+              />
               Bugs
             </Link>
-            <Link to="/comments" className="ml-6 mt-4 text-nowrap text-lg">
+            <Link
+              to="/comments"
+              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+            >
               Comments
             </Link>
           </nav>
@@ -62,22 +85,37 @@ function SideNavbar() {
               <FontAwesomeIcon icon={faBars} size="lg" />
             </button>
           </div>
-          <nav className="flex flex-col items-center">
-            <span className="mt-4 text-lg">
-              <Link to="/home">
-                <FontAwesomeIcon icon={faHouse} size="sm" className="w-4" />
-              </Link>
-            </span>
-            <span className="mt-4 text-lg">
-              <Link to="/projects">
-                <FontAwesomeIcon icon={faClipboard} size="sm" className="w-4" />
-              </Link>
-            </span>
-            <span className="mt-4 text-lg">
-              <Link to="/bugs">
-                <FontAwesomeIcon icon={faBug} size="sm" className="w-4" />
-              </Link>
-            </span>
+          <nav className="flex flex-col">
+            <Link
+              to="/home"
+              className="hover:bg-primary-3 py-3 text-center text-lg"
+            >
+              <img
+                src={menuHomeIcon}
+                alt="home icon"
+                className="inline-block w-6"
+              />
+            </Link>
+            <Link
+              to="/projects"
+              className="hover:bg-primary-3 py-3 text-center text-lg"
+            >
+              <img
+                src={menuProjectsIcon}
+                alt="projects icon"
+                className="inline-block w-6"
+              />
+            </Link>
+            <Link
+              to="/bugs"
+              className="hover:bg-primary-3 py-3 text-center text-lg"
+            >
+              <img
+                src={menuBugsIcon}
+                alt="bugs icon"
+                className="inline-block w-6"
+              />
+            </Link>
           </nav>
         </>
       )}

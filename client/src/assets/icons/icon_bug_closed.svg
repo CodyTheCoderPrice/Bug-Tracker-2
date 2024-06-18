@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="50"
+   height="50"
+   viewBox="0 0 13.229166 13.229167"
+   version="1.1"
+   id="svg1141"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="icon_done.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1143"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="8.4359982"
+     inkscape:cx="26.256525"
+     inkscape:cy="29.753444"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1138" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g102082"
+       style="display:inline"
+       transform="matrix(0.63074752,0,0,0.63074752,-260.76923,-40.790032)">
+      <rect
+         style="fill:#217844;fill-opacity:1;stroke:none;stroke-width:1.51393;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+         id="rect100478"
+         width="20.973791"
+         height="20.973791"
+         x="413.42886"
+         y="64.66935" />
+      <g
+         style="fill:none"
+         id="g100510"
+         transform="matrix(0.64990485,0,0,0.64990485,416.16241,67.468005)">
+        <path
+           d="M 8.81802,12.3107 10.9393,14.432 15.182,10.1893 M 21.75,12 c 0,5.3848 -4.3652,9.75 -9.75,9.75 -5.38478,0 -9.75,-4.3652 -9.75,-9.75 0,-5.38478 4.36522,-9.75 9.75,-9.75 5.3848,0 9.75,4.36522 9.75,9.75 z"
+           stroke="#3a52ee"
+           stroke-width="1.5"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           id="path100501"
+           style="stroke:#ffffff;stroke-opacity:1" />
+      </g>
+    </g>
+  </g>
+</svg>
