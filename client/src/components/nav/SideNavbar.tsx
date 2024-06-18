@@ -16,7 +16,7 @@ function SideNavbar() {
   return (
     <div
       className={
-        "transition-width bg-primary-1 text-white" +
+        "bg-primary-1 text-white shadow transition-width" +
         (navbarExpanded ? " w-[250px]" : " w-[66px]")
       }
     >
