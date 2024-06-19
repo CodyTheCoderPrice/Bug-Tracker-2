@@ -8,6 +8,7 @@ export type TBug = {
   project_id: number;
   account_id: number;
   name: string;
+  project: string;
   description: string;
   priority_id: number;
   priority_name: string;

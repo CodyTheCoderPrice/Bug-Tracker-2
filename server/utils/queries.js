@@ -181,6 +181,7 @@ async function getProjectsFromDB(account_id) {
  *  bug_id: number,
  * 	project_id: number,
  * 	name: string,
+ * 	project: string,
  * 	description: string,
  * 	priority_id: number,
  * 	priority_name: string,
@@ -195,17 +196,20 @@ async function getProjectsFromDB(account_id) {
 async function getBugsFromDB(account_id) {
 	try {
 		return await pool.query(
-			`WITH b AS
-				(SELECT * FROM bug WHERE project_id IN
-					(SELECT project_id FROM project WHERE account_id = $1)
-				)
-			SELECT b.bug_id, b.project_id, b.name, b.description,
+			`WITH pjt AS
+				(SELECT project_id, name FROM project),
+				b AS
+					(SELECT * FROM bug WHERE project_id IN
+						(SELECT project_id FROM project WHERE account_id = $1)
+					)
+			SELECT b.bug_id, b.project_id, b.name, pjt.name AS project, b.description,
 				b.priority_id, b.status_id, b.create_time, b.due_date,
 				b.complete_date, b.update_time,
 				p.name AS priority_name, s.name AS status_name
-			  FROM b, priority p, status s
-			 WHERE (b.priority_id = p.priority_id) AND (b.status_id = s.status_id)
-			 ORDER BY b.bug_id`,
+			FROM b, pjt, priority p, status s
+			WHERE (b.project_id = pjt.project_id) AND (b.priority_id = p.priority_id)
+							AND (b.status_id = s.status_id)
+			ORDER BY b.bug_id`,
 			[account_id]
 		);
 	} catch (err) {
@@ -270,6 +274,7 @@ async function getCommentsFromDB(account_id) {
  *  bug_id: number,
  * 	project_id: number,
  * 	name: string,
+ * 	project: string,
  * 	description: string,
  * 	priority_id: number,
  * 	priority_name: string,
