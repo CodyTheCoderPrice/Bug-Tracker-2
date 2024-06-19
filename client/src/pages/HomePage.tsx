@@ -1,13 +1,16 @@
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, SetStateAction, useState, Dispatch } from "react";
 import { TBug } from "@/features/bugs/bugSlice";
 import openBugIcon from "@/assets/icons/icon_bug_open.svg";
 import inProgressBugIcon from "@/assets/icons/icon_bug_progress.svg";
 import inTestingBugIcon from "@/assets/icons/icon_bug_testing.svg";
 import closedBugIcon from "@/assets/icons/icon_bug_closed.svg";
 import { useAppSelector } from "@/app/hooks";
+import moment from "moment";
+import { filterDueBugs, filterOverdueBugs } from "@/utils/filterUtils";
+
+export type TFilter = 0 | 1 | 2;
 
 function HomePage() {
-  type TFilter = 0 | 1 | 2;
   const [dueFilterSelected, setDueFilterSelected] = useState<TFilter>(0);
   const [overdueFilterSelected, setOverdueFilterSelected] =
     useState<TFilter>(0);
@@ -21,7 +24,7 @@ function HomePage() {
     return (
       <button
         onClick={onClick}
-        className="mr-[50px] flex w-[225px] items-center rounded-lg bg-plain-1 px-4 shadow hover:shadow-lg"
+        className="bg-plain-100 mr-[50px] flex w-[225px] items-center rounded-lg px-4 shadow hover:shadow-lg"
       >
         <img src={src} alt={`icon for ${title}`} className="h-[50px] rounded" />
         <div className="ml-3 flex flex-col text-left">
@@ -37,12 +40,7 @@ function HomePage() {
   };
 
   const filterButtons = (
-    btn1Text: string,
-    btn1OnClick: MouseEventHandler<HTMLButtonElement>,
-    btn2Text: string,
-    btn2OnClick: MouseEventHandler<HTMLButtonElement>,
-    btn3Text: string,
-    btn3OnClick: MouseEventHandler<HTMLButtonElement>,
+    setFilterFunc: Dispatch<SetStateAction<TFilter>>,
     forDueSoon: boolean,
   ) => {
     const filterSelected = forDueSoon
@@ -52,47 +50,82 @@ function HomePage() {
     return (
       <div className="mt-6 font-medium text-primary-2">
         <button
-          onClick={btn1OnClick}
+          onClick={() => {
+            setFilterFunc(0);
+          }}
           className={
-            "rounded-l border border-plain-3 px-4 py-[1px]" +
+            "border-plain-400 rounded-l border px-4 py-[1px]" +
             (filterSelected === 0 ? " bg-primary-1 text-white" : "")
           }
         >
-          {btn1Text}
+          All
         </button>
         <button
-          onClick={btn2OnClick}
+          onClick={() => {
+            setFilterFunc(1);
+          }}
           className={
-            "border border-l-0 border-plain-3 px-4 py-[1px]" +
+            "border-plain-400 border border-l-0 px-4 py-[1px]" +
             (filterSelected === 1 ? " bg-primary-1 text-white" : "")
           }
         >
-          {btn2Text}
+          This Week
         </button>
         <button
-          onClick={btn3OnClick}
+          onClick={() => {
+            setFilterFunc(2);
+          }}
           className={
-            "rounded-r border border-l-0 border-plain-3 px-4 py-[1px]" +
+            "border-plain-400 rounded-r border border-l-0 px-4 py-[1px]" +
             (filterSelected === 2 ? " bg-primary-1 text-white" : "")
           }
         >
-          {btn3Text}
+          This Month
         </button>
       </div>
     );
   };
 
-  const bugTable = (bugList: TBug[] | null) => {
+  const bugTable = (bugList: TBug[] | null, isDueSoon: boolean) => {
+    bugList = isDueSoon
+      ? filterDueBugs(bugList, dueFilterSelected)
+      : filterOverdueBugs(bugList, overdueFilterSelected);
+
     return (
-      <table className="mt-4 flex-grow">
-        <thead>
-          <tr className="bg-plain-3">
-            <th>BUG</th>
-            <th>PROJECT</th>
-            <th>DUE DATE</th>
-          </tr>
-        </thead>
-      </table>
+      <div className="mt-4 flex-grow">
+        <table className="w-full">
+          <thead>
+            <tr className="bg-plain-500 text-left">
+              <th className="w-[40%] px-4">BUG</th>
+              <th className="w-[40%] px-4">PROJECT</th>
+              <th className="w-[20%] px-4">DUE DATE</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bugList?.map((bug, idx) => {
+              return (
+                <tr
+                  key={idx}
+                  className="hover:bg-plain-200 border-plain-300 border-b"
+                >
+                  <td
+                    onClick={() => {}}
+                    className="cursor-pointer px-4 py-2 font-medium text-primary-2 hover:underline"
+                  >
+                    {bug.name}
+                  </td>
+                  <td className="px-4 py-2">{bug.project}</td>
+                  <td className="px-4 py-2">
+                    {bug.due_date !== null
+                      ? moment.utc(bug.due_date).format("MM-DD-YYYY")
+                      : "-"}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     );
   };
 
@@ -107,43 +140,15 @@ function HomePage() {
         {bugStatusButton(closedBugIcon, "Closed Bugs", -1, () => {})}
       </div>
       <div className="mx-10 mb-10 mt-6 flex grow">
-        <div className="mr-5 flex flex-1 flex-col rounded bg-plain-1 p-6 shadow">
+        <div className="bg-plain-100 mr-5 flex flex-1 flex-col rounded p-6 shadow">
           {titleHeader("Bugs Due Soon")}
-          {filterButtons(
-            "All",
-            () => {
-              setDueFilterSelected(0);
-            },
-            "This Week",
-            () => {
-              setDueFilterSelected(1);
-            },
-            "This Month",
-            () => {
-              setDueFilterSelected(2);
-            },
-            true,
-          )}
-          {bugTable(bugs)}
+          {filterButtons(setDueFilterSelected, true)}
+          {bugTable(bugs, true)}
         </div>
-        <div className="ml-5 flex flex-1 flex-col rounded bg-plain-1 p-6 shadow">
+        <div className="bg-plain-100 ml-5 flex flex-1 flex-col rounded p-6 shadow">
           {titleHeader("Overdue Bugs")}
-          {filterButtons(
-            "All",
-            () => {
-              setOverdueFilterSelected(0);
-            },
-            "Past Week",
-            () => {
-              setOverdueFilterSelected(1);
-            },
-            "Past Month",
-            () => {
-              setOverdueFilterSelected(2);
-            },
-            false,
-          )}
-          {bugTable(bugs)}
+          {filterButtons(setOverdueFilterSelected, false)}
+          {bugTable(bugs, false)}
         </div>
       </div>
     </div>

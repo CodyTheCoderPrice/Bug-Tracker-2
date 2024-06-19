@@ -18,7 +18,7 @@ function RegisterPage() {
   return (
     <div className="flex h-full">
       <Intro />
-      <div className="bg-plain-1 w-[600px] p-12 shadow-md">
+      <div className="bg-plain-100 w-[600px] p-12 shadow-md">
         <Register />
         <Divider text="OR" />
         <LinkButton to="/login" text="Already a member? LOGIN" />
