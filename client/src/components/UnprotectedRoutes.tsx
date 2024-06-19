@@ -1,10 +1,10 @@
-import { useAppSelector } from '@/app/hooks';
-import { Outlet, Navigate } from 'react-router-dom';
+import { useAppSelector } from "@/app/hooks";
+import { Outlet, Navigate } from "react-router-dom";
 
 function UnprotectedRoutes() {
-	const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
 
-	return !isLoggedIn ? <Outlet /> : <Navigate to='/home' replace />;
+  return isLoggedIn ? <Navigate to="/home" replace /> : <Outlet />;
 }
 
 export default UnprotectedRoutes;

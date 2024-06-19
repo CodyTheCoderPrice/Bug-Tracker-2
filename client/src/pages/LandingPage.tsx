@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom";
+import { useAppSelector } from "@/app/hooks";
+import { Navigate } from "react-router-dom";
 
 function LandingPage() {
-  return (
-    <>
-      <Link to="/login" className="px-[30px]">
-        Login
-      </Link>
-      <p className="px-[30px]">Explain details about website...</p>
-    </>
+  const { isLoggedIn } = useAppSelector((state) => state.auth);
+
+  return isLoggedIn ? (
+    <Navigate to="/home" replace />
+  ) : (
+    <Navigate to="/login" replace />
   );
 }
 
