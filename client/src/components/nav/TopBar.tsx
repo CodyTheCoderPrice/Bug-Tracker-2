@@ -28,14 +28,14 @@ function TopBar() {
   return (
     <>
       {searchBar && <SearchBar />}
-      <nav className="h-top-bar bg-plain-100 flex items-center shadow">
+      <nav className="bg-color-foreground-dl h-top-bar flex shrink-0 items-center shadow">
         <h1 className="ml-4 font-semibold">{getPageName()}</h1>
         <div className="ml-auto">
           <span
             onClick={() => {
               dispatch(toggleSearchBar());
             }}
-            className="bg-plain-200 ml-5 mr-6 h-full w-[100px] cursor-pointer rounded border border-black px-10 py-1"
+            className="bg-plain-light-200 dark:bg-plain-dark-300 ml-5 mr-6 h-full w-[100px] cursor-pointer rounded border border-black px-10 py-1"
           >
             Search...
           </span>

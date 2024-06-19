@@ -12,13 +12,26 @@ body,
   height: 100%;
   width: 100%;
   font-family: "Inter", sans-serif;
-  @apply bg-plain-400 dark:bg-slate-600;
+}
+
+/* BG color dark/light */
+.bg-color-foreground-dl {
+  @apply bg-plain-light-100 dark:bg-plain-dark-400
+}
+.bg-color-input-dl {
+  @apply bg-white dark:bg-plain-dark-100
+}
+
+/* Border color dark/light */
+.border-color-dl {
+  @apply border-plain-light-400 dark:border-plain-dark-100
+}
+
+/* Text color dark/light */
+.text-color-input-dl {
+  @apply dark:placeholder:text-plain-light-500
 }
 
 .h-top-bar {
   @apply h-[60px]
-}
-
-.border-color {
-  @apply border-black dark:border-gray-200
 }

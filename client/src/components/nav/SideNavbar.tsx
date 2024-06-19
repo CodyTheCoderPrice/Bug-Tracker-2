@@ -12,17 +12,29 @@ function SideNavbar() {
   const dispatch = useAppDispatch();
 
   const { navbarExpanded } = useAppSelector((state) => state.system);
+
+  // Shared classNames
+  const logoContainerShared = "h-top-bar flex items-center";
+  const navShared = "mt-2 flex flex-col";
+  const linkExpandedShared =
+    "text-nowrap py-3 pl-6 text-lg hover:bg-primary-3 hover:dark:bg-primary-4 ";
+  const linkMiniShared =
+    "py-3 text-center text-lg hover:bg-primary-3 hover:dark:bg-primary-4";
+  const iconShared = "inline-block w-6";
+  const iconExpandedShared = "mr-3 " + iconShared;
+  const iconMiniShared = " " + iconShared;
+
   return (
     <div
       className={
-        "shrink-0 bg-primary-2 text-gray-50 shadow transition-width" +
+        "shrink-0 bg-primary-2 text-gray-50 shadow transition-width dark:bg-primary-3" +
         (navbarExpanded ? " w-[260px]" : " w-[66px]")
       }
     >
       {navbarExpanded ? (
         <>
           {/* Navbar expanded */}
-          <div className="h-top-bar flex items-center justify-between">
+          <div className={logoContainerShared + " justify-between"}>
             <img
               src={logo}
               alt="LOGO: Bug Tracker"
@@ -35,44 +47,32 @@ function SideNavbar() {
               <FontAwesomeIcon icon={faBars} size="lg" />
             </button>
           </div>
-          <nav className="flex flex-col">
-            <Link
-              to="/home"
-              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
-            >
+          <nav className={navShared}>
+            <Link to="/home" className={linkExpandedShared}>
               <img
                 src={menuHomeIcon}
                 alt="home icon"
-                className="mr-3 inline-block w-6"
+                className={iconExpandedShared}
               />
               Home
             </Link>
-            <Link
-              to="/projects"
-              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
-            >
+            <Link to="/projects" className={linkExpandedShared}>
               <img
                 src={menuProjectsIcon}
                 alt="projects icon"
-                className="mr-3 inline-block w-6"
+                className={iconExpandedShared}
               />
               Projects
             </Link>
-            <Link
-              to="/bugs"
-              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
-            >
+            <Link to="/bugs" className={linkExpandedShared}>
               <img
                 src={menuBugsIcon}
                 alt="bugs icon"
-                className="mr-3 inline-block w-6"
+                className={iconExpandedShared}
               />
               Bugs
             </Link>
-            <Link
-              to="/comments"
-              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
-            >
+            <Link to="/comments" className={linkExpandedShared}>
               Comments
             </Link>
           </nav>
@@ -80,40 +80,31 @@ function SideNavbar() {
       ) : (
         <>
           {/* Navbar minimized */}
-          <div className="h-top-bar flex items-center justify-center">
+          <div className={logoContainerShared + " justify-center"}>
             <button onClick={() => dispatch(toggleNavbarExpanded())}>
               <FontAwesomeIcon icon={faBars} size="lg" />
             </button>
           </div>
-          <nav className="flex flex-col">
-            <Link
-              to="/home"
-              className="py-3 text-center text-lg hover:bg-primary-3"
-            >
+          <nav className={navShared}>
+            <Link to="/home" className={linkMiniShared}>
               <img
                 src={menuHomeIcon}
                 alt="home icon"
-                className="inline-block w-6"
+                className={iconMiniShared}
               />
             </Link>
-            <Link
-              to="/projects"
-              className="py-3 text-center text-lg hover:bg-primary-3"
-            >
+            <Link to="/projects" className={linkMiniShared}>
               <img
                 src={menuProjectsIcon}
                 alt="projects icon"
-                className="inline-block w-6"
+                className={iconMiniShared}
               />
             </Link>
-            <Link
-              to="/bugs"
-              className="py-3 text-center text-lg hover:bg-primary-3"
-            >
+            <Link to="/bugs" className={linkMiniShared}>
               <img
                 src={menuBugsIcon}
                 alt="bugs icon"
-                className="inline-block w-6"
+                className={iconMiniShared}
               />
             </Link>
           </nav>

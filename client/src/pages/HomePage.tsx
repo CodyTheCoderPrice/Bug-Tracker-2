@@ -24,7 +24,7 @@ function HomePage() {
     return (
       <button
         onClick={onClick}
-        className="bg-plain-100 mr-[50px] flex w-[225px] items-center rounded-lg px-4 shadow hover:shadow-lg"
+        className="bg-color-foreground-dl mr-[50px] flex w-[225px] items-center rounded-lg px-4 shadow hover:shadow-lg"
       >
         <img src={src} alt={`icon for ${title}`} className="h-[50px] rounded" />
         <div className="ml-3 flex flex-col text-left">
@@ -46,15 +46,14 @@ function HomePage() {
     const filterSelected = forDueSoon
       ? dueFilterSelected
       : overdueFilterSelected;
-
     return (
-      <div className="mt-6 font-medium text-primary-2">
+      <div className="dark:text-plain-light-100 mt-6 font-medium text-primary-2">
         <button
           onClick={() => {
             setFilterFunc(0);
           }}
           className={
-            "border-plain-400 rounded-l border px-4 py-[1px]" +
+            "border-color-dl rounded-l border px-4 py-[1px]" +
             (filterSelected === 0 ? " bg-primary-1 text-white" : "")
           }
         >
@@ -65,7 +64,7 @@ function HomePage() {
             setFilterFunc(1);
           }}
           className={
-            "border-plain-400 border border-l-0 px-4 py-[1px]" +
+            "border-color-dl border border-l-0 px-4 py-[1px]" +
             (filterSelected === 1 ? " bg-primary-1 text-white" : "")
           }
         >
@@ -76,7 +75,7 @@ function HomePage() {
             setFilterFunc(2);
           }}
           className={
-            "border-plain-400 rounded-r border border-l-0 px-4 py-[1px]" +
+            "border-color-dl rounded-r border border-l-0 px-4 py-[1px]" +
             (filterSelected === 2 ? " bg-primary-1 text-white" : "")
           }
         >
@@ -90,12 +89,11 @@ function HomePage() {
     bugList = isDueSoon
       ? filterDueBugs(bugList, dueFilterSelected)
       : filterOverdueBugs(bugList, overdueFilterSelected);
-
     return (
       <div className="mt-4 flex-grow">
         <table className="w-full">
           <thead>
-            <tr className="bg-plain-500 text-left">
+            <tr className="bg-plain-light-500 dark:bg-plain-dark-500 text-left">
               <th className="w-[40%] px-4">BUG</th>
               <th className="w-[40%] px-4">PROJECT</th>
               <th className="w-[20%] px-4">DUE DATE</th>
@@ -106,11 +104,11 @@ function HomePage() {
               return (
                 <tr
                   key={idx}
-                  className="hover:bg-plain-200 border-plain-300 border-b"
+                  className="hover:bg-plain-light-200 hover:dark:bg-plain-dark-300 border-plain-light-300 border-b"
                 >
                   <td
                     onClick={() => {}}
-                    className="cursor-pointer px-4 py-2 font-medium text-primary-2 hover:underline"
+                    className="dark:text-plain-light-100 cursor-pointer px-4 py-2 font-medium text-primary-2 hover:underline"
                   >
                     {bug.name}
                   </td>
@@ -131,6 +129,10 @@ function HomePage() {
 
   const { bugs } = useAppSelector((state) => state.bugs);
 
+  // Shared classNames
+  const bugTableContainerShared =
+    "bg-color-foreground-dl flex flex-1 flex-col rounded p-6 shadow";
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="mx-10 mt-10 flex h-[70px]">
@@ -140,12 +142,12 @@ function HomePage() {
         {bugStatusButton(closedBugIcon, "Closed Bugs", -1, () => {})}
       </div>
       <div className="mx-10 mb-10 mt-6 flex grow">
-        <div className="bg-plain-100 mr-5 flex flex-1 flex-col rounded p-6 shadow">
+        <div className={bugTableContainerShared + " mr-5"}>
           {titleHeader("Bugs Due Soon")}
           {filterButtons(setDueFilterSelected, true)}
           {bugTable(bugs, true)}
         </div>
-        <div className="bg-plain-100 ml-5 flex flex-1 flex-col rounded p-6 shadow">
+        <div className={bugTableContainerShared + " ml-5"}>
           {titleHeader("Overdue Bugs")}
           {filterButtons(setOverdueFilterSelected, false)}
           {bugTable(bugs, false)}

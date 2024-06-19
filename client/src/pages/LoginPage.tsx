@@ -18,7 +18,7 @@ function LoginPage() {
   return (
     <div className="flex h-full">
       <Intro />
-      <div className="bg-plain-100 w-[600px] p-12 shadow-md">
+      <div className="bg-plain-light-100 w-[600px] p-12 shadow-md">
         <Login />
         <Divider text="OR" />
         <LinkButton to="/register" text="SIGN UP" />

@@ -30,7 +30,7 @@ function SearchBar() {
       />
       {/* Searchbar */}
       <div
-        className="border-color absolute left-1/2 top-2 h-[400px] w-[60%] translate-x-[-50%] rounded-xl border bg-gray-100 p-4"
+        className="bg-color-foreground-dl dark:border-plain-dark-100 absolute left-1/2 top-2 h-[400px] w-[60%] translate-x-[-50%] rounded-xl border-2 border-black p-4"
         onClick={() => setDropdownOpen(false)}
       >
         <div className="flex">
@@ -39,13 +39,13 @@ function SearchBar() {
               e.stopPropagation();
               setDropdownOpen(!dropdownOpen);
             }}
-            className={`${barHeight} border-color w-[150px] rounded-l-lg border bg-gray-200 hover:bg-gray-300`}
+            className={`${barHeight} border-color-dl bg-plain-light-300 dark:bg-plain-dark-200 hover:bg-plain-light-400 hover:dark:bg-plain-dark-300 w-[150px] rounded-l-lg border`}
           >
             {category}
             <FontAwesomeIcon icon={faAngleDown} className="ml-2" />
           </button>
           <div
-            className={`${barHeight} border-color flex flex-1 rounded-r-lg border border-l-0`}
+            className={`${barHeight} border-color-dl flex flex-1 rounded-r-lg border border-l-0`}
           >
             <input
               type="text"
@@ -54,9 +54,9 @@ function SearchBar() {
                 setSearchText(e.target.value)
               }
               value={searchText}
-              className="flex-1 px-2"
+              className="bg-color-input-dl text-color-input-dl flex-1 px-2"
             />
-            <button className="w-10 rounded-r-lg bg-primary-1">
+            <button className="w-10 rounded-r-lg bg-primary-1 dark:bg-primary-2">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
                 size="lg"
@@ -66,7 +66,7 @@ function SearchBar() {
           </div>
         </div>
         {dropdownOpen && (
-          <div className="border-color ml-[-10px] mt-2 w-[170px] rounded-lg border py-2">
+          <div className="border-color-dl bg-plain-light-200 dark:bg-plain-dark-100 ml-[-10px] mt-2 w-[170px] rounded-lg border py-2">
             <ul>
               {categories.map((c, idx) => {
                 return (
