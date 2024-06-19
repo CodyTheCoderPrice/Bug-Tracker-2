@@ -11,25 +11,23 @@ const bugStatusButton = (
   onClick: MouseEventHandler<HTMLButtonElement>,
 ) => {
   return (
-    <div className="flex flex-1 items-center">
-      <button
-        onClick={onClick}
-        className="flex w-[200px] rounded hover:bg-plain-2"
-      >
-        <img src={src} alt={`icon for ${title}`} className="h-[50px] rounded" />
-        <div className="ml-3 flex flex-col text-left">
-          <span>{title}</span>
-          <span className="text-xl">{amount}</span>
-        </div>
-      </button>
-    </div>
+    <button
+      onClick={onClick}
+      className="mr-[50px] flex w-[225px] items-center rounded-lg bg-plain-1 px-4 shadow hover:shadow-lg"
+    >
+      <img src={src} alt={`icon for ${title}`} className="h-[50px] rounded" />
+      <div className="ml-3 flex flex-col text-left">
+        <span>{title}</span>
+        <span className="text-xl">{amount}</span>
+      </div>
+    </button>
   );
 };
 
 function HomePage() {
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mx-10 mt-10 flex h-[80px] rounded bg-plain-1 px-10 shadow">
+      <div className="mx-10 mt-10 flex h-[70px]">
         {bugStatusButton(openBugIcon, "Open Bugs", -1, () => {})}
         {bugStatusButton(inProgressBugIcon, "Bugs in Progress", -1, () => {})}
         {bugStatusButton(inTestingBugIcon, "Bugs in Testing", -1, () => {})}

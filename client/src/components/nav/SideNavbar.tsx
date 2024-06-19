@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import logo from "@/assets/logo_bug_tracker.svg";
 import { toggleNavbarExpanded } from "@/features/system/systemSlice";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import logo from "@/assets/logo_menu.svg";
 import menuHomeIcon from "@/assets/icons/icon_menu_home.svg";
 import menuProjectsIcon from "@/assets/icons/icon_menu_projects.svg";
 import menuBugsIcon from "@/assets/icons/icon_menu_bugs.svg";
@@ -15,7 +15,7 @@ function SideNavbar() {
   return (
     <div
       className={
-        "bg-primary-2 text-gray-50 shadow transition-width" +
+        "shrink-0 bg-primary-2 text-gray-50 shadow transition-width" +
         (navbarExpanded ? " w-[260px]" : " w-[66px]")
       }
     >
@@ -38,7 +38,7 @@ function SideNavbar() {
           <nav className="flex flex-col">
             <Link
               to="/home"
-              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
             >
               <img
                 src={menuHomeIcon}
@@ -49,7 +49,7 @@ function SideNavbar() {
             </Link>
             <Link
               to="/projects"
-              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
             >
               <img
                 src={menuProjectsIcon}
@@ -60,7 +60,7 @@ function SideNavbar() {
             </Link>
             <Link
               to="/bugs"
-              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
             >
               <img
                 src={menuBugsIcon}
@@ -71,7 +71,7 @@ function SideNavbar() {
             </Link>
             <Link
               to="/comments"
-              className="hover:bg-primary-3 text-nowrap py-3 pl-6 text-lg"
+              className="text-nowrap py-3 pl-6 text-lg hover:bg-primary-3"
             >
               Comments
             </Link>
@@ -88,7 +88,7 @@ function SideNavbar() {
           <nav className="flex flex-col">
             <Link
               to="/home"
-              className="hover:bg-primary-3 py-3 text-center text-lg"
+              className="py-3 text-center text-lg hover:bg-primary-3"
             >
               <img
                 src={menuHomeIcon}
@@ -98,7 +98,7 @@ function SideNavbar() {
             </Link>
             <Link
               to="/projects"
-              className="hover:bg-primary-3 py-3 text-center text-lg"
+              className="py-3 text-center text-lg hover:bg-primary-3"
             >
               <img
                 src={menuProjectsIcon}
@@ -108,7 +108,7 @@ function SideNavbar() {
             </Link>
             <Link
               to="/bugs"
-              className="hover:bg-primary-3 py-3 text-center text-lg"
+              className="py-3 text-center text-lg hover:bg-primary-3"
             >
               <img
                 src={menuBugsIcon}

@@ -1,12 +1,12 @@
-import IntroLogo from "@/assets/IntroLogo.svg";
+import IntroLogo from "@/assets/logos/logo_with_black_text_side.svg";
 
 function Intro() {
   return (
-    <div className={"bg-blueGeoBg flex flex-1 justify-center"}>
+    <div className={"flex flex-1 justify-center bg-blueGeoBg"}>
       <img
         src={IntroLogo}
         alt="Bug Tracker Logo"
-        className="invisible mb-[10%] w-[450px] laptop:visible"
+        className="mb-[5%] hidden w-[650px] px-10 laptop:block"
       />
       <div className="pointer-events-none absolute left-[-600px] h-full w-full bg-black/5" />
     </div>

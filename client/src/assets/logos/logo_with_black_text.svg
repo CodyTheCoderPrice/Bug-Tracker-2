@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="167.315mm"
-   height="140.162mm"
-   viewBox="0 0 167.315 140.162"
+   width="631.79401"
+   height="529.74597"
+   viewBox="0 0 167.16216 140.16195"
    version="1.1"
    id="svg5"
    inkscape:export-filename="logo_with_text.png"
@@ -27,9 +27,9 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="0.74564396"
-     inkscape:cx="480.79247"
-     inkscape:cy="276.27127"
+     inkscape:zoom="1.0544998"
+     inkscape:cx="400.6639"
+     inkscape:cy="233.28596"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
      inkscape:window-x="-8"
@@ -41,44 +41,34 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-0.3798256)">
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:6.35px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:start;text-anchor:start;display:inline;fill:#ffffff;stroke:none;stroke-width:0.396875;stroke-linecap:round;stroke-linejoin:round"
-       x="0.13185509"
+       x="0.063565843"
        y="138.82558"
        id="text1087-8"><tspan
          sodipodi:role="line"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.35px;font-family:Arial;-inkscape-font-specification:Arial;text-align:start;text-anchor:start;fill:#000000;stroke-width:0.396875"
-         x="0.13185509"
+         x="0.063565843"
          y="138.82558"
          id="tspan1191-6">Created by Cody Price</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:31.3972px;font-family:Arial;-inkscape-font-specification:'Arial Bold';text-align:start;text-anchor:start;display:inline;fill:#ffffff;stroke:#ffffff;stroke-width:0.794;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       x="-0.49377668"
-       y="107.66759"
-       id="text1087-8-3"><tspan
-         sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:31.3972px;font-family:Impact;-inkscape-font-specification:Impact;text-align:start;text-anchor:start;fill:#000000;stroke:#ffffff;stroke-width:0.794;stroke-dasharray:none;stroke-opacity:1"
-         x="-0.49377668"
-         y="107.66759"
-         id="tspan1191-6-0">BUG TRACKER</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:#000000;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       x="0.18844993"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:none;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       x="0.12016069"
        y="118.13452"
        id="text1271"><tspan
          sodipodi:role="line"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:#000000;stroke-width:0.529167;stroke-dasharray:none;stroke-opacity:1"
-         x="0.18844993"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:Arial;-inkscape-font-specification:'Arial Bold Italic';text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:none;stroke-width:0.529167;stroke-dasharray:none;stroke-opacity:1"
+         x="0.12016069"
          y="118.13452"
          id="tspan1269">FREE ONLINE BUG TRACKING SYSTEM</tspan><tspan
          sodipodi:role="line"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Arial;-inkscape-font-specification:'Arial Italic';text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:#000000;stroke-width:0.529167;stroke-dasharray:none;stroke-opacity:1"
-         x="0.18844993"
-         y="126.95397"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.05556px;font-family:Arial;-inkscape-font-specification:'Arial Bold Italic';text-align:start;text-anchor:start;display:inline;fill:#000000;stroke:none;stroke-width:0.529167;stroke-dasharray:none;stroke-opacity:1"
+         x="0.12016069"
+         y="126.97112"
          id="tspan1273">FOR YOUR SOFTWARE PROJECT NEEDS</tspan></text>
     <g
        transform="matrix(0.45368059,0.22756744,-0.2275648,0.45367532,76.743072,13.096518)"
@@ -116,5 +106,16 @@
        style="display:inline;stroke:#ffffff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        sodipodi:nodetypes="cccccccccccccccccccccccccccccccccc"
        inkscape:label="crosshair" />
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-weight:bold;font-size:31.3972px;font-family:Arial;-inkscape-font-specification:'Arial Bold Italic';text-align:center;text-anchor:middle;fill:#000000;stroke:#ffffff;stroke-width:0.79375;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       x="83.922714"
+       y="106.38535"
+       id="text385"><tspan
+         sodipodi:role="line"
+         id="tspan383"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;font-size:31.3972px;font-family:Impact;-inkscape-font-specification:'Impact Condensed';fill:#000000;stroke:#ffffff;stroke-width:0.79375;stroke-dasharray:none;stroke-opacity:1"
+         x="83.922714"
+         y="106.38535">BUG TRACKER</tspan></text>
   </g>
 </svg>
