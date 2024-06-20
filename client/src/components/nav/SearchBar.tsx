@@ -57,7 +57,7 @@ function SearchBar() {
               value={searchText}
               className="border-color-input-dl bg-color-input-dl text-color-input-dl flex-1 border-2 px-2"
             />
-            <button className="w-10 rounded-r-lg bg-primary-1 dark:bg-primary-1">
+            <button className="bg-primary-100 dark:bg-primary-100 w-10 rounded-r-lg">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
                 size="lg"

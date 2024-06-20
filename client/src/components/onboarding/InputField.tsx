@@ -1,6 +1,6 @@
 import { ChangeEventHandler } from "react";
 
-type Props = {
+type TProps = {
   type: string;
   name: string;
   placeholder: string;
@@ -11,7 +11,7 @@ type Props = {
   className?: string;
 };
 
-function InputField(props: Props) {
+function InputField(props: TProps) {
   return (
     <input
       type={props.type}

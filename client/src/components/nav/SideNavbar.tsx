@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { toggleNavbarExpanded } from "@/features/system/systemSlice";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@/assets/logo_menu.svg";
@@ -10,24 +10,27 @@ import menuBugsIcon from "@/assets/icons/icon_menu_bugs.svg";
 
 function SideNavbar() {
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const { navbarExpanded } = useAppSelector((state) => state.system);
 
   // Shared classNames
   const logoContainerShared = " h-top-bar flex items-center ";
   const navShared = " mt-2 flex flex-col ";
-  const linkExpandedShared =
-    " text-nowrap py-3 pl-6 text-lg hover:bg-primary-3 hover:dark:bg-primary-4 ";
-  const linkMiniShared =
-    " py-3 text-center text-lg hover:bg-primary-3 hover:dark:bg-primary-4 ";
-  const iconShared = "inline-block w-6";
+  const linkShared = " text-lg hover:bg-primary-300 hover:dark:bg-primary-400 ";
+  const linkExpandedShared = " text-nowrap py-3 pl-6" + linkShared;
+  const linkMiniShared = " py-3 text-center" + linkShared;
+  const linkSelectedShared = (path: string) => {
+    return location.pathname === path ? " text-secondary-100 " : "";
+  };
+  const iconShared = " inline-block w-6 ";
   const iconExpandedShared = " mr-3 " + iconShared;
   const iconMiniShared = " " + iconShared;
 
   return (
     <div
       className={
-        "shrink-0 bg-primary-2 text-gray-50 shadow transition-width dark:bg-primary-3" +
+        "bg-primary-200 dark:bg-primary-300 shrink-0 text-gray-50 shadow transition-width" +
         (navbarExpanded ? " w-[260px]" : " w-[66px]")
       }
     >
@@ -48,7 +51,10 @@ function SideNavbar() {
             </button>
           </div>
           <nav className={navShared}>
-            <Link to="/home" className={linkExpandedShared}>
+            <Link
+              to="/home"
+              className={linkExpandedShared + linkSelectedShared("/home")}
+            >
               <img
                 src={menuHomeIcon}
                 alt="home icon"
@@ -56,7 +62,10 @@ function SideNavbar() {
               />
               Home
             </Link>
-            <Link to="/projects" className={linkExpandedShared}>
+            <Link
+              to="/projects"
+              className={linkExpandedShared + linkSelectedShared("/projects")}
+            >
               <img
                 src={menuProjectsIcon}
                 alt="projects icon"
@@ -64,7 +73,10 @@ function SideNavbar() {
               />
               Projects
             </Link>
-            <Link to="/bugs" className={linkExpandedShared}>
+            <Link
+              to="/bugs"
+              className={linkExpandedShared + linkSelectedShared("/bugs")}
+            >
               <img
                 src={menuBugsIcon}
                 alt="bugs icon"
@@ -72,7 +84,10 @@ function SideNavbar() {
               />
               Bugs
             </Link>
-            <Link to="/comments" className={linkExpandedShared}>
+            <Link
+              to="/comments"
+              className={linkExpandedShared + linkSelectedShared("/comments")}
+            >
               Comments
             </Link>
           </nav>
@@ -86,21 +101,30 @@ function SideNavbar() {
             </button>
           </div>
           <nav className={navShared}>
-            <Link to="/home" className={linkMiniShared}>
+            <Link
+              to="/home"
+              className={linkMiniShared + linkSelectedShared("/home")}
+            >
               <img
                 src={menuHomeIcon}
                 alt="home icon"
                 className={iconMiniShared}
               />
             </Link>
-            <Link to="/projects" className={linkMiniShared}>
+            <Link
+              to="/projects"
+              className={linkMiniShared + linkSelectedShared("/projects")}
+            >
               <img
                 src={menuProjectsIcon}
                 alt="projects icon"
                 className={iconMiniShared}
               />
             </Link>
-            <Link to="/bugs" className={linkMiniShared}>
+            <Link
+              to="/bugs"
+              className={linkMiniShared + linkSelectedShared("/bugs")}
+            >
               <img
                 src={menuBugsIcon}
                 alt="bugs icon"

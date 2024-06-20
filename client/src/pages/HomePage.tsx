@@ -49,7 +49,7 @@ function HomePage() {
     // Shared classNames
     const buttonShared = " border-color-dl border px-4 py-[1px] ";
     return (
-      <div className="mt-6 font-medium text-primary-2 dark:text-plain-light-100">
+      <div className="text-primary-200 mt-6 font-medium dark:text-plain-light-100">
         <button
           onClick={() => {
             setFilterFunc(0);
@@ -57,7 +57,7 @@ function HomePage() {
           className={
             buttonShared +
             "rounded-l" +
-            (filterSelected === 0 ? " bg-primary-1 text-white" : "")
+            (filterSelected === 0 ? " bg-primary-100 text-white" : "")
           }
         >
           All
@@ -69,7 +69,7 @@ function HomePage() {
           className={
             buttonShared +
             "border-l-0" +
-            (filterSelected === 1 ? " bg-primary-1 text-white" : "")
+            (filterSelected === 1 ? " bg-primary-100 text-white" : "")
           }
         >
           This Week
@@ -81,7 +81,7 @@ function HomePage() {
           className={
             buttonShared +
             "rounded-r border-l-0" +
-            (filterSelected === 2 ? " bg-primary-1 text-white" : "")
+            (filterSelected === 2 ? " bg-primary-100 text-white" : "")
           }
         >
           This Month
@@ -113,7 +113,7 @@ function HomePage() {
                 >
                   <td
                     onClick={() => {}}
-                    className="cursor-pointer px-4 py-2 font-medium text-primary-2 hover:underline dark:text-secondary-1"
+                    className="text-primary-200 dark:text-secondary-200 cursor-pointer px-4 py-2 font-medium hover:underline"
                   >
                     {bug.name}
                   </td>

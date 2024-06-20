@@ -30,7 +30,7 @@ body,
   @apply border-plain-light-300 dark:border-plain-dark-100
 }
 .border-color-input-dl {
-  @apply border-color-dl focus:border-blue-500 dark:focus:border-secondary-1 focus:outline-none
+  @apply border-color-dl focus:border-blue-500 dark:focus:border-secondary-200 focus:outline-none
 }
 .border-color-table-row-dl {
   @apply border-plain-light-300 dark:border-plain-dark-300

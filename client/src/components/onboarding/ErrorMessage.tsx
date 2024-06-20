@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-type Props = {
+type TProps = {
   message: string | undefined;
   className?: string;
 };
 
-function ErrorMessage(props: Props) {
+function ErrorMessage(props: TProps) {
   return (
     <>
       {props.message && (
