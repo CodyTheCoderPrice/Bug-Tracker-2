@@ -55,7 +55,7 @@ function SearchBar() {
                 setSearchText(e.target.value)
               }
               value={searchText}
-              className="border-color-input-dl bg-color-input-dl text-color-input-dl flex-1 border-2 px-2"
+              className="border-color-dl dark:focus:border-secondary-200 bg-color-input-dl text-color-input-dl flex-1 border-2 px-2 focus:border-blue-500 focus:outline-none"
             />
             <button className="bg-primary-100 dark:bg-primary-100 w-10 rounded-r-lg">
               <FontAwesomeIcon
