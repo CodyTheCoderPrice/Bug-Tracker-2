@@ -30,7 +30,7 @@ const rootReducer = (state: any, action: any) => {
 const persistConfig = getPersistConfig({
   key: "root",
   storage,
-  whitelist: ["auth.isLoggedIn"],
+  whitelist: ["auth.isLoggedIn", "system"],
   rootReducer,
 });
 
