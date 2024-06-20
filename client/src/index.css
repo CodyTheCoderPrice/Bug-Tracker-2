@@ -40,6 +40,9 @@ body,
 .text-color-input-dl {
   @apply dark:placeholder:text-plain-light-500
 }
+.text-color-warning-dl {
+  @apply text-warning-red-light dark:text-warning-red-dark
+}
 
 .h-top-bar {
   @apply h-[60px]

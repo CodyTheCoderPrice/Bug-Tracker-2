@@ -122,7 +122,11 @@ function HomePage() {
                     {bug.name}
                   </td>
                   <td className="px-4 py-2">{bug.project}</td>
-                  <td className="px-4 py-2">
+                  <td
+                    className={
+                      "px-4 py-2" + (!isDueSoon ? " text-color-warning-dl" : "")
+                    }
+                  >
                     {bug.due_date !== null
                       ? moment.utc(bug.due_date).format("MM-DD-YYYY")
                       : "-"}

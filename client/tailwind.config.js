@@ -34,7 +34,8 @@ module.exports = {
         "plain-dark-400": "#202936",
         "plain-dark-500": "#11171e",
         // Other
-        "error-red": "#f02849",
+        "warning-red-light": "#f02849",
+        "warning-red-dark": "#DC3F59",
       },
     },
     screens: {

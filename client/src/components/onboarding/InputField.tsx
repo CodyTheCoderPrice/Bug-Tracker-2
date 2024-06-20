@@ -24,7 +24,7 @@ function InputField(props: TProps) {
         "border-gray mt-6 block w-full rounded border border-solid p-2 " +
         props.className +
         (props.hasError
-          ? " border-error-red focus:outline focus:outline-1 focus:outline-error-red"
+          ? " border-warning-red-light focus:outline-warning-red-light focus:outline focus:outline-1"
           : " border-gray-400")
       }
     />
