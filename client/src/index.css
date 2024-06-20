@@ -18,6 +18,9 @@ body,
 .bg-color-foreground-dl {
   @apply bg-plain-light-100 dark:bg-plain-dark-400
 }
+.bg-color-foreground-hover-dl {
+  @apply bg-color-foreground-dl hover:bg-plain-light-200 dark:hover:bg-plain-dark-300
+}
 .bg-color-input-dl {
   @apply bg-white dark:bg-plain-dark-100
 }
@@ -27,7 +30,10 @@ body,
   @apply border-plain-light-300 dark:border-plain-dark-100
 }
 .border-color-input-dl {
-  @apply border-color-dl focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none
+  @apply border-color-dl focus:border-blue-500 dark:focus:border-secondary-1 focus:outline-none
+}
+.border-color-table-row-dl {
+  @apply border-plain-light-300 dark:border-plain-dark-300
 }
 
 /* Text color dark/light */

@@ -35,7 +35,7 @@ function TopBar() {
             onClick={() => {
               dispatch(toggleSearchBar());
             }}
-            className="bg-plain-light-200 dark:bg-plain-dark-300 ml-5 mr-6 h-full w-[100px] cursor-pointer rounded border border-black px-10 py-1"
+            className="ml-5 mr-6 h-full w-[100px] cursor-pointer rounded border border-black bg-plain-light-200 px-10 py-1 dark:bg-plain-dark-300"
           >
             Search...
           </span>

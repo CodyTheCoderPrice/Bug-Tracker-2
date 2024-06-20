@@ -24,7 +24,7 @@ function HomePage() {
     return (
       <button
         onClick={onClick}
-        className="bg-color-foreground-dl mr-[50px] flex w-[225px] items-center rounded-lg px-4 shadow hover:shadow-lg"
+        className="bg-color-foreground-hover-dl mr-[50px] flex w-[225px] items-center rounded-lg px-4 shadow"
       >
         <img src={src} alt={`icon for ${title}`} className="h-[50px] rounded" />
         <div className="ml-3 flex flex-col text-left">
@@ -46,14 +46,17 @@ function HomePage() {
     const filterSelected = forDueSoon
       ? dueFilterSelected
       : overdueFilterSelected;
+    // Shared classNames
+    const buttonShared = " border-color-dl border px-4 py-[1px] ";
     return (
-      <div className="dark:text-plain-light-100 mt-6 font-medium text-primary-2">
+      <div className="mt-6 font-medium text-primary-2 dark:text-plain-light-100">
         <button
           onClick={() => {
             setFilterFunc(0);
           }}
           className={
-            "border-color-dl rounded-l border px-4 py-[1px]" +
+            buttonShared +
+            "rounded-l" +
             (filterSelected === 0 ? " bg-primary-1 text-white" : "")
           }
         >
@@ -64,7 +67,8 @@ function HomePage() {
             setFilterFunc(1);
           }}
           className={
-            "border-color-dl border border-l-0 px-4 py-[1px]" +
+            buttonShared +
+            "border-l-0" +
             (filterSelected === 1 ? " bg-primary-1 text-white" : "")
           }
         >
@@ -75,7 +79,8 @@ function HomePage() {
             setFilterFunc(2);
           }}
           className={
-            "border-color-dl rounded-r border border-l-0 px-4 py-[1px]" +
+            buttonShared +
+            "rounded-r border-l-0" +
             (filterSelected === 2 ? " bg-primary-1 text-white" : "")
           }
         >
@@ -93,7 +98,7 @@ function HomePage() {
       <div className="mt-4 flex-grow">
         <table className="w-full">
           <thead>
-            <tr className="bg-plain-light-500 dark:bg-plain-dark-500 text-left">
+            <tr className="bg-plain-light-500 text-left dark:bg-plain-dark-500">
               <th className="w-[40%] px-4">BUG</th>
               <th className="w-[40%] px-4">PROJECT</th>
               <th className="w-[20%] px-4">DUE DATE</th>
@@ -104,11 +109,11 @@ function HomePage() {
               return (
                 <tr
                   key={idx}
-                  className="hover:bg-plain-light-200 hover:dark:bg-plain-dark-300 border-plain-light-300 border-b"
+                  className="border-color-table-row-dl border-b hover:bg-plain-light-200 hover:dark:bg-plain-dark-300"
                 >
                   <td
                     onClick={() => {}}
-                    className="dark:text-plain-light-100 cursor-pointer px-4 py-2 font-medium text-primary-2 hover:underline"
+                    className="cursor-pointer px-4 py-2 font-medium text-primary-2 hover:underline dark:text-secondary-1"
                   >
                     {bug.name}
                   </td>
