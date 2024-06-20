@@ -24,7 +24,10 @@ body,
 
 /* Border color dark/light */
 .border-color-dl {
-  @apply border-plain-light-400 dark:border-plain-dark-100
+  @apply border-plain-light-300 dark:border-plain-dark-100
+}
+.border-color-input-dl {
+  @apply border-color-dl focus:border-blue-500 dark:focus:border-blue-400 focus:outline-none
 }
 
 /* Text color dark/light */

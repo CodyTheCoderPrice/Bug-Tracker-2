@@ -14,14 +14,14 @@ function SideNavbar() {
   const { navbarExpanded } = useAppSelector((state) => state.system);
 
   // Shared classNames
-  const logoContainerShared = "h-top-bar flex items-center";
-  const navShared = "mt-2 flex flex-col";
+  const logoContainerShared = " h-top-bar flex items-center ";
+  const navShared = " mt-2 flex flex-col ";
   const linkExpandedShared =
-    "text-nowrap py-3 pl-6 text-lg hover:bg-primary-3 hover:dark:bg-primary-4 ";
+    " text-nowrap py-3 pl-6 text-lg hover:bg-primary-3 hover:dark:bg-primary-4 ";
   const linkMiniShared =
-    "py-3 text-center text-lg hover:bg-primary-3 hover:dark:bg-primary-4";
+    " py-3 text-center text-lg hover:bg-primary-3 hover:dark:bg-primary-4 ";
   const iconShared = "inline-block w-6";
-  const iconExpandedShared = "mr-3 " + iconShared;
+  const iconExpandedShared = " mr-3 " + iconShared;
   const iconMiniShared = " " + iconShared;
 
   return (
