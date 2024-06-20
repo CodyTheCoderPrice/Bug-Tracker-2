@@ -6,7 +6,11 @@ import inTestingBugIcon from "@/assets/icons/icon_bug_testing.svg";
 import closedBugIcon from "@/assets/icons/icon_bug_closed.svg";
 import { useAppSelector } from "@/app/hooks";
 import moment from "moment";
-import { filterDueBugs, filterOverdueBugs } from "@/utils/filterUtils";
+import {
+  getNumBugsByStatus,
+  filterDueBugs,
+  filterOverdueBugs,
+} from "@/utils/filterUtils";
 
 export type TFilter = 0 | 1 | 2;
 
@@ -141,10 +145,30 @@ function HomePage() {
   return (
     <div className="flex flex-1 flex-col">
       <div className="mx-10 mt-10 flex h-[70px]">
-        {bugStatusButton(openBugIcon, "Open Bugs", -1, () => {})}
-        {bugStatusButton(inProgressBugIcon, "Bugs in Progress", -1, () => {})}
-        {bugStatusButton(inTestingBugIcon, "Bugs in Testing", -1, () => {})}
-        {bugStatusButton(closedBugIcon, "Closed Bugs", -1, () => {})}
+        {bugStatusButton(
+          openBugIcon,
+          "Open Bugs",
+          getNumBugsByStatus(bugs, 1),
+          () => {},
+        )}
+        {bugStatusButton(
+          inProgressBugIcon,
+          "Bugs in Progress",
+          getNumBugsByStatus(bugs, 2),
+          () => {},
+        )}
+        {bugStatusButton(
+          inTestingBugIcon,
+          "Bugs in Testing",
+          getNumBugsByStatus(bugs, 3),
+          () => {},
+        )}
+        {bugStatusButton(
+          closedBugIcon,
+          "Closed Bugs",
+          getNumBugsByStatus(bugs, 4),
+          () => {},
+        )}
       </div>
       <div className="mx-10 mb-10 mt-6 flex grow">
         <div className={bugTableContainerShared + " mr-5"}>
