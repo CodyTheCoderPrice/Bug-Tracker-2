@@ -1,5 +1,5 @@
 import { TBug } from "@/features/bugs/bugSlice";
-import { TFilter } from "@/pages/HomePage";
+import { TFilter } from "@/components/home/BugDueDatePanels";
 import moment from "moment";
 
 export const getNumBugsByStatus = (

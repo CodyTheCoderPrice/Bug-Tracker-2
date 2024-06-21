@@ -1,27 +1,17 @@
 import { MouseEventHandler } from "react";
 import { useAppSelector } from "@/app/hooks";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 import { getNumBugsByStatus } from "@/utils/filterUtils";
 import openBugIcon from "@/assets/icons/icon_bug_open.svg";
 import inProgressBugIcon from "@/assets/icons/icon_bug_progress.svg";
 import inTestingBugIcon from "@/assets/icons/icon_bug_testing.svg";
 import closedBugIcon from "@/assets/icons/icon_bug_closed.svg";
 
-function BugStatusButtons() {
-  const { bugs } = useAppSelector((state) => state.bugs);
-  const { width } = useWindowDimensions();
+type TProps = {
+  shouldExpand: boolean;
+};
 
-  // Shared classNames
-  const statusButtonShared =
-    " mb-[20px] bg-color-foreground-hover-dl flex items-center rounded-lg shadow  h-[65px] ";
-  const statusButtonsExpandedShared = statusButtonShared + " px-4 w-[210px] ";
-  const statusButtonMiniShared =
-    statusButtonShared + " pr-4 pl-1 w-[160px] border-l-[16px] ";
-  const statusButtonMarginR = " mr-[30px] ";
-  const statusImgShared = " h-[48px] rounded ";
-  const statusDivShared = " ml-3 flex flex-col text-left ";
-  const statusAmountShared = " text-xl ";
-  const statusTitleShared = " text-sm ";
+function BugStatusButtons(props: TProps) {
+  const { bugs } = useAppSelector((state) => state.bugs);
 
   const getRibbonColor = (statusCode: 1 | 2 | 3 | 4) => {
     switch (statusCode) {
@@ -44,29 +34,31 @@ function BugStatusButtons() {
     title: string,
     statusCode: 1 | 2 | 3 | 4,
   ) => {
-    const shouldExpand = width > 1270;
     return (
       <button
         onClick={onClick}
         className={
-          (statusCode !== 4 ? statusButtonMarginR : "") +
-          (shouldExpand
-            ? statusButtonsExpandedShared
-            : statusButtonMiniShared + getRibbonColor(statusCode))
+          "bg-color-foreground-hover-dl mb-[20px] flex h-[65px] items-center rounded-lg shadow" +
+          (statusCode !== 4 ? " mr-[30px]" : "") +
+          " " +
+          (props.shouldExpand
+            ? " w-[210px] px-4"
+            : "w-[160px] border-l-[16px] pl-1 pr-4" +
+              getRibbonColor(statusCode))
         }
       >
-        {shouldExpand && (
+        {props.shouldExpand && (
           <img
             src={icon}
             alt={"icon for " + title}
-            className={statusImgShared}
+            className="h-[48px] rounded"
           />
         )}
-        <div className={statusDivShared}>
-          <span className={statusAmountShared}>
+        <div className="ml-3 flex flex-col text-left">
+          <span className="text-xl">
             {getNumBugsByStatus(bugs, statusCode)}
           </span>
-          <span className={statusTitleShared}>{title}</span>
+          <span className="text-sm">{title}</span>
         </div>
       </button>
     );
