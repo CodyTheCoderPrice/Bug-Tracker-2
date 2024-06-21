@@ -6,7 +6,11 @@ import { SetStateAction, useState, Dispatch } from "react";
 
 export type TFilter = 0 | 1 | 2;
 
-function BugDueDatePanels() {
+type TProps = {
+  shouldExpand: boolean;
+};
+
+function BugDueDatePanels(props: TProps) {
   const [dueFilterSelected, setDueFilterSelected] = useState<TFilter>(0);
   const [overdueFilterSelected, setOverdueFilterSelected] =
     useState<TFilter>(0);
@@ -115,13 +119,26 @@ function BugDueDatePanels() {
     " bg-color-foreground-dl flex flex-1 flex-col rounded p-6 shadow ";
 
   return (
-    <div className="mx-10 mb-10 mt-1 flex grow">
-      <div className={bugTableContainerShared + " mr-5"}>
+    <div
+      className={
+        "mx-10 mb-10 mt-1 flex" +
+        (props.shouldExpand ? " flex-grow" : " flex-col")
+      }
+    >
+      <div
+        className={
+          bugTableContainerShared + (props.shouldExpand ? " mr-5" : "")
+        }
+      >
         {titleHeader("Bugs Due Soon")}
         {filterButtons(setDueFilterSelected, true)}
         {bugTable(bugs, true)}
       </div>
-      <div className={bugTableContainerShared + " ml-5"}>
+      <div
+        className={
+          bugTableContainerShared + (props.shouldExpand ? " ml-5" : " mt-5")
+        }
+      >
         {titleHeader("Overdue Bugs")}
         {filterButtons(setOverdueFilterSelected, false)}
         {bugTable(bugs, false)}

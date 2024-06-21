@@ -30,7 +30,7 @@ function SideNavbar() {
   return (
     <div
       className={
-        "bg-primary-200 dark:bg-primary-300 shrink-0 text-gray-50 shadow transition-width" +
+        "shrink-0 overflow-visible bg-primary-200 text-gray-50 shadow transition-width dark:bg-primary-300" +
         (navbarExpanded ? " w-[260px]" : " w-[66px]")
       }
     >

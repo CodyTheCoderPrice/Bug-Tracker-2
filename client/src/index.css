@@ -12,6 +12,7 @@ body,
   height: 100%;
   width: 100%;
   font-family: "Inter", sans-serif;
+  overflow: hidden;
 }
 
 /* BG color dark/light */

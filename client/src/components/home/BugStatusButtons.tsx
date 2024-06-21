@@ -39,11 +39,11 @@ function BugStatusButtons(props: TProps) {
         onClick={onClick}
         className={
           "bg-color-foreground-hover-dl mb-[20px] flex h-[65px] items-center rounded-lg shadow" +
-          (statusCode !== 4 ? " mr-[30px]" : "") +
+          (statusCode !== 4 ? " mr-[25px]" : "") +
           " " +
           (props.shouldExpand
             ? " w-[210px] px-4"
-            : "w-[160px] border-l-[16px] pl-1 pr-4" +
+            : "w-[145px] border-l-[16px] pl-1 pr-4" +
               getRibbonColor(statusCode))
         }
       >
@@ -58,7 +58,9 @@ function BugStatusButtons(props: TProps) {
           <span className="text-xl">
             {getNumBugsByStatus(bugs, statusCode)}
           </span>
-          <span className="text-sm">{title}</span>
+          <span className={props.shouldExpand ? "text-sm" : "text-xs"}>
+            {title}
+          </span>
         </div>
       </button>
     );
