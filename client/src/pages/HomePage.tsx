@@ -4,7 +4,7 @@ import BugDueDatePanels from "@/components/home/BugDueDatePanels";
 
 function HomePage() {
   const { width } = useWindowSize();
-  const shouldExpand = width > 1260;
+  const shouldExpand = width > 1275;
 
   return (
     <div className="flex flex-1 flex-col overflow-auto">
