@@ -36,12 +36,18 @@ module.exports = {
         // Other
         "warning-red-light": "#f02849",
         "warning-red-dark": "#DC3F59",
+        "open-icon-red": "#c83737",
+        "progress-icon-orange": "#ff7f2a",
+        "testing-icon-teal": "#008080",
+        "closed-icon-green": "#217844",
       },
     },
     screens: {
       tablet: "640px",
       laptop: "1024px",
       desktop: "1280px",
+      // Custom
+      homePageBP: "1000px",
     },
     transitionProperty: {
       width: "width",

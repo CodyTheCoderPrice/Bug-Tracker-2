@@ -1,16 +1,9 @@
-import { MouseEventHandler, SetStateAction, useState, Dispatch } from "react";
-import { TBug } from "@/features/bugs/bugSlice";
-import openBugIcon from "@/assets/icons/icon_bug_open.svg";
-import inProgressBugIcon from "@/assets/icons/icon_bug_progress.svg";
-import inTestingBugIcon from "@/assets/icons/icon_bug_testing.svg";
-import closedBugIcon from "@/assets/icons/icon_bug_closed.svg";
 import { useAppSelector } from "@/app/hooks";
+import { SetStateAction, useState, Dispatch } from "react";
+import { TBug } from "@/features/bugs/bugSlice";
+import BugStatusButtons from "@/components/home/BugStatusButtons";
 import moment from "moment";
-import {
-  getNumBugsByStatus,
-  filterDueBugs,
-  filterOverdueBugs,
-} from "@/utils/filterUtils";
+import { filterDueBugs, filterOverdueBugs } from "@/utils/filterUtils";
 
 export type TFilter = 0 | 1 | 2;
 
@@ -18,26 +11,6 @@ function HomePage() {
   const [dueFilterSelected, setDueFilterSelected] = useState<TFilter>(0);
   const [overdueFilterSelected, setOverdueFilterSelected] =
     useState<TFilter>(0);
-
-  const bugStatusButton = (
-    src: string,
-    title: string,
-    amount: number,
-    onClick: MouseEventHandler<HTMLButtonElement>,
-  ) => {
-    return (
-      <button
-        onClick={onClick}
-        className="bg-color-foreground-hover-dl mr-[50px] flex w-[225px] items-center rounded-lg px-4 shadow"
-      >
-        <img src={src} alt={`icon for ${title}`} className="h-[50px] rounded" />
-        <div className="ml-3 flex flex-col text-left">
-          <span>{title}</span>
-          <span className="text-xl">{amount}</span>
-        </div>
-      </button>
-    );
-  };
 
   const titleHeader = (title: string) => {
     return <h2 className="text-xl font-semibold">{title}</h2>;
@@ -53,7 +26,7 @@ function HomePage() {
     // Shared classNames
     const buttonShared = " border-color-dl border px-4 py-[1px] ";
     return (
-      <div className="text-primary-200 mt-6 font-medium dark:text-plain-light-100">
+      <div className="mt-6 font-medium text-primary-200 dark:text-plain-light-100">
         <button
           onClick={() => {
             setFilterFunc(0);
@@ -99,7 +72,7 @@ function HomePage() {
       ? filterDueBugs(bugList, dueFilterSelected)
       : filterOverdueBugs(bugList, overdueFilterSelected);
     return (
-      <div className="mt-4 flex-grow">
+      <div className="mt-4">
         <table className="w-full">
           <thead>
             <tr className="bg-plain-light-500 text-left dark:bg-plain-dark-500">
@@ -117,16 +90,12 @@ function HomePage() {
                 >
                   <td
                     onClick={() => {}}
-                    className="text-primary-200 dark:text-secondary-200 cursor-pointer px-4 py-2 font-medium hover:underline"
+                    className="text-color-primary-dl cursor-pointer px-4 py-2 font-medium hover:underline"
                   >
                     {bug.name}
                   </td>
                   <td className="px-4 py-2">{bug.project}</td>
-                  <td
-                    className={
-                      "px-4 py-2" + (!isDueSoon ? " text-color-warning-dl" : "")
-                    }
-                  >
+                  <td className={"px-4 py-2"}>
                     {bug.due_date !== null
                       ? moment.utc(bug.due_date).format("MM-DD-YYYY")
                       : "-"}
@@ -144,37 +113,12 @@ function HomePage() {
 
   // Shared classNames
   const bugTableContainerShared =
-    "bg-color-foreground-dl flex flex-1 flex-col rounded p-6 shadow";
+    " bg-color-foreground-dl flex flex-1 flex-col rounded p-6 shadow ";
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mx-10 mt-10 flex h-[70px]">
-        {bugStatusButton(
-          openBugIcon,
-          "Open Bugs",
-          getNumBugsByStatus(bugs, 1),
-          () => {},
-        )}
-        {bugStatusButton(
-          inProgressBugIcon,
-          "Bugs in Progress",
-          getNumBugsByStatus(bugs, 2),
-          () => {},
-        )}
-        {bugStatusButton(
-          inTestingBugIcon,
-          "Bugs in Testing",
-          getNumBugsByStatus(bugs, 3),
-          () => {},
-        )}
-        {bugStatusButton(
-          closedBugIcon,
-          "Closed Bugs",
-          getNumBugsByStatus(bugs, 4),
-          () => {},
-        )}
-      </div>
-      <div className="mx-10 mb-10 mt-6 flex grow">
+      <BugStatusButtons />
+      <div className="mx-10 mb-10 mt-1 flex grow">
         <div className={bugTableContainerShared + " mr-5"}>
           {titleHeader("Bugs Due Soon")}
           {filterButtons(setDueFilterSelected, true)}
