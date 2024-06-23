@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { register } from "./registerSlice";
 import Header from "@/components/onboarding/Header";
 import InputField from "@/components/onboarding/InputField";
@@ -8,6 +9,7 @@ import SubmitButton from "@/components/onboarding/SubmitButton";
 
 function Register() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [registerInfo, setRegisterInfo] = useState({
     first_name: "",
@@ -25,9 +27,13 @@ function Register() {
     dispatch(register(registerInfo));
   };
 
-  const { loading, success, errors } = useAppSelector(
-    (state) => state.register,
-  );
+  const { success, errors } = useAppSelector((state) => state.register);
+
+  useEffect(() => {
+    if (success) {
+      navigate("/login");
+    }
+  }, [success]);
 
   return (
     <>

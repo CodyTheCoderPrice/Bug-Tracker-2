@@ -52,6 +52,8 @@ const registerSlice = createSlice({
   initialState,
   reducers: {
     clearRegisterErrors: (state) => {
+      state.loading = false;
+      state.success = false;
       state.errors = null;
     },
   },

@@ -73,6 +73,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     clearAuthErrors: (state) => {
+      state.loading = false;
       state.errors = null;
     },
   },
