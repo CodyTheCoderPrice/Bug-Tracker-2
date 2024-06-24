@@ -44,6 +44,7 @@ type TInitialState = {
   updateNameSuccess: boolean;
   updateEmailSuccess: boolean;
   updatePasswordSuccess: boolean;
+  deleteAccountSuccess: boolean;
   updateNameErrors: TUpdateNameError | null;
   updateEmailErrors: TUpdateEmailError | null;
   updatePasswordErrors: TUpdatePasswordError | null;
@@ -59,6 +60,7 @@ const initialState: TInitialState = {
   updateNameSuccess: false,
   updateEmailSuccess: false,
   updatePasswordSuccess: false,
+  deleteAccountSuccess: false,
   updateNameErrors: null,
   updateEmailErrors: null,
   updatePasswordErrors: null,
@@ -230,15 +232,18 @@ const accountSlice = createSlice({
     // Delete account
     builder.addCase(deleteAccount.pending, (state) => {
       state.deleteAccountLoading = true;
+      state.deleteAccountSuccess = false;
       state.deleteAccountErrors = null;
     });
     builder.addCase(deleteAccount.fulfilled, (state) => {
       state.deleteAccountLoading = false;
       state.account = null;
+      state.deleteAccountSuccess = true;
       state.deleteAccountErrors = null;
     });
     builder.addCase(deleteAccount.rejected, (state, action: any) => {
       state.deleteAccountLoading = false;
+      state.deleteAccountSuccess = false;
       state.deleteAccountErrors = action.payload;
     });
   },

@@ -5,7 +5,7 @@ import Intro from "@/components/onboarding/Intro";
 import Login from "@/features/auth/Login";
 import Divider from "@/components/onboarding/Divider";
 import LinkButton from "@/components/onboarding/LinkButton";
-import CreationMessage from "@/components/onboarding/CreationMessage";
+import PopUpMessages from "@/components/onboarding/PopUpMessages";
 
 function LoginPage() {
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ function LoginPage() {
     <div className="flex h-full">
       <Intro />
       <div className="w-[600px] bg-plain-light-100 p-12 shadow-md">
-        <CreationMessage />
+        <PopUpMessages />
         <Login />
         <Divider text="OR" />
         <LinkButton to="/register" text="SIGN UP" />
