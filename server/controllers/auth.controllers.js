@@ -31,8 +31,8 @@ const login = async (req, res, next) => {
 		);
 
 		if (idAndHashPass.rowCount === 0) {
-			throw new CustomError('Email unregistered', 401, {
-				errors: { email: 'Email unregistered' },
+			throw new CustomError('Account not found', 401, {
+				errors: { email: 'Account not found' },
 			});
 		}
 

@@ -11,8 +11,8 @@ import ProjectsPage from "@/pages/ProjectsPage";
 import CommentsPage from "@/pages/CommentsPage";
 import BugsPage from "@/pages/BugsPage";
 import NotFoundPage from "@/pages/NotFoundPage";
-import ProtectedRoutes from "@/components/ProtectedRoutes";
-import UnprotectedRoutes from "@/components/UnprotectedRoutes";
+import ProtectedRoutes from "@/components/routes/ProtectedRoutes";
+import UnprotectedRoutes from "@/components/routes/UnprotectedRoutes";
 
 function App() {
   const dispatch = useAppDispatch();

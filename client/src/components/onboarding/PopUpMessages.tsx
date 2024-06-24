@@ -47,7 +47,7 @@ function PopUpMessages() {
 
   // Shared ClassNames
   const messageContainerShared =
-    " absolute top-0 h-[50px] w-[300px] rounded-b text-center align-middle text-lg font-medium leading-[50px] text-white shadow-lg transition-right duration-300 ";
+    " absolute top-0 h-[50px] w-[300px] rounded text-center align-middle text-lg font-medium leading-[50px] text-white shadow-lg transition-right duration-300 ";
 
   return (
     <>
