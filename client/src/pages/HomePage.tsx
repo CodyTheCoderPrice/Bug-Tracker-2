@@ -1,10 +1,12 @@
 import useWindowSize from "@/hooks/useWindowSize";
 import BugStatusButtons from "@/components/home/BugStatusButtons";
 import BugDueDatePanels from "@/components/home/BugDueDatePanels";
+import { useAppSelector } from "@/app/hooks";
 
 function HomePage() {
+  const { navbarExpanded } = useAppSelector((state) => state.system);
   const { width } = useWindowSize();
-  const shouldExpand = width > 1275;
+  const shouldExpand = width > (navbarExpanded ? 1275 : 1080);
 
   return (
     <div className="flex flex-1 flex-col overflow-auto">
