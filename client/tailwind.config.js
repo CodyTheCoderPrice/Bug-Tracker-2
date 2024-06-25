@@ -8,19 +8,17 @@ module.exports = {
       },
       colors: {
         // Primary
-        "primary-100": "#466979",
-        "primary-200": "#355166",
-        "primary-300": "#283d4c",
-        "primary-400": "#1e2e39",
+        "primary-100": "#527a8c",
+        "primary-200": "#466979",
+        "primary-300": "#355166",
+        "primary-400": "#283d4c",
+        "primary-500": "#1e2e39",
         // Secondary
         "secondary-100": "#A7CEDE",
         "secondary-200": "#9BBECB",
         "secondary-300": "#89a7b3",
         "secondary-400": "#6595a8",
         "secondary-500": "#527e90",
-        // Tertiary
-        "tertiary-100": "#668299",
-        "tertiary-200": "#355166",
         // Plain light
         "plain-light-100": "#F9FAFB",
         "plain-light-200": "#eeeeee",

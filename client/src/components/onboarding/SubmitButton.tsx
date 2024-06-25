@@ -6,7 +6,7 @@ function SubmitButton(props: TProps) {
   return (
     <button
       type="submit"
-      className="bg-primary-100 hover:bg-primary-200 mx-auto mt-10 block w-[95%] rounded-lg px-4 py-2 text-white"
+      className="mx-auto mt-10 block w-[95%] rounded-lg bg-primary-200 px-4 py-2 text-white hover:bg-primary-300"
     >
       {props.text}
     </button>

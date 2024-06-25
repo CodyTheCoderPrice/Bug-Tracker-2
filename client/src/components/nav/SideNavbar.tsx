@@ -17,7 +17,7 @@ function SideNavbar() {
   // Shared classNames
   const logoContainerShared = " h-top-bar flex items-center ";
   const navShared = " mt-2 flex flex-col ";
-  const linkShared = " text-lg hover:bg-primary-300 hover:dark:bg-primary-400 ";
+  const linkShared = " text-lg hover:bg-primary-400 hover:dark:bg-primary-500 ";
   const linkExpandedShared = " text-nowrap py-3 pl-6" + linkShared;
   const linkMiniShared = " py-3 text-center" + linkShared;
   const linkSelectedShared = (path: string) => {
@@ -30,7 +30,7 @@ function SideNavbar() {
   return (
     <div
       className={
-        "shrink-0 overflow-visible bg-primary-200 text-gray-50 shadow transition-width duration-200 dark:bg-primary-300" +
+        "shrink-0 overflow-visible bg-primary-300 text-gray-50 shadow transition-width duration-200 dark:bg-primary-400" +
         (navbarExpanded ? " w-[260px]" : " w-[66px]")
       }
     >

@@ -1,8 +1,14 @@
 import { useAppSelector } from "@/app/hooks";
 import { TBug } from "@/features/bugs/bugSlice";
+import {
+  setHomeDueSoonRowsPerPage,
+  setHomeOverdueRowsPerPage,
+} from "@/features/system/systemSlice";
 import { filterDueBugs, filterOverdueBugs } from "@/utils/filterUtils";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import moment from "moment";
 import { SetStateAction, useState, Dispatch } from "react";
+import TablePagingFooter from "../table/TablePagingFooter";
 
 export type TFilter = 0 | 1 | 2;
 
@@ -28,8 +34,9 @@ function BugDueDatePanels(props: TProps) {
       : overdueFilterSelected;
     // Shared classNames
     const buttonShared = " border-color-dl border px-4 py-[1px] ";
+    const selectedShared = " bg-primary-200 dark:bg-primary-300 text-white ";
     return (
-      <div className="mt-6 font-medium text-primary-200 dark:text-plain-light-100">
+      <div className="mt-6 font-medium text-primary-300 dark:text-plain-light-100">
         <button
           onClick={() => {
             setFilterFunc(0);
@@ -37,7 +44,7 @@ function BugDueDatePanels(props: TProps) {
           className={
             buttonShared +
             "rounded-l" +
-            (filterSelected === 0 ? " bg-primary-100 text-white" : "")
+            (filterSelected === 0 ? selectedShared : "")
           }
         >
           All
@@ -49,7 +56,7 @@ function BugDueDatePanels(props: TProps) {
           className={
             buttonShared +
             "border-l-0" +
-            (filterSelected === 1 ? " bg-primary-100 text-white" : "")
+            (filterSelected === 1 ? selectedShared : "")
           }
         >
           This Week
@@ -61,7 +68,7 @@ function BugDueDatePanels(props: TProps) {
           className={
             buttonShared +
             "rounded-r border-l-0" +
-            (filterSelected === 2 ? " bg-primary-100 text-white" : "")
+            (filterSelected === 2 ? selectedShared : "")
           }
         >
           This Month
@@ -75,7 +82,7 @@ function BugDueDatePanels(props: TProps) {
       ? filterDueBugs(bugList, dueFilterSelected)
       : filterOverdueBugs(bugList, overdueFilterSelected);
     return (
-      <div className="mt-4">
+      <div className="mb-4 mt-4">
         <table className="w-full">
           <thead>
             <tr className="bg-plain-light-500 text-left dark:bg-plain-dark-500">
@@ -113,6 +120,9 @@ function BugDueDatePanels(props: TProps) {
   };
 
   const { bugs } = useAppSelector((state) => state.bugs);
+  const { homeDueSoonRowsPerPage, homeOverdueRowsPerPage } = useAppSelector(
+    (state) => state.system,
+  );
 
   // Shared classNames
   const bugTableContainerShared =
@@ -133,6 +143,10 @@ function BugDueDatePanels(props: TProps) {
         {titleHeader("Bugs Due Soon")}
         {filterButtons(setDueFilterSelected, true)}
         {bugTable(bugs, true)}
+        <TablePagingFooter
+          rowsPerPage={homeDueSoonRowsPerPage}
+          setRowsPerPage={setHomeDueSoonRowsPerPage}
+        />
       </div>
       <div
         className={
@@ -142,6 +156,10 @@ function BugDueDatePanels(props: TProps) {
         {titleHeader("Overdue Bugs")}
         {filterButtons(setOverdueFilterSelected, false)}
         {bugTable(bugs, false)}
+        <TablePagingFooter
+          rowsPerPage={homeOverdueRowsPerPage}
+          setRowsPerPage={setHomeOverdueRowsPerPage}
+        />
       </div>
     </div>
   );
