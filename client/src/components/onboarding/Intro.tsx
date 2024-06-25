@@ -2,7 +2,9 @@ import IntroLogo from "@/assets/logos/logo_with_black_text_side.svg";
 
 function Intro() {
   return (
-    <div className={"flex flex-1 justify-center bg-blueGeoBg"}>
+    <div
+      className={"bg-blue-geo dark:bg-dark-mode-geo flex flex-1 justify-center"}
+    >
       <img
         src={IntroLogo}
         alt="Bug Tracker Logo"

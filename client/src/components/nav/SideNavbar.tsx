@@ -3,7 +3,7 @@ import { toggleNavbarExpanded } from "@/features/system/systemSlice";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import logo from "@/assets/logo_menu.svg";
+import logo from "@/assets/logos/logo_menu.svg";
 import menuHomeIcon from "@/assets/icons/icon_menu_home.svg";
 import menuProjectsIcon from "@/assets/icons/icon_menu_projects.svg";
 import menuBugsIcon from "@/assets/icons/icon_menu_bugs.svg";

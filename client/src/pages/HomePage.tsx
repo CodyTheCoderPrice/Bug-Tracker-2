@@ -9,7 +9,7 @@ function HomePage() {
   const shouldExpand = width > (navbarExpanded ? 1275 : 1080);
 
   return (
-    <div className="flex flex-1 flex-col overflow-auto">
+    <div className="bg-light-mode-geo flex flex-1 flex-col overflow-auto">
       <BugStatusButtons shouldExpand={shouldExpand} />
       <BugDueDatePanels shouldExpand={shouldExpand} />
     </div>
