@@ -10,19 +10,21 @@ function PopUpMessages() {
   const { success } = useAppSelector((state) => state.register);
   const { deleteAccountSuccess } = useAppSelector((state) => state.account);
 
-  const displayMessage = (
+  function timeout(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  const displayMessage = async (
     setExists: Dispatch<React.SetStateAction<boolean>>,
     setIsCentered: Dispatch<React.SetStateAction<boolean>>,
   ) => {
     setExists(true);
-    setTimeout(() => {
-      setIsCentered(true);
-    }, 100);
-
-    setTimeout(() => {
-      setIsCentered(false);
-    }, 5000);
-    setExists(true);
+    await timeout(100);
+    setIsCentered(true);
+    await timeout(5000);
+    setIsCentered(false);
+    await timeout(1000);
+    setExists(false);
   };
 
   useEffect(() => {
