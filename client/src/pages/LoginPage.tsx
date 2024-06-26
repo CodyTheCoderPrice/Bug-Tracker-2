@@ -6,6 +6,7 @@ import Login from "@/features/auth/Login";
 import Divider from "@/components/onboarding/Divider";
 import LinkButton from "@/components/onboarding/LinkButton";
 import PopUpMessages from "@/components/onboarding/PopUpMessages";
+import { setAccountDeletedToFalse } from "@/features/account/accountSlice";
 
 function LoginPage() {
   const dispatch = useAppDispatch();
@@ -13,6 +14,8 @@ function LoginPage() {
   useEffect(() => {
     return () => {
       dispatch(clearAuthErrors());
+      // Keeps account deleted popup from showing more than once
+      dispatch(setAccountDeletedToFalse());
     };
   }, []);
 

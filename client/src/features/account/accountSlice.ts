@@ -154,7 +154,11 @@ export const deleteAccount = createAsyncThunk(
 const accountSlice = createSlice({
   name: "account",
   initialState,
-  reducers: {},
+  reducers: {
+    setAccountDeletedToFalse: (state) => {
+      state.deleteAccountSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     // Login / Relogin
     builder.addCase(
@@ -250,3 +254,4 @@ const accountSlice = createSlice({
 });
 
 export default accountSlice.reducer;
+export const { setAccountDeletedToFalse } = accountSlice.actions;
