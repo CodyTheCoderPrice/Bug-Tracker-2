@@ -2,9 +2,9 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { toggleSearchBar, toggleDarkMode } from "@/features/system/systemSlice";
+import SunIcon from "@/components/svg/SunIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faCircleUser } from "@fortawesome/free-regular-svg-icons";
-import sunIcon from "@/assets/icons/sun-custom.svg";
 
 function TopBar() {
   const dispatch = useAppDispatch();
@@ -48,7 +48,7 @@ function TopBar() {
             className="mr-6 cursor-pointer"
           >
             {isDarkModeOn ? (
-              <img src={sunIcon} alt="Sun Icon" className="inline-block w-5" />
+              <SunIcon className="box-content inline-block w-[20px] align-[-5px]" />
             ) : (
               <FontAwesomeIcon icon={faMoon} size="lg" />
             )}
