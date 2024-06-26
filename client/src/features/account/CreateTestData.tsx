@@ -221,7 +221,7 @@ function CreateTestData() {
           description: "Conversion, software version 7.0",
           priority_id: 3,
           status_id: 3,
-          due_date: moment().subtract(16, "d").format("YYYY-MM-DD"),
+          due_date: moment().subtract(23, "d").format("YYYY-MM-DD"),
           complete_date: null,
         }),
       );
@@ -276,7 +276,7 @@ function CreateTestData() {
           description: "Rhymes with food",
           priority_id: 2,
           status_id: 2,
-          due_date: moment().subtract(10, "d").format("YYYY-MM-DD"),
+          due_date: moment().subtract(18, "d").format("YYYY-MM-DD"),
           complete_date: null,
         }),
       );
@@ -397,7 +397,7 @@ function CreateTestData() {
           description: "I wanna get lost in your rock and roll...",
           priority_id: 3,
           status_id: 3,
-          due_date: moment().add(2, "d").format("YYYY-MM-DD"),
+          due_date: moment().add(-2, "d").format("YYYY-MM-DD"),
           complete_date: null,
         }),
       );
@@ -507,7 +507,7 @@ function CreateTestData() {
           description: "So close, just a few more",
           priority_id: 3,
           status_id: 1,
-          due_date: moment().add(35, "d").format("YYYY-MM-DD"),
+          due_date: moment().add(17, "d").format("YYYY-MM-DD"),
           complete_date: null,
         }),
       );
@@ -529,7 +529,7 @@ function CreateTestData() {
           description: "It is finished!",
           priority_id: 3,
           status_id: 1,
-          due_date: moment().add(40, "d").format("YYYY-MM-DD"),
+          due_date: moment().add(21, "d").format("YYYY-MM-DD"),
           complete_date: null,
         }),
       );

@@ -1,6 +1,7 @@
 import { SetStateAction, useState, Dispatch, useEffect } from "react";
 import { useAppSelector } from "@/app/hooks";
 import { TBug } from "@/features/bugs/bugSlice";
+import { sortBugsByDueDate } from "@/utils/sortUtils";
 import {
   filterDueSoonBugsByDate,
   filterBugsByPage,
@@ -25,11 +26,15 @@ function BugDueDatePanels(props: TProps) {
   const { bugs } = useAppSelector((state) => state.bugs);
 
   useEffect(() => {
-    setDueSoonBugs(filterDueSoonBugsByDate(bugs, dueSoonFilter));
+    setDueSoonBugs(
+      sortBugsByDueDate(filterDueSoonBugsByDate(bugs, dueSoonFilter)),
+    );
   }, [bugs, dueSoonFilter]);
 
   useEffect(() => {
-    setOverdueBugs(filterOverdueBugsByDate(bugs, overdueFilter));
+    setOverdueBugs(
+      sortBugsByDueDate(filterOverdueBugsByDate(bugs, overdueFilter)),
+    );
   }, [bugs, overdueFilter]);
 
   const titleHeader = (title: string) => {
