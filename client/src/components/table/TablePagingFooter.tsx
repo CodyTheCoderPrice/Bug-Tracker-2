@@ -1,80 +1,71 @@
-import { useAppDispatch } from "@/app/hooks";
-import { useState } from "react";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import OutsideClickHandler from "react-outside-click-handler";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useEffect, useState } from "react";
+import { homeRowsPerPage } from "@/utils/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import {
-  faAngleDown,
-  faAngleLeft,
-  faAngleRight,
-} from "@fortawesome/free-solid-svg-icons";
+  setHomeDueSoonPage,
+  setHomeOverduePage,
+} from "@/features/system/systemSlice";
 
 type TProps = {
-  rowsPerPage: number;
-  setRowsPerPage: ActionCreatorWithPayload<
-    10 | 25,
-    "system/setHomeDueSoonRowsPerPage" | "system/setHomeOverdueRowsPerPage"
-  >;
+  isDueSoon: boolean;
+  pageNum: number;
+  numBugs: number;
 };
 
 function TablePagingFooter(props: TProps) {
   const dispatch = useAppDispatch();
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [pageRange, setPageRange] = useState<string>("");
 
-  const dropdownOnClick = (rpp: 10 | 25) => {
-    dispatch(props.setRowsPerPage(rpp));
-    setDropdownOpen(false);
+  useEffect(() => {
+    const lowerBound = (props.pageNum - 1) * homeRowsPerPage + 1;
+    const upperBound = Math.min(props.pageNum * homeRowsPerPage, props.numBugs);
+    setPageRange(`${lowerBound}-${upperBound} of ${props.numBugs}`);
+  }, [props.pageNum, props.numBugs]);
+
+  const canPageDown = props.pageNum > 1;
+  const canPageUp = props.pageNum * homeRowsPerPage < props.numBugs;
+
+  const pageDownOnClick = () => {
+    if (canPageDown) {
+      const newPageNum = props.pageNum - 1;
+      props.isDueSoon
+        ? dispatch(setHomeDueSoonPage(newPageNum))
+        : dispatch(setHomeOverduePage(newPageNum));
+    }
   };
 
+  const pageUpOnClick = () => {
+    if (canPageUp) {
+      const newPageNum = props.pageNum + 1;
+      props.isDueSoon
+        ? dispatch(setHomeDueSoonPage(newPageNum))
+        : dispatch(setHomeOverduePage(newPageNum));
+    }
+  };
+
+  // Shared classNames
+  const buttonDisabledShared =
+    "pointer-events-none text-gray-400 dark:text-gray-500";
+
   return (
-    <div className="mt-auto flex h-[50px] bg-primary-200 text-xs text-white dark:bg-primary-300">
+    <div className="mt-auto flex h-[50px] bg-plain-light-300 text-xs dark:bg-plain-dark-300">
       <div className="ml-auto flex items-center">
-        <span className="flex items-center">Rows per page</span>
-        <OutsideClickHandler onOutsideClick={() => setDropdownOpen(false)}>
-          <div className="relative">
-            <button
-              onClick={() => {
-                setDropdownOpen(!dropdownOpen);
-              }}
-              className="ml-2 h-[30px] w-[50px] rounded bg-primary-100 dark:bg-primary-200"
-            >
-              {props.rowsPerPage}
-              <FontAwesomeIcon icon={faAngleDown} className="ml-2" />
-            </button>
-            {dropdownOpen && (
-              <div className="absolute top-0 ml-2 w-[50px] rounded bg-primary-100 py-2 text-sm dark:bg-primary-200">
-                <ul>
-                  <li>
-                    <button
-                      onClick={() => dropdownOnClick(10)}
-                      className="w-full py-1 text-center hover:bg-primary-300 dark:hover:bg-primary-400"
-                    >
-                      10
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={() => dropdownOnClick(25)}
-                      className="w-full py-1 text-center hover:bg-primary-300 dark:hover:bg-primary-400"
-                    >
-                      25
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            )}
-          </div>
-        </OutsideClickHandler>
-      </div>
-      <div className="ml-8 flex items-center">
-        <span className="flex items-center">1-10 of 10</span>
+        <span className="flex items-center">{pageRange}</span>
       </div>
       <div className="ml-8 flex items-center text-sm">
-        <button>
+        <button
+          onClick={pageDownOnClick}
+          className={canPageDown ? "" : buttonDisabledShared}
+        >
           <FontAwesomeIcon icon={faAngleLeft} className="mr-4" />
         </button>
-        <button>
+        <button
+          onClick={pageUpOnClick}
+          className={canPageUp ? "" : buttonDisabledShared}
+        >
           <FontAwesomeIcon icon={faAngleRight} className="mr-4" />
         </button>
       </div>

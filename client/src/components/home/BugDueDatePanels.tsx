@@ -1,13 +1,12 @@
+import { SetStateAction, useState, Dispatch, useEffect } from "react";
 import { useAppSelector } from "@/app/hooks";
 import { TBug } from "@/features/bugs/bugSlice";
 import {
-  setHomeDueSoonRowsPerPage,
-  setHomeOverdueRowsPerPage,
-} from "@/features/system/systemSlice";
-import { filterDueBugs, filterOverdueBugs } from "@/utils/filterUtils";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+  filterDueSoonBugsByDate,
+  filterBugsByPage,
+  filterOverdueBugsByDate,
+} from "@/utils/filterUtils";
 import moment from "moment";
-import { SetStateAction, useState, Dispatch } from "react";
 import TablePagingFooter from "../table/TablePagingFooter";
 
 export type TFilter = 0 | 1 | 2;
@@ -17,9 +16,21 @@ type TProps = {
 };
 
 function BugDueDatePanels(props: TProps) {
-  const [dueFilterSelected, setDueFilterSelected] = useState<TFilter>(0);
-  const [overdueFilterSelected, setOverdueFilterSelected] =
-    useState<TFilter>(0);
+  const [dueSoonFilter, setDueSoonFilter] = useState<TFilter>(0);
+  const [overdueFilter, setOverdueFilter] = useState<TFilter>(0);
+
+  const [dueSoonBugs, setDueSoonBugs] = useState<TBug[] | null>(null);
+  const [overdueBugs, setOverdueBugs] = useState<TBug[] | null>(null);
+
+  const { bugs } = useAppSelector((state) => state.bugs);
+
+  useEffect(() => {
+    setDueSoonBugs(filterDueSoonBugsByDate(bugs, dueSoonFilter));
+  }, [bugs, dueSoonFilter]);
+
+  useEffect(() => {
+    setOverdueBugs(filterOverdueBugsByDate(bugs, overdueFilter));
+  }, [bugs, overdueFilter]);
 
   const titleHeader = (title: string) => {
     return <h2 className="text-xl font-semibold">{title}</h2>;
@@ -29,9 +40,7 @@ function BugDueDatePanels(props: TProps) {
     setFilterFunc: Dispatch<SetStateAction<TFilter>>,
     forDueSoon: boolean,
   ) => {
-    const filterSelected = forDueSoon
-      ? dueFilterSelected
-      : overdueFilterSelected;
+    const filterSelected = forDueSoon ? dueSoonFilter : overdueFilter;
     // Shared classNames
     const buttonShared = " border-color-dl border px-4 py-[1px] ";
     const selectedShared = " bg-primary-200 dark:bg-primary-300 text-white ";
@@ -77,12 +86,12 @@ function BugDueDatePanels(props: TProps) {
     );
   };
 
-  const bugTable = (bugList: TBug[] | null, isDueSoon: boolean) => {
-    bugList = isDueSoon
-      ? filterDueBugs(bugList, dueFilterSelected)
-      : filterOverdueBugs(bugList, overdueFilterSelected);
+  const bugTable = (isDueSoon: boolean) => {
+    const bugList = isDueSoon
+      ? filterBugsByPage(dueSoonBugs, homeDueSoonPage)
+      : filterBugsByPage(overdueBugs, homeOverduePage);
     return (
-      <div className="mb-4 mt-4">
+      <div className="mb-4 mt-4 min-h-[450px]">
         <table className="w-full">
           <thead>
             <tr className="bg-plain-light-500 text-left dark:bg-plain-dark-500">
@@ -119,8 +128,7 @@ function BugDueDatePanels(props: TProps) {
     );
   };
 
-  const { bugs } = useAppSelector((state) => state.bugs);
-  const { homeDueSoonRowsPerPage, homeOverdueRowsPerPage } = useAppSelector(
+  const { homeDueSoonPage, homeOverduePage } = useAppSelector(
     (state) => state.system,
   );
 
@@ -141,11 +149,12 @@ function BugDueDatePanels(props: TProps) {
         }
       >
         {titleHeader("Bugs Due Soon")}
-        {filterButtons(setDueFilterSelected, true)}
-        {bugTable(bugs, true)}
+        {filterButtons(setDueSoonFilter, true)}
+        {bugTable(true)}
         <TablePagingFooter
-          rowsPerPage={homeDueSoonRowsPerPage}
-          setRowsPerPage={setHomeDueSoonRowsPerPage}
+          isDueSoon={true}
+          pageNum={homeDueSoonPage}
+          numBugs={dueSoonBugs ? dueSoonBugs.length : 0}
         />
       </div>
       <div
@@ -154,11 +163,12 @@ function BugDueDatePanels(props: TProps) {
         }
       >
         {titleHeader("Overdue Bugs")}
-        {filterButtons(setOverdueFilterSelected, false)}
-        {bugTable(bugs, false)}
+        {filterButtons(setOverdueFilter, false)}
+        {bugTable(false)}
         <TablePagingFooter
-          rowsPerPage={homeOverdueRowsPerPage}
-          setRowsPerPage={setHomeOverdueRowsPerPage}
+          isDueSoon={false}
+          pageNum={homeOverduePage}
+          numBugs={overdueBugs ? overdueBugs.length : 0}
         />
       </div>
     </div>

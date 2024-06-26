@@ -1,6 +1,7 @@
 import { TBug } from "@/features/bugs/bugSlice";
 import { TFilter } from "@/components/home/BugDueDatePanels";
 import moment from "moment";
+import { homeRowsPerPage } from "./constants";
 
 export const getNumBugsByStatus = (
   bugs: TBug[] | null,
@@ -12,7 +13,10 @@ export const getNumBugsByStatus = (
   return bugs?.filter((bug) => bug.status_id === statusCode).length;
 };
 
-export const filterDueBugs = (bugs: TBug[] | null, approach: TFilter) => {
+export const filterDueSoonBugsByDate = (
+  bugs: TBug[] | null,
+  approach: TFilter,
+) => {
   if (bugs === null) {
     return null;
   }
@@ -38,7 +42,10 @@ export const filterDueBugs = (bugs: TBug[] | null, approach: TFilter) => {
   });
 };
 
-export const filterOverdueBugs = (bugs: TBug[] | null, approach: TFilter) => {
+export const filterOverdueBugsByDate = (
+  bugs: TBug[] | null,
+  approach: TFilter,
+) => {
   if (bugs === null) {
     return null;
   }
@@ -58,4 +65,14 @@ export const filterOverdueBugs = (bugs: TBug[] | null, approach: TFilter) => {
       }
     }
   });
+};
+
+export const filterBugsByPage = (bugs: TBug[] | null, pageNum: number) => {
+  if (bugs !== null) {
+    const lowerBound = (pageNum - 1) * homeRowsPerPage;
+    const upperBound = Math.min(pageNum * homeRowsPerPage, bugs.length);
+    return bugs.slice(lowerBound, upperBound);
+  }
+
+  return bugs;
 };

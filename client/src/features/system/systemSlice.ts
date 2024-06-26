@@ -4,16 +4,16 @@ type TInitialState = {
   darkMode: boolean;
   navbarExpanded: boolean;
   searchBar: boolean;
-  homeDueSoonRowsPerPage: 10 | 25;
-  homeOverdueRowsPerPage: 10 | 25;
+  homeDueSoonPage: number;
+  homeOverduePage: number;
 };
 
 const initialState: TInitialState = {
   darkMode: false,
   navbarExpanded: true,
   searchBar: false,
-  homeDueSoonRowsPerPage: 10,
-  homeOverdueRowsPerPage: 10,
+  homeDueSoonPage: 1,
+  homeOverduePage: 1,
 };
 
 const systemSlice = createSlice({
@@ -29,11 +29,11 @@ const systemSlice = createSlice({
     toggleSearchBar: (state) => {
       state.searchBar = !state.searchBar;
     },
-    setHomeDueSoonRowsPerPage: (state, action: PayloadAction<10 | 25>) => {
-      state.homeDueSoonRowsPerPage = action.payload;
+    setHomeDueSoonPage: (state, action: PayloadAction<number>) => {
+      state.homeDueSoonPage = action.payload;
     },
-    setHomeOverdueRowsPerPage: (state, action: PayloadAction<10 | 25>) => {
-      state.homeOverdueRowsPerPage = action.payload;
+    setHomeOverduePage: (state, action: PayloadAction<number>) => {
+      state.homeOverduePage = action.payload;
     },
   },
 });
@@ -43,6 +43,6 @@ export const {
   toggleDarkMode,
   toggleNavbarExpanded,
   toggleSearchBar,
-  setHomeDueSoonRowsPerPage,
-  setHomeOverdueRowsPerPage,
+  setHomeDueSoonPage,
+  setHomeOverduePage,
 } = systemSlice.actions;
