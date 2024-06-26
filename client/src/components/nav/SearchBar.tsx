@@ -13,13 +13,13 @@ function SearchBar() {
 
   const categories = ["All", "Projects", "Bugs", "Comments"];
   const [category, setCategory] = useState(categories[0]);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [searchText, setSearchText] = useState("");
 
   const dropdownOnClick = (ctgy: string) => {
     setCategory(ctgy);
-    setDropdownOpen(false);
+    setIsDropdownOpen(false);
   };
 
   // Shared classNames
@@ -37,10 +37,10 @@ function SearchBar() {
       {/* Searchbar */}
       <div className="bg-color-foreground-dl absolute left-1/2 top-2 h-[400px] w-[60%] translate-x-[-50%] rounded-xl p-6">
         <div className="flex">
-          <OutsideClickHandler onOutsideClick={() => setDropdownOpen(false)}>
+          <OutsideClickHandler onOutsideClick={() => setIsDropdownOpen(false)}>
             <button
               onClick={() => {
-                setDropdownOpen(!dropdownOpen);
+                setIsDropdownOpen(!isDropdownOpen);
               }}
               className={
                 searchBarShared +
@@ -50,7 +50,7 @@ function SearchBar() {
               {category}
               <FontAwesomeIcon icon={faAngleDown} className="ml-2" />
             </button>
-            {dropdownOpen && (
+            {isDropdownOpen && (
               <div className="border-color-dl absolute mt-1 w-[150px] rounded-lg border bg-plain-light-200 py-2 dark:bg-plain-dark-100">
                 <ul>
                   {categories.map((ctgy, idx) => {

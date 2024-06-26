@@ -25,10 +25,10 @@ function App() {
     }
   }, []);
 
-  const { darkMode } = useAppSelector((state) => state.system);
+  const { isDarkModeOn } = useAppSelector((state) => state.system);
 
   return (
-    <div className={"h-full w-full" + (darkMode ? " dark" : "")}>
+    <div className={"h-full w-full" + (isDarkModeOn ? " dark" : "")}>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route element={<UnprotectedRoutes />}>

@@ -49,26 +49,26 @@ type TDeleteBugError = {
 };
 
 type TInitialState = {
-  createBugLoading: boolean;
-  updateBugLoading: boolean;
-  deleteBugLoading: boolean;
+  isCreateBugLoading: boolean;
+  isUpdateBugLoading: boolean;
+  isDeleteBugLoading: boolean;
   bugs: TBug[] | null;
-  createBugSuccess: boolean;
-  updateBugSuccess: boolean;
-  deleteBugSuccess: boolean;
+  hasCreateBugSucceeded: boolean;
+  hasUpdateBugSucceeded: boolean;
+  hasDeleteBugSucceeded: boolean;
   createBugErrors: TCreateBugError | null;
   updateBugErrors: TUpdateBugError | null;
   deleteBugErrors: TDeleteBugError | null;
 };
 
 const initialState: TInitialState = {
-  createBugLoading: false,
-  updateBugLoading: false,
-  deleteBugLoading: false,
+  isCreateBugLoading: false,
+  isUpdateBugLoading: false,
+  isDeleteBugLoading: false,
   bugs: null,
-  createBugSuccess: false,
-  updateBugSuccess: false,
-  deleteBugSuccess: false,
+  hasCreateBugSucceeded: false,
+  hasUpdateBugSucceeded: false,
+  hasDeleteBugSucceeded: false,
   createBugErrors: null,
   updateBugErrors: null,
   deleteBugErrors: null,
@@ -171,62 +171,62 @@ const bugSlice = createSlice({
     );
     // Create
     builder.addCase(createBug.pending, (state) => {
-      state.createBugLoading = true;
-      state.createBugSuccess = false;
+      state.isCreateBugLoading = true;
+      state.hasCreateBugSucceeded = false;
       state.createBugErrors = null;
     });
     builder.addCase(
       createBug.fulfilled,
       (state, action: PayloadAction<{ bugs: TBug[] }>) => {
-        state.createBugLoading = false;
+        state.isCreateBugLoading = false;
         state.bugs = action.payload.bugs;
-        state.createBugSuccess = true;
+        state.hasCreateBugSucceeded = true;
         state.createBugErrors = null;
       },
     );
     builder.addCase(createBug.rejected, (state, action: any) => {
-      state.createBugLoading = false;
-      state.createBugSuccess = false;
+      state.isCreateBugLoading = false;
+      state.hasCreateBugSucceeded = false;
       state.createBugErrors = action.payload;
     });
     // Update
     builder.addCase(updateBug.pending, (state) => {
-      state.updateBugLoading = true;
-      state.updateBugSuccess = false;
+      state.isUpdateBugLoading = true;
+      state.hasUpdateBugSucceeded = false;
       state.updateBugErrors = null;
     });
     builder.addCase(
       updateBug.fulfilled,
       (state, action: PayloadAction<{ bugs: TBug[] }>) => {
-        state.updateBugLoading = false;
+        state.isUpdateBugLoading = false;
         state.bugs = action.payload.bugs;
-        state.updateBugSuccess = true;
+        state.hasUpdateBugSucceeded = true;
         state.updateBugErrors = null;
       },
     );
     builder.addCase(updateBug.rejected, (state, action: any) => {
-      state.updateBugLoading = false;
-      state.updateBugSuccess = false;
+      state.isUpdateBugLoading = false;
+      state.hasUpdateBugSucceeded = false;
       state.updateBugErrors = action.payload;
     });
     // delete
     builder.addCase(deleteBug.pending, (state) => {
-      state.deleteBugLoading = true;
-      state.deleteBugSuccess = false;
+      state.isDeleteBugLoading = true;
+      state.hasDeleteBugSucceeded = false;
       state.deleteBugErrors = null;
     });
     builder.addCase(
       deleteBug.fulfilled,
       (state, action: PayloadAction<{ bugs: TBug[] }>) => {
-        state.deleteBugLoading = false;
+        state.isDeleteBugLoading = false;
         state.bugs = action.payload.bugs;
-        state.deleteBugSuccess = true;
+        state.hasDeleteBugSucceeded = true;
         state.deleteBugErrors = null;
       },
     );
     builder.addCase(deleteBug.rejected, (state, action: any) => {
-      state.deleteBugLoading = false;
-      state.deleteBugSuccess = false;
+      state.isDeleteBugLoading = false;
+      state.hasDeleteBugSucceeded = false;
       state.deleteBugErrors = action.payload;
     });
   },

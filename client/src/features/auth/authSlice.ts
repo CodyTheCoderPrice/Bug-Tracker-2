@@ -9,13 +9,13 @@ type TLoginError = {
 };
 
 type TInitialState = {
-  loading: boolean;
+  isLoading: boolean;
   isLoggedIn: boolean;
   errors: TLoginError | null;
 };
 
 const initialState: TInitialState = {
-  loading: false,
+  isLoading: false,
   isLoggedIn: false,
   errors: null,
 };
@@ -73,38 +73,38 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     clearAuthErrors: (state) => {
-      state.loading = false;
+      state.isLoading = false;
       state.errors = null;
     },
   },
   extraReducers: (builder) => {
     // Login
     builder.addCase(login.pending, (state) => {
-      state.loading = true;
+      state.isLoading = true;
       state.errors = null;
     });
     builder.addCase(login.fulfilled, (state) => {
-      state.loading = false;
+      state.isLoading = false;
       state.isLoggedIn = true;
       state.errors = null;
     });
     builder.addCase(login.rejected, (state, action: any) => {
-      state.loading = false;
+      state.isLoading = false;
       state.isLoggedIn = false;
       state.errors = action.payload;
     });
     // Relogin
     builder.addCase(relogin.pending, (state) => {
-      state.loading = true;
+      state.isLoading = true;
       state.errors = null;
     });
     builder.addCase(relogin.fulfilled, (state) => {
-      state.loading = false;
+      state.isLoading = false;
       state.isLoggedIn = true;
       state.errors = null;
     });
     builder.addCase(relogin.rejected, (state, action: any) => {
-      state.loading = false;
+      state.isLoading = false;
       state.isLoggedIn = false;
       state.errors = action.payload;
     });

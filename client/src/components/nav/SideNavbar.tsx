@@ -12,7 +12,7 @@ function SideNavbar() {
   const dispatch = useAppDispatch();
   const location = useLocation();
 
-  const { navbarExpanded } = useAppSelector((state) => state.system);
+  const { isNavbarExpanded } = useAppSelector((state) => state.system);
 
   // Shared classNames
   const logoContainerShared = " h-top-bar flex items-center ";
@@ -31,10 +31,10 @@ function SideNavbar() {
     <div
       className={
         "shrink-0 overflow-visible bg-primary-300 text-gray-50 shadow transition-width duration-200 dark:bg-primary-400" +
-        (navbarExpanded ? " w-[260px]" : " w-[66px]")
+        (isNavbarExpanded ? " w-[260px]" : " w-[66px]")
       }
     >
-      {navbarExpanded ? (
+      {isNavbarExpanded ? (
         <>
           {/* Navbar expanded */}
           <div className={logoContainerShared + " justify-between"}>

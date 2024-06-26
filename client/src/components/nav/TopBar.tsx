@@ -24,10 +24,12 @@ function TopBar() {
     }
   };
 
-  const { searchBar, darkMode } = useAppSelector((state) => state.system);
+  const { isSearchBarOpen, isDarkModeOn } = useAppSelector(
+    (state) => state.system,
+  );
   return (
     <>
-      {searchBar && <SearchBar />}
+      {isSearchBarOpen && <SearchBar />}
       <nav className="bg-color-foreground-dl h-top-bar flex shrink-0 items-center shadow">
         <h1 className="ml-4 font-semibold">{getPageName()}</h1>
         <div className="ml-auto">
@@ -45,7 +47,7 @@ function TopBar() {
             }}
             className="mr-6 cursor-pointer"
           >
-            {darkMode ? (
+            {isDarkModeOn ? (
               <img src={sunIcon} alt="Sun Icon" className="inline-block w-5" />
             ) : (
               <FontAwesomeIcon icon={faMoon} size="lg" />

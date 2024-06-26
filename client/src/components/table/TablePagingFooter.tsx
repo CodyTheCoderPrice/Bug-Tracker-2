@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useAppDispatch } from "@/app/hooks";
 import { useEffect, useState } from "react";
 import { homeRowsPerPage } from "@/utils/constants";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -27,13 +27,13 @@ function Register() {
     dispatch(register(registerInfo));
   };
 
-  const { success, errors } = useAppSelector((state) => state.register);
+  const { hasSucceeded, errors } = useAppSelector((state) => state.register);
 
   useEffect(() => {
-    if (success) {
+    if (hasSucceeded) {
       navigate("/login");
     }
-  }, [success]);
+  }, [hasSucceeded]);
 
   return (
     <>

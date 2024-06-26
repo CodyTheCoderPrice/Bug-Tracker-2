@@ -13,7 +13,7 @@ import TablePagingFooter from "../table/TablePagingFooter";
 export type TFilter = 0 | 1 | 2;
 
 type TProps = {
-  shouldExpand: boolean;
+  isWideScreen: boolean;
 };
 
 function BugDueDatePanels(props: TProps) {
@@ -43,9 +43,9 @@ function BugDueDatePanels(props: TProps) {
 
   const filterButtons = (
     setFilterFunc: Dispatch<SetStateAction<TFilter>>,
-    forDueSoon: boolean,
+    isDueSoon: boolean,
   ) => {
-    const filterSelected = forDueSoon ? dueSoonFilter : overdueFilter;
+    const filterSelected = isDueSoon ? dueSoonFilter : overdueFilter;
     // Shared classNames
     const buttonShared = " border-color-dl border px-4 py-[1px] ";
     const selectedShared = " bg-primary-200 dark:bg-primary-300 text-white ";
@@ -145,12 +145,12 @@ function BugDueDatePanels(props: TProps) {
     <div
       className={
         "mx-10 mb-10 mt-1 flex" +
-        (props.shouldExpand ? " flex-grow" : " flex-col")
+        (props.isWideScreen ? " flex-grow" : " flex-col")
       }
     >
       <div
         className={
-          bugTableContainerShared + (props.shouldExpand ? " mr-5" : "")
+          bugTableContainerShared + (props.isWideScreen ? " mr-5" : "")
         }
       >
         {titleHeader("Bugs Due Soon")}
@@ -164,7 +164,7 @@ function BugDueDatePanels(props: TProps) {
       </div>
       <div
         className={
-          bugTableContainerShared + (props.shouldExpand ? " ml-5" : " mt-5")
+          bugTableContainerShared + (props.isWideScreen ? " ml-5" : " mt-5")
         }
       >
         {titleHeader("Overdue Bugs")}

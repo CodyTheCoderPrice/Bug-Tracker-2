@@ -36,15 +36,15 @@ type TDeleteAccountError = {
 };
 
 type TInitialState = {
-  updateNameLoading: boolean;
-  updateEmailLoading: boolean;
-  updatePasswordLoading: boolean;
-  deleteAccountLoading: boolean;
+  isUpdateNameLoading: boolean;
+  isUpdateEmailLoading: boolean;
+  isUpdatePasswordLoading: boolean;
+  isDeleteAccountLoading: boolean;
   account: TAccount | null;
-  updateNameSuccess: boolean;
-  updateEmailSuccess: boolean;
-  updatePasswordSuccess: boolean;
-  deleteAccountSuccess: boolean;
+  hasUpdateNameSucceeded: boolean;
+  hasUpdateEmailSucceeded: boolean;
+  hasUpdatePasswordSucceeded: boolean;
+  hasDeleteAccountSucceeded: boolean;
   updateNameErrors: TUpdateNameError | null;
   updateEmailErrors: TUpdateEmailError | null;
   updatePasswordErrors: TUpdatePasswordError | null;
@@ -52,15 +52,15 @@ type TInitialState = {
 };
 
 const initialState: TInitialState = {
-  updateNameLoading: false,
-  updateEmailLoading: false,
-  updatePasswordLoading: false,
-  deleteAccountLoading: false,
+  isUpdateNameLoading: false,
+  isUpdateEmailLoading: false,
+  isUpdatePasswordLoading: false,
+  isDeleteAccountLoading: false,
   account: null,
-  updateNameSuccess: false,
-  updateEmailSuccess: false,
-  updatePasswordSuccess: false,
-  deleteAccountSuccess: false,
+  hasUpdateNameSucceeded: false,
+  hasUpdateEmailSucceeded: false,
+  hasUpdatePasswordSucceeded: false,
+  hasDeleteAccountSucceeded: false,
   updateNameErrors: null,
   updateEmailErrors: null,
   updatePasswordErrors: null,
@@ -156,7 +156,7 @@ const accountSlice = createSlice({
   initialState,
   reducers: {
     setAccountDeletedToFalse: (state) => {
-      state.deleteAccountSuccess = false;
+      state.hasDeleteAccountSucceeded = false;
     },
   },
   extraReducers: (builder) => {
@@ -175,79 +175,79 @@ const accountSlice = createSlice({
     );
     // Update name
     builder.addCase(updateName.pending, (state) => {
-      state.updateNameLoading = true;
-      state.updateNameSuccess = false;
+      state.isUpdateNameLoading = true;
+      state.hasUpdateNameSucceeded = false;
       state.updateNameErrors = null;
     });
     builder.addCase(
       updateName.fulfilled,
       (state, action: PayloadAction<{ account: TAccount }>) => {
-        state.updateNameLoading = false;
+        state.isUpdateNameLoading = false;
         state.account = action.payload.account;
-        state.updateNameSuccess = true;
+        state.hasUpdateNameSucceeded = true;
         state.updateNameErrors = null;
       },
     );
     builder.addCase(updateName.rejected, (state, action: any) => {
-      state.updateNameLoading = false;
-      state.updateNameSuccess = false;
+      state.isUpdateNameLoading = false;
+      state.hasUpdateNameSucceeded = false;
       state.updateNameErrors = action.payload;
     });
     // Update email
     builder.addCase(updateEmail.pending, (state) => {
-      state.updateEmailLoading = true;
-      state.updateEmailSuccess = false;
+      state.isUpdateEmailLoading = true;
+      state.hasUpdateEmailSucceeded = false;
       state.updateEmailErrors = null;
     });
     builder.addCase(
       updateEmail.fulfilled,
       (state, action: PayloadAction<{ account: TAccount }>) => {
-        state.updateEmailLoading = false;
+        state.isUpdateEmailLoading = false;
         state.account = action.payload.account;
-        state.updateEmailSuccess = true;
+        state.hasUpdateEmailSucceeded = true;
         state.updateEmailErrors = null;
       },
     );
     builder.addCase(updateEmail.rejected, (state, action: any) => {
-      state.updateEmailLoading = false;
-      state.updateEmailSuccess = false;
+      state.isUpdateEmailLoading = false;
+      state.hasUpdateEmailSucceeded = false;
       state.updateEmailErrors = action.payload;
     });
     // Update password
     builder.addCase(updatePassword.pending, (state) => {
-      state.updatePasswordLoading = true;
-      state.updatePasswordSuccess = false;
+      state.isUpdatePasswordLoading = true;
+      state.hasUpdatePasswordSucceeded = false;
       state.updatePasswordErrors = null;
     });
     builder.addCase(
       updatePassword.fulfilled,
       (state, action: PayloadAction<{ account: TAccount }>) => {
-        state.updatePasswordLoading = false;
+        state.isUpdatePasswordLoading = false;
         state.account = action.payload.account;
-        state.updatePasswordSuccess = true;
+        state.hasUpdatePasswordSucceeded = true;
         state.updatePasswordErrors = null;
       },
     );
     builder.addCase(updatePassword.rejected, (state, action: any) => {
-      state.updatePasswordLoading = false;
-      state.updatePasswordSuccess = false;
+      state.isUpdatePasswordLoading = false;
+      state.hasUpdatePasswordSucceeded = false;
       state.updatePasswordErrors = action.payload;
     });
     // Delete account
     builder.addCase(deleteAccount.pending, (state) => {
-      state.deleteAccountLoading = true;
-      state.deleteAccountSuccess = false;
+      state.isDeleteAccountLoading = true;
+      state.hasDeleteAccountSucceeded = false;
       state.deleteAccountErrors = null;
     });
     builder.addCase(deleteAccount.fulfilled, (state) => {
-      state.deleteAccountLoading = false;
+      state.isDeleteAccountLoading = false;
       state.account = null;
-      state.deleteAccountSuccess = true;
+      state.hasDeleteAccountSucceeded = true;
       state.deleteAccountErrors = null;
     });
     builder.addCase(deleteAccount.rejected, (state, action: any) => {
-      state.deleteAccountLoading = false;
-      state.deleteAccountSuccess = false;
+      state.isDeleteAccountLoading = false;
+      state.hasDeleteAccountSucceeded = false;
       state.deleteAccountErrors = action.payload;
     });
   },

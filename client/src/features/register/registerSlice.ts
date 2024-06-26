@@ -10,14 +10,14 @@ type TRegisterError = {
 };
 
 type TInitialState = {
-  loading: boolean;
-  success: boolean;
+  isLoading: boolean;
+  hasSucceeded: boolean;
   errors: TRegisterError | null;
 };
 
 const initialState: TInitialState = {
-  loading: false,
-  success: false,
+  isLoading: false,
+  hasSucceeded: false,
   errors: null,
 };
 
@@ -52,23 +52,23 @@ const registerSlice = createSlice({
   initialState,
   reducers: {
     clearRegisterErrors: (state) => {
-      state.loading = false;
-      state.success = false;
+      state.isLoading = false;
+      state.hasSucceeded = false;
       state.errors = null;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(register.pending, (state) => {
-      state.loading = true;
+      state.isLoading = true;
     });
     builder.addCase(register.fulfilled, (state) => {
-      state.loading = false;
-      state.success = true;
+      state.isLoading = false;
+      state.hasSucceeded = true;
       state.errors = null;
     });
     builder.addCase(register.rejected, (state, action: any) => {
-      state.loading = false;
-      state.success = false;
+      state.isLoading = false;
+      state.hasSucceeded = false;
       state.errors = action.payload;
     });
   },

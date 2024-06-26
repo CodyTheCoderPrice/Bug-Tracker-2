@@ -1,17 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type TInitialState = {
-  darkMode: boolean;
-  navbarExpanded: boolean;
-  searchBar: boolean;
+  isDarkModeOn: boolean;
+  isNavbarExpanded: boolean;
+  isSearchBarOpen: boolean;
   homeDueSoonPage: number;
   homeOverduePage: number;
 };
 
 const initialState: TInitialState = {
-  darkMode: false,
-  navbarExpanded: true,
-  searchBar: false,
+  isDarkModeOn: false,
+  isNavbarExpanded: true,
+  isSearchBarOpen: false,
   homeDueSoonPage: 1,
   homeOverduePage: 1,
 };
@@ -21,13 +21,13 @@ const systemSlice = createSlice({
   initialState,
   reducers: {
     toggleDarkMode: (state) => {
-      state.darkMode = !state.darkMode;
+      state.isDarkModeOn = !state.isDarkModeOn;
     },
     toggleNavbarExpanded: (state) => {
-      state.navbarExpanded = !state.navbarExpanded;
+      state.isNavbarExpanded = !state.isNavbarExpanded;
     },
     toggleSearchBar: (state) => {
-      state.searchBar = !state.searchBar;
+      state.isSearchBarOpen = !state.isSearchBarOpen;
     },
     setHomeDueSoonPage: (state, action: PayloadAction<number>) => {
       state.homeDueSoonPage = action.payload;

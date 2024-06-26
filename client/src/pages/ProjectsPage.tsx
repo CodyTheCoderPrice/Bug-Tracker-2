@@ -6,7 +6,7 @@ import UpdateProject from "@/features/projects/UpdateProject";
 
 function ProjectsPage() {
   const { account } = useAppSelector((state) => state.account);
-  const { loading } = useAppSelector((state) => state.auth);
+  const { isLoading } = useAppSelector((state) => state.auth);
   return (
     <>
       {account ? (
@@ -24,7 +24,7 @@ function ProjectsPage() {
           <Route path="list" element={<ProjectList />} />
           <Route path=":id" element={<UpdateProject />} />
         </Routes>
-      ) : loading ? (
+      ) : isLoading ? (
         <h3>Loading</h3>
       ) : (
         <p>Must be logged in</p>

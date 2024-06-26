@@ -43,7 +43,7 @@ function UpdateBug() {
   };
 
   const { projects } = useAppSelector((state) => state.projects);
-  const { updateBugLoading, updateBugSuccess, updateBugErrors } =
+  const { isUpdateBugLoading, hasUpdateBugSucceeded, updateBugErrors } =
     useAppSelector((state) => state.bugs);
 
   return (
@@ -122,8 +122,8 @@ function UpdateBug() {
             />
             <button type="submit">Update</button>
           </form>
-          {updateBugLoading && <h3>Loading...</h3>}
-          {updateBugSuccess && <p>Bug Updated</p>}
+          {isUpdateBugLoading && <h3>Loading...</h3>}
+          {hasUpdateBugSucceeded && <p>Bug Updated</p>}
           {updateBugErrors?.bug_id && (
             <p style={{ color: "red" }}>{updateBugErrors.bug_id}</p>
           )}

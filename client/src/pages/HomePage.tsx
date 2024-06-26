@@ -4,14 +4,14 @@ import BugDueDatePanels from "@/components/home/BugDueDatePanels";
 import { useAppSelector } from "@/app/hooks";
 
 function HomePage() {
-  const { navbarExpanded } = useAppSelector((state) => state.system);
+  const { isNavbarExpanded } = useAppSelector((state) => state.system);
   const { width } = useWindowSize();
-  const shouldExpand = width > (navbarExpanded ? 1275 : 1080);
+  const isWideScreen = width > (isNavbarExpanded ? 1275 : 1080);
 
   return (
-    <div className="bg-light-mode-geo flex flex-1 flex-col overflow-auto">
-      <BugStatusButtons shouldExpand={shouldExpand} />
-      <BugDueDatePanels shouldExpand={shouldExpand} />
+    <div className="flex flex-1 flex-col overflow-auto bg-light-mode-geo">
+      <BugStatusButtons isWideScreen={isWideScreen} />
+      <BugDueDatePanels isWideScreen={isWideScreen} />
     </div>
   );
 }

@@ -6,7 +6,7 @@ function BugList() {
   const dispatch = useAppDispatch();
 
   const { projects } = useAppSelector((state) => state.projects);
-  const { bugs, deleteBugLoading, deleteBugSuccess, deleteBugErrors } =
+  const { bugs, isDeleteBugLoading, hasDeleteBugSucceeded, deleteBugErrors } =
     useAppSelector((state) => state.bugs);
 
   return (
@@ -77,8 +77,8 @@ function BugList() {
               })}
             </tbody>
           </table>
-          {deleteBugLoading && <h3>Loading...</h3>}
-          {deleteBugSuccess && <p>Bug Deleted</p>}
+          {isDeleteBugLoading && <h3>Loading...</h3>}
+          {hasDeleteBugSucceeded && <p>Bug Deleted</p>}
           {deleteBugErrors?.bug_id && (
             <p style={{ color: "red" }}>{deleteBugErrors.bug_id}</p>
           )}

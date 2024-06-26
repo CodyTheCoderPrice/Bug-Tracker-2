@@ -6,7 +6,7 @@ import UpdateBug from "@/features/bugs/UpdateBug";
 
 function BugPage() {
   const { account } = useAppSelector((state) => state.account);
-  const { loading } = useAppSelector((state) => state.auth);
+  const { isLoading } = useAppSelector((state) => state.auth);
   return (
     <div>
       {account ? (
@@ -24,7 +24,7 @@ function BugPage() {
           <Route path="list" element={<BugList />} />
           <Route path=":id" element={<UpdateBug />} />
         </Routes>
-      ) : loading ? (
+      ) : isLoading ? (
         <h3>Loading</h3>
       ) : (
         <p>Must be logged in</p>

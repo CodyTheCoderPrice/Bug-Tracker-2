@@ -2,13 +2,15 @@ import { useAppSelector } from "@/app/hooks";
 import { Dispatch, useEffect, useState } from "react";
 
 function PopUpMessages() {
-  const [createdMsgExists, setCreatedMsgExists] = useState(false);
-  const [createdMsgCentered, setCreatedMsgCentered] = useState(false);
-  const [deletedMsgExists, setDeletedMsgExists] = useState(false);
-  const [deletedMsgCentered, setDeletedMsgCentered] = useState(false);
+  const [isCreatedMsgInDom, setIsCreatedMsgInDom] = useState(false);
+  const [isCreatedMsgCentered, setIsCreatedMsgCentered] = useState(false);
+  const [isDeletedMsgInDom, setIsDeletedMsgInDom] = useState(false);
+  const [isDeletedMsgCentered, setIsDeletedMsgCentered] = useState(false);
 
-  const { success } = useAppSelector((state) => state.register);
-  const { deleteAccountSuccess } = useAppSelector((state) => state.account);
+  const { hasSucceeded } = useAppSelector((state) => state.register);
+  const { hasDeleteAccountSucceeded } = useAppSelector(
+    (state) => state.account,
+  );
 
   function timeout(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -28,23 +30,23 @@ function PopUpMessages() {
   };
 
   useEffect(() => {
-    if (success) {
-      displayMessage(setCreatedMsgExists, setCreatedMsgCentered);
+    if (hasSucceeded) {
+      displayMessage(setIsCreatedMsgInDom, setIsCreatedMsgCentered);
     }
-  }, [success]);
+  }, [hasSucceeded]);
 
   useEffect(() => {
-    if (deleteAccountSuccess) {
-      displayMessage(setDeletedMsgExists, setDeletedMsgCentered);
+    if (hasDeleteAccountSucceeded) {
+      displayMessage(setIsDeletedMsgInDom, setIsDeletedMsgCentered);
     }
-  }, [deleteAccountSuccess]);
+  }, [hasDeleteAccountSucceeded]);
 
   const displayCreated = () => {
-    displayMessage(setCreatedMsgExists, setCreatedMsgCentered);
+    displayMessage(setIsCreatedMsgInDom, setIsCreatedMsgCentered);
   };
 
   const displayDeleted = () => {
-    displayMessage(setDeletedMsgExists, setDeletedMsgCentered);
+    displayMessage(setIsDeletedMsgInDom, setIsDeletedMsgCentered);
   };
 
   // Shared ClassNames
@@ -53,23 +55,23 @@ function PopUpMessages() {
 
   return (
     <>
-      {createdMsgExists && (
+      {isCreatedMsgInDom && (
         <div
           className={
             messageContainerShared +
             " bg-green-700" +
-            (createdMsgCentered ? " right-[150px]" : " right-[-300px]")
+            (isCreatedMsgCentered ? " right-[150px]" : " right-[-300px]")
           }
         >
           Account created
         </div>
       )}
-      {deletedMsgExists && (
+      {isDeletedMsgInDom && (
         <div
           className={
             messageContainerShared +
             " bg-red-700" +
-            (deletedMsgCentered ? " right-[150px]" : " right-[-300px]")
+            (isDeletedMsgCentered ? " right-[150px]" : " right-[-300px]")
           }
         >
           Account deleted

@@ -7,7 +7,7 @@ import inTestingBugIcon from "@/assets/icons/icon_bug_testing.svg";
 import closedBugIcon from "@/assets/icons/icon_bug_closed.svg";
 
 type TProps = {
-  shouldExpand: boolean;
+  isWideScreen: boolean;
 };
 
 function BugStatusButtons(props: TProps) {
@@ -41,13 +41,13 @@ function BugStatusButtons(props: TProps) {
           "bg-color-foreground-hover-dl mb-[20px] flex h-[65px] items-center rounded-lg shadow" +
           (statusCode !== 4 ? " mr-[25px]" : "") +
           " " +
-          (props.shouldExpand
+          (props.isWideScreen
             ? " w-[210px] px-4"
             : "w-[145px] border-l-[16px] pl-1 pr-4" +
               getRibbonColor(statusCode))
         }
       >
-        {props.shouldExpand && (
+        {props.isWideScreen && (
           <img
             src={icon}
             alt={"icon for " + title}
@@ -58,7 +58,7 @@ function BugStatusButtons(props: TProps) {
           <span className="text-xl">
             {getNumBugsByStatus(bugs, statusCode)}
           </span>
-          <span className={props.shouldExpand ? "text-sm" : "text-xs"}>
+          <span className={props.isWideScreen ? "text-sm" : "text-xs"}>
             {title}
           </span>
         </div>
