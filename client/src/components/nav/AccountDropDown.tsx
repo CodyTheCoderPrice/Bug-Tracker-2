@@ -23,7 +23,7 @@ function AccountDropDown(props: TProps) {
 
   // Shared classNames
   const spanShared = " pr-20 ";
-  const smallSpanShared = spanShared + " mt-[1px] text-sm";
+  const smallSpanShared = spanShared + " mt-[1px] text-sm ";
   const buttonShared =
     " hover:text-blue-700 dark:hover:text-secondary-200 text-sm ";
 

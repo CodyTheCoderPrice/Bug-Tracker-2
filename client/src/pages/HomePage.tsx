@@ -9,7 +9,7 @@ function HomePage() {
   const isWideScreen = width > (isNavbarExpanded ? 1275 : 1080);
 
   return (
-    <div className="flex flex-1 flex-col overflow-auto bg-light-mode-geo bg-right-top bg-no-repeat">
+    <div className="bg-protected flex flex-1 flex-col overflow-auto">
       <BugStatusButtons isWideScreen={isWideScreen} />
       <BugDueDatePanels isWideScreen={isWideScreen} />
     </div>

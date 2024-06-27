@@ -15,6 +15,14 @@ body,
   overflow: hidden;
 }
 
+.bg-protected {
+  @apply bg-protected-geo bg-right-top bg-no-repeat
+}
+
+.h-top-bar {
+  @apply h-[60px]
+}
+
 /* BG color dark/light */
 .bg-color-foreground-dl {
   @apply bg-plain-light-100 dark:bg-plain-dark-400
@@ -46,8 +54,4 @@ body,
 }
 .text-color-warning-dl {
   @apply text-warning-red-light dark:text-warning-red-dark
-}
-
-.h-top-bar {
-  @apply h-[60px]
 }

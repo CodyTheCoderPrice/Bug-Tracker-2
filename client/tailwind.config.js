@@ -4,8 +4,8 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        "blue-geo": "url('@/assets/bgs/SteelBlueGeoBG_1920.png')",
-        "light-mode-geo": "url('@/assets/bgs/LightModeGeoBG.svg')",
+        "unprotected-geo": "url('@/assets/bgs/SteelBlueGeoBG_1920.png')",
+        "protected-geo": "url('@/assets/bgs/LightModeGeoBG.svg')",
       },
       colors: {
         // Primary

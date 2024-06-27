@@ -3,7 +3,9 @@ import IntroLogo from "@/assets/logos/logo_with_black_text_side.svg";
 function Intro() {
   return (
     <div
-      className={"bg-blue-geo dark:bg-dark-mode-geo flex flex-1 justify-center"}
+      className={
+        "bg-unprotected-geo dark:bg-dark-mode-geo flex flex-1 justify-center"
+      }
     >
       <img
         src={IntroLogo}
