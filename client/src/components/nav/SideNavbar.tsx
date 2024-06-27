@@ -23,7 +23,7 @@ function SideNavbar() {
   const linkSelectedShared = (path: string) => {
     return location.pathname === path ? " text-secondary-100 " : "";
   };
-  const iconShared = " inline-block w-6 ";
+  const iconShared = " inline-block w-6 box-content align-[-5px] ";
   const iconExpandedShared = " mr-3 " + iconShared;
   const iconMiniShared = " " + iconShared;
 
@@ -55,27 +55,21 @@ function SideNavbar() {
               to="/home"
               className={linkExpandedShared + linkSelectedShared("/home")}
             >
-              <HomeIcon
-                className={iconExpandedShared + "box-content align-[-5px]"}
-              />
+              <HomeIcon className={iconExpandedShared} />
               Home
             </Link>
             <Link
               to="/projects"
               className={linkExpandedShared + linkSelectedShared("/projects")}
             >
-              <ProjectIcon
-                className={iconExpandedShared + "box-content align-[-5px]"}
-              />
+              <ProjectIcon className={iconExpandedShared} />
               Projects
             </Link>
             <Link
               to="/bugs"
               className={linkExpandedShared + linkSelectedShared("/bugs")}
             >
-              <BugIcon
-                className={iconExpandedShared + "box-content align-[-5px]"}
-              />
+              <BugIcon className={iconExpandedShared} />
               Bugs
             </Link>
             <Link
@@ -99,25 +93,19 @@ function SideNavbar() {
               to="/home"
               className={linkMiniShared + linkSelectedShared("/home")}
             >
-              <HomeIcon
-                className={iconMiniShared + "box-content align-[-5px]"}
-              />
+              <HomeIcon className={iconMiniShared} />
             </Link>
             <Link
               to="/projects"
               className={linkMiniShared + linkSelectedShared("/projects")}
             >
-              <ProjectIcon
-                className={iconMiniShared + "box-content align-[-5px]"}
-              />
+              <ProjectIcon className={iconMiniShared} />
             </Link>
             <Link
               to="/bugs"
               className={linkMiniShared + linkSelectedShared("/bugs")}
             >
-              <BugIcon
-                className={iconMiniShared + "box-content align-[-5px]"}
-              />
+              <BugIcon className={iconMiniShared} />
             </Link>
           </nav>
         </>
