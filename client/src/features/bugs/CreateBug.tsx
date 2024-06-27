@@ -2,12 +2,22 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { createBug } from "./bugSlice";
 
+type TBugInfo = {
+  project_id: number;
+  name: string;
+  description: string;
+  priority_id: number;
+  status_id: number;
+  due_date: string;
+  complete_date: string;
+};
+
 function CreateBug() {
   const dispatch = useAppDispatch();
 
   const { projects } = useAppSelector((state) => state.projects);
 
-  const [bugInfo, setBugInfo] = useState({
+  const [bugInfo, setBugInfo] = useState<TBugInfo>({
     project_id: projects && projects.length > 0 ? projects[0].project_id : -1,
     name: "",
     description: "",

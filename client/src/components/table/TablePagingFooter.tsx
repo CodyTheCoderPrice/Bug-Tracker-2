@@ -17,12 +17,12 @@ type TProps = {
 function TablePagingFooter(props: TProps) {
   const dispatch = useAppDispatch();
 
-  const [pageRange, setPageRange] = useState<string>("");
+  const [pageRangeText, setPageRangeText] = useState<string>("");
 
   useEffect(() => {
     const lowerBound = (props.pageNum - 1) * homeRowsPerPage + 1;
     const upperBound = Math.min(props.pageNum * homeRowsPerPage, props.numBugs);
-    setPageRange(`${lowerBound}-${upperBound} of ${props.numBugs}`);
+    setPageRangeText(`${lowerBound}-${upperBound} of ${props.numBugs}`);
   }, [props.pageNum, props.numBugs]);
 
   const canPageDown = props.pageNum > 1;
@@ -53,7 +53,7 @@ function TablePagingFooter(props: TProps) {
   return (
     <div className="mt-auto flex h-[50px] bg-plain-light-300 text-xs dark:bg-plain-dark-300">
       <div className="ml-auto flex items-center">
-        <span className="flex items-center">{pageRange}</span>
+        <span className="flex items-center">{pageRangeText}</span>
       </div>
       <div className="ml-8 flex items-center text-sm">
         <button

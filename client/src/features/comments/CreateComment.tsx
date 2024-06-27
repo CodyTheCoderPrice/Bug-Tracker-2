@@ -2,12 +2,17 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { createComment } from "./commentSlice";
 
+type TCommentInfo = {
+  bug_id: number;
+  description: string;
+};
+
 function CreateComment() {
   const dispatch = useAppDispatch();
 
   const { bugs } = useAppSelector((state) => state.bugs);
 
-  const [commentInfo, setCommentInfo] = useState({
+  const [commentInfo, setCommentInfo] = useState<TCommentInfo>({
     bug_id: bugs && bugs.length > 0 ? bugs[0].bug_id : -1,
     description: "",
   });

@@ -2,10 +2,18 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updateName } from "./accountSlice";
 
+type TNameInfo = {
+  first_name: string;
+  last_name: string;
+};
+
 function UpdateName() {
   const dispatch = useAppDispatch();
 
-  const [nameInfo, setNameInfo] = useState({ first_name: "", last_name: "" });
+  const [nameInfo, setNameInfo] = useState<TNameInfo>({
+    first_name: "",
+    last_name: "",
+  });
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameInfo({ ...nameInfo, [e.target.name]: e.target.value });

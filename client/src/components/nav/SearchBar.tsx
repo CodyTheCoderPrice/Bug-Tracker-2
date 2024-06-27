@@ -8,16 +8,18 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 
+type TCategory = "All" | "Projects" | "Bugs" | "Comments";
+
 function SearchBar() {
   const dispatch = useAppDispatch();
 
-  const categories = ["All", "Projects", "Bugs", "Comments"];
-  const [category, setCategory] = useState(categories[0]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const categories: TCategory[] = ["All", "Projects", "Bugs", "Comments"];
+  const [category, setCategory] = useState<TCategory>(categories[0]);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
 
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
 
-  const dropdownOnClick = (ctgy: string) => {
+  const dropdownOnClick = (ctgy: TCategory) => {
     setCategory(ctgy);
     setIsDropdownOpen(false);
   };

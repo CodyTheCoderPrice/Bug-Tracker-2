@@ -4,6 +4,17 @@ import { useParams } from "react-router-dom";
 import { updateBug } from "./bugSlice";
 import moment from "moment";
 
+type TBugInfo = {
+  bug_id: number;
+  project_id: number;
+  name: string;
+  description: string;
+  priority_id: number;
+  status_id: number;
+  due_date: string;
+  complete_date: string;
+};
+
 function UpdateBug() {
   const dispatch = useAppDispatch();
 
@@ -14,7 +25,7 @@ function UpdateBug() {
     return b.bug_id === Number(id);
   });
 
-  const [bugInfo, setBugInfo] = useState({
+  const [bugInfo, setBugInfo] = useState<TBugInfo>({
     bug_id: bug?.bug_id ? bug.bug_id : -1,
     project_id: bug?.project_id ? bug.project_id : -1,
     name: bug?.name ? bug.name : "",

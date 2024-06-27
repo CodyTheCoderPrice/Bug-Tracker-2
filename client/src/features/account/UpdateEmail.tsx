@@ -2,10 +2,18 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updateEmail } from "./accountSlice";
 
+type TEmailInfo = {
+  email: string;
+  pwd: string;
+};
+
 function UpdateEmail() {
   const dispatch = useAppDispatch();
 
-  const [emailInfo, setEmailInfo] = useState({ email: "", pwd: "" });
+  const [emailInfo, setEmailInfo] = useState<TEmailInfo>({
+    email: "",
+    pwd: "",
+  });
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailInfo({ ...emailInfo, [e.target.name]: e.target.value });

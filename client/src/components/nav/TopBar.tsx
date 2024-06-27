@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { toggleSearchBar, toggleDarkMode } from "@/features/system/systemSlice";

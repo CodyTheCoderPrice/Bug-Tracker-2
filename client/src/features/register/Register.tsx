@@ -7,11 +7,18 @@ import InputField from "@/components/onboarding/InputField";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import SubmitButton from "@/components/onboarding/SubmitButton";
 
+type TRegisterInfo = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  pwd: string;
+};
+
 function Register() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [registerInfo, setRegisterInfo] = useState({
+  const [registerInfo, setRegisterInfo] = useState<TRegisterInfo>({
     first_name: "",
     last_name: "",
     email: "",

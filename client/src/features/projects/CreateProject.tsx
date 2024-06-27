@@ -2,10 +2,15 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { createProject } from "./projectSlice";
 
+type TProjectInfo = {
+  name: string;
+  description: string;
+};
+
 function CreateProject() {
   const dispatch = useAppDispatch();
 
-  const [projectInfo, setProjectInfo] = useState({
+  const [projectInfo, setProjectInfo] = useState<TProjectInfo>({
     name: "",
     description: "",
   });

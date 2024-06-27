@@ -2,10 +2,16 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updatePassword } from "./accountSlice";
 
+type TPwdInfo = {
+  pwd: string;
+  newPwd: string;
+  confirmPwd: string;
+};
+
 function UpdatePassword() {
   const dispatch = useAppDispatch();
 
-  const [pwdInfo, setPwdInfo] = useState({
+  const [pwdInfo, setPwdInfo] = useState<TPwdInfo>({
     pwd: "",
     newPwd: "",
     confirmPwd: "",

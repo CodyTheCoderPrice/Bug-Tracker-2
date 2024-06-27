@@ -3,6 +3,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { updateComment } from "./commentSlice";
 
+type TCommentInfo = {
+  comment_id: number;
+  bug_id: number;
+  description: string;
+};
+
 function UpdateComment() {
   const dispatch = useAppDispatch();
 
@@ -13,7 +19,7 @@ function UpdateComment() {
     return c.comment_id === Number(id);
   });
 
-  const [commentInfo, setCommentInfo] = useState({
+  const [commentInfo, setCommentInfo] = useState<TCommentInfo>({
     comment_id: comment?.comment_id ? comment.comment_id : -1,
     bug_id: comment?.bug_id ? comment.bug_id : -1,
     description: comment?.description ? comment.description : "",

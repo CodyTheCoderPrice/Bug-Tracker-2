@@ -3,6 +3,12 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { updateProject } from "./projectSlice";
 
+type TProjectInfo = {
+  project_id: number;
+  name: string;
+  description: string;
+};
+
 function UpdateProject() {
   const dispatch = useAppDispatch();
 
@@ -13,7 +19,7 @@ function UpdateProject() {
     return p.project_id === Number(id);
   });
 
-  const [projectInfo, setProjectInfo] = useState({
+  const [projectInfo, setProjectInfo] = useState<TProjectInfo>({
     project_id: project?.project_id ? project.project_id : -1,
     name: project?.name ? project.name : "",
     description: project?.description ? project.description : "",

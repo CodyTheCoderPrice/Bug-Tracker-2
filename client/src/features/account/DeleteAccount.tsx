@@ -2,10 +2,18 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { deleteAccount } from "./accountSlice";
 
+type TDeleteInfo = {
+  pwd: string;
+  confirmDelete: string;
+};
+
 function DeleteAccount() {
   const dispatch = useAppDispatch();
 
-  const [deleteInfo, setDeleteInfo] = useState({ pwd: "", confirmDelete: "" });
+  const [deleteInfo, setDeleteInfo] = useState<TDeleteInfo>({
+    pwd: "",
+    confirmDelete: "",
+  });
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDeleteInfo({ ...deleteInfo, [e.target.name]: e.target.value });

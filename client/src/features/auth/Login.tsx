@@ -6,10 +6,15 @@ import InputField from "@/components/onboarding/InputField";
 import ErrorMessage from "@/components/onboarding/ErrorMessage";
 import SubmitButton from "@/components/onboarding/SubmitButton";
 
+type TLoginInfo = {
+  email: string;
+  pwd: string;
+};
+
 function Login() {
   const dispatch = useAppDispatch();
 
-  const [loginInfo, setLoginInfo] = useState({
+  const [loginInfo, setLoginInfo] = useState<TLoginInfo>({
     email: "",
     pwd: "",
   });
