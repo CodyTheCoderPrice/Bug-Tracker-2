@@ -1,11 +1,13 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { toggleSearchBar, toggleDarkMode } from "@/features/system/systemSlice";
-import SunIcon from "@/components/svg/SunIcon";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faCircleUser } from "@fortawesome/free-regular-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import SunIcon from "@/components/svg/SunIcon";
+import AccountDropDown from "./AccountDropDown";
 
 function TopBar() {
   const dispatch = useAppDispatch();
@@ -28,37 +30,51 @@ function TopBar() {
   const { isSearchBarOpen, isDarkModeOn } = useAppSelector(
     (state) => state.system,
   );
+
+  const [isAccountDropdownOpen, setIsAccountDropdownOpen] =
+    useState<boolean>(false);
+
+  // Shared classNames
+  const buttonShared = "mr-6 inline-block cursor-pointer";
+
   return (
     <>
-      {isSearchBarOpen && <SearchBar />}
       <nav className="bg-color-foreground-dl h-top-bar flex shrink-0 items-center shadow">
         <h1 className="ml-4 font-semibold">{getPageName()}</h1>
         <div className="ml-auto">
-          <span
-            onClick={() => {
-              dispatch(toggleSearchBar());
-            }}
-            className="ml-5 mr-6 h-full w-[100px] cursor-pointer rounded border border-black bg-plain-light-200 px-10 py-1 dark:bg-plain-dark-300"
+          <button
+            onClick={() => dispatch(toggleSearchBar())}
+            className={buttonShared + " w-[20px]"}
           >
-            Search...
-          </span>
-          <span
-            onClick={() => {
-              dispatch(toggleDarkMode());
-            }}
-            className="mr-6 cursor-pointer"
+            <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
+          </button>
+          <button
+            onClick={() => dispatch(toggleDarkMode())}
+            className={buttonShared + " w-[22px]"}
           >
             {isDarkModeOn ? (
-              <SunIcon className="box-content inline-block w-[20px] align-[-5px]" />
+              <SunIcon className="box-content inline-block align-[-5px]" />
             ) : (
               <FontAwesomeIcon icon={faMoon} size="lg" />
             )}
-          </span>
-          <Link to="/account" className="mr-6">
-            <FontAwesomeIcon icon={faCircleUser} size="lg" />
-          </Link>
+          </button>
+          <button
+            id="account-dropdown-button"
+            onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
+            className={buttonShared + " w-[20px]"}
+          >
+            <FontAwesomeIcon
+              icon={faCircleUser}
+              size="lg"
+              className="pointer-events-none"
+            />
+          </button>
         </div>
       </nav>
+      {isAccountDropdownOpen && (
+        <AccountDropDown setIsDropdownOpen={setIsAccountDropdownOpen} />
+      )}
+      {isSearchBarOpen && <SearchBar />}
     </>
   );
 }
