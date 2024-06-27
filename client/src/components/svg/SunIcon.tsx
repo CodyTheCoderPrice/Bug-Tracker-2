@@ -4,7 +4,11 @@ type TProps = {
 
 function SunIcon(props: TProps) {
   return (
-    <svg viewBox="0 0 512 512" className={props.className}>
+    <svg
+      viewBox="0 0 512 512"
+      xmlns="http://www.w3.org/2000/svg"
+      className={props.className}
+    >
       <g>
         <path
           style={{

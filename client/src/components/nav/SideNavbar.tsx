@@ -4,9 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import logo from "@/assets/logos/logo_menu.svg";
-import menuHomeIcon from "@/assets/icons/icon_menu_home.svg";
-import menuProjectsIcon from "@/assets/icons/icon_menu_projects.svg";
-import menuBugsIcon from "@/assets/icons/icon_menu_bugs.svg";
+import HomeIcon from "../svg/HomeIcon";
+import ProjectIcon from "../svg/ProjectIcon";
+import BugIcon from "../svg/BugIcon";
 
 function SideNavbar() {
   const dispatch = useAppDispatch();
@@ -55,10 +55,8 @@ function SideNavbar() {
               to="/home"
               className={linkExpandedShared + linkSelectedShared("/home")}
             >
-              <img
-                src={menuHomeIcon}
-                alt="home icon"
-                className={iconExpandedShared}
+              <HomeIcon
+                className={iconExpandedShared + "box-content align-[-5px]"}
               />
               Home
             </Link>
@@ -66,10 +64,8 @@ function SideNavbar() {
               to="/projects"
               className={linkExpandedShared + linkSelectedShared("/projects")}
             >
-              <img
-                src={menuProjectsIcon}
-                alt="projects icon"
-                className={iconExpandedShared}
+              <ProjectIcon
+                className={iconExpandedShared + "box-content align-[-5px]"}
               />
               Projects
             </Link>
@@ -77,10 +73,8 @@ function SideNavbar() {
               to="/bugs"
               className={linkExpandedShared + linkSelectedShared("/bugs")}
             >
-              <img
-                src={menuBugsIcon}
-                alt="bugs icon"
-                className={iconExpandedShared}
+              <BugIcon
+                className={iconExpandedShared + "box-content align-[-5px]"}
               />
               Bugs
             </Link>
@@ -105,30 +99,24 @@ function SideNavbar() {
               to="/home"
               className={linkMiniShared + linkSelectedShared("/home")}
             >
-              <img
-                src={menuHomeIcon}
-                alt="home icon"
-                className={iconMiniShared}
+              <HomeIcon
+                className={iconMiniShared + "box-content align-[-5px]"}
               />
             </Link>
             <Link
               to="/projects"
               className={linkMiniShared + linkSelectedShared("/projects")}
             >
-              <img
-                src={menuProjectsIcon}
-                alt="projects icon"
-                className={iconMiniShared}
+              <ProjectIcon
+                className={iconMiniShared + "box-content align-[-5px]"}
               />
             </Link>
             <Link
               to="/bugs"
               className={linkMiniShared + linkSelectedShared("/bugs")}
             >
-              <img
-                src={menuBugsIcon}
-                alt="bugs icon"
-                className={iconMiniShared}
+              <BugIcon
+                className={iconMiniShared + "box-content align-[-5px]"}
               />
             </Link>
           </nav>
