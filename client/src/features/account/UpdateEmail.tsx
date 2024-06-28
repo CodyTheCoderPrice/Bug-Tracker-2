@@ -28,8 +28,8 @@ function UpdateEmail() {
     useAppSelector((state) => state.account);
 
   return (
-    <>
-      <h2>Change Email</h2>
+    <div className="account-feature-container-mt">
+      <h2 className="account-header">Change Email</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <input
           type="email"
@@ -37,6 +37,7 @@ function UpdateEmail() {
           placeholder="Email"
           onChange={handleInput}
           value={emailInfo.email}
+          className="account-input"
         />
         <input
           type="password"
@@ -44,8 +45,11 @@ function UpdateEmail() {
           placeholder="Password"
           onChange={handleInput}
           value={emailInfo.pwd}
+          className="account-input"
         />
-        <button type="submit">Update Email</button>
+        <button type="submit" className="account-button-update">
+          Update Email
+        </button>
       </form>
       {isUpdateEmailLoading && <h3>Loading...</h3>}
       {hasUpdateEmailSucceeded && <p>Email Updated</p>}
@@ -58,7 +62,7 @@ function UpdateEmail() {
       {updateEmailErrors?.server && (
         <p style={{ color: "red" }}>{updateEmailErrors.server}</p>
       )}
-    </>
+    </div>
   );
 }
 

@@ -33,8 +33,8 @@ function UpdatePassword() {
   } = useAppSelector((state) => state.account);
 
   return (
-    <>
-      <h2>Change Password</h2>
+    <div className="account-feature-container-mt">
+      <h2 className="account-header">Change Password</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <input
           type="password"
@@ -42,6 +42,7 @@ function UpdatePassword() {
           placeholder="Current password"
           onChange={handleInput}
           value={pwdInfo.pwd}
+          className="account-input"
         />
         <input
           type="password"
@@ -49,6 +50,7 @@ function UpdatePassword() {
           placeholder="New password"
           onChange={handleInput}
           value={pwdInfo.newPwd}
+          className="account-input"
         />
         <input
           type="password"
@@ -56,8 +58,11 @@ function UpdatePassword() {
           placeholder="Confirm new password"
           onChange={handleInput}
           value={pwdInfo.confirmPwd}
+          className="account-input"
         />
-        <button type="submit">Update Password</button>
+        <button type="submit" className="account-button-update">
+          Update Password
+        </button>
       </form>
       {isUpdatePasswordLoading && <h3>Loading...</h3>}
       {hasUpdatePasswordSucceeded && <p>Password Updated</p>}
@@ -73,7 +78,7 @@ function UpdatePassword() {
       {updatePasswordErrors?.server && (
         <p style={{ color: "red" }}>{updatePasswordErrors.server}</p>
       )}
-    </>
+    </div>
   );
 }
 

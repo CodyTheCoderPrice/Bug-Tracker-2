@@ -28,8 +28,8 @@ function UpdateName() {
     useAppSelector((state) => state.account);
 
   return (
-    <>
-      <h2>Change Name</h2>
+    <div>
+      <h2 className="account-header">Change Name</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -37,6 +37,7 @@ function UpdateName() {
           placeholder="First name"
           onChange={handleInput}
           value={nameInfo.first_name}
+          className="account-input"
         />
         <input
           type="text"
@@ -44,8 +45,11 @@ function UpdateName() {
           placeholder="Last name"
           onChange={handleInput}
           value={nameInfo.last_name}
+          className="account-input"
         />
-        <button type="submit">Update Name</button>
+        <button type="submit" className="account-button-update">
+          Update Name
+        </button>
       </form>
       {isUpdateNameLoading && <h3>Loading...</h3>}
       {hasUpdateNameSucceeded && <p>Name Updated</p>}
@@ -58,7 +62,7 @@ function UpdateName() {
       {updateNameErrors?.server && (
         <p style={{ color: "red" }}>{updateNameErrors.server}</p>
       )}
-    </>
+    </div>
   );
 }
 

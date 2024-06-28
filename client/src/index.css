@@ -23,7 +23,7 @@ body,
   @apply h-[60px]
 }
 
-/* BG color dark/light */
+/* BG color dark/light mode */
 .bg-color-foreground-dl {
   @apply bg-plain-light-100 dark:bg-plain-dark-400
 }
@@ -34,7 +34,7 @@ body,
   @apply bg-white dark:bg-plain-dark-100
 }
 
-/* Border color dark/light */
+/* Border color dark/light mode */
 .border-color-dl {
   @apply border-plain-light-300 dark:border-plain-dark-100
 }
@@ -45,7 +45,7 @@ body,
   @apply border-plain-light-300 dark:border-plain-dark-300
 }
 
-/* Text color dark/light */
+/* Text color dark/light mode */
 .text-color-input-dl {
   @apply dark:placeholder:text-plain-light-500
 }
@@ -54,4 +54,29 @@ body,
 }
 .text-color-warning-dl {
   @apply text-warning-red-light dark:text-warning-red-dark
+}
+
+/* Account Page */
+.account-feature-container-mt {
+  @apply mt-12
+}
+
+.account-header {
+  @apply text-xl font-semibold
+}
+
+.account-input {
+  @apply bg-color-input-dl border border-color-input-dl text-color-input-dl block mt-4 px-2 py-1 rounded
+}
+
+.account-button {
+  @apply w-[175px] py-2 rounded-lg text-white mt-4
+}
+
+.account-button-update {
+  @apply account-button bg-primary-300
+}
+
+.account-button-delete {
+  @apply account-button bg-red-700
 }

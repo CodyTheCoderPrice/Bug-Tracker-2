@@ -29,8 +29,8 @@ function DeleteAccount() {
   );
 
   return (
-    <>
-      <h2>Delete Account</h2>
+    <div>
+      <h2 className="account-header">Delete Account</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <input
           type="password"
@@ -38,6 +38,7 @@ function DeleteAccount() {
           placeholder="Password"
           onChange={handleInput}
           value={deleteInfo.pwd}
+          className="account-input"
         />
         <input
           type="text"
@@ -45,8 +46,13 @@ function DeleteAccount() {
           placeholder="DELETE"
           onChange={handleInput}
           value={deleteInfo.confirmDelete}
+          className="account-input"
         />
-        <button type="submit" disabled={deleteInfo.confirmDelete !== "DELETE"}>
+        <button
+          type="submit"
+          disabled={deleteInfo.confirmDelete !== "DELETE"}
+          className="account-button-delete"
+        >
           Delete
         </button>
       </form>
@@ -57,7 +63,7 @@ function DeleteAccount() {
       {deleteAccountErrors?.server && (
         <p style={{ color: "red" }}>{deleteAccountErrors.server}</p>
       )}
-    </>
+    </div>
   );
 }
 
