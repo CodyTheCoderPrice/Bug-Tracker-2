@@ -10,10 +10,19 @@ function ErrorMessage(props: TProps) {
   return (
     <>
       {props.message && (
-        <p className={"text-warning-red-light pt-2 text-sm " + props.className}>
-          <FontAwesomeIcon icon={faCircleExclamation} size="lg" />
-          <span className="pl-3">{props.message}</span>
-        </p>
+        <span
+          className={
+            "block pt-2 text-sm text-warning-red-light dark:text-warning-red-dark" +
+            props.className
+          }
+        >
+          <FontAwesomeIcon
+            icon={faCircleExclamation}
+            size="lg"
+            className="ml-1 mr-2"
+          />
+          {props.message}
+        </span>
       )}
     </>
   );

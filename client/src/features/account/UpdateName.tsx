@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updateName } from "./accountSlice";
+import ErrorMessage from "@/components/form/ErrorMessage";
 
 type TNameInfo = {
   first_name: string;
@@ -37,31 +38,25 @@ function UpdateName() {
           placeholder="First name"
           onChange={handleInput}
           value={nameInfo.first_name}
-          className="account-input"
+          className="account-input account-mt"
         />
+        <ErrorMessage message={updateNameErrors?.first_name} />
         <input
           type="text"
           name="last_name"
           placeholder="Last name"
           onChange={handleInput}
           value={nameInfo.last_name}
-          className="account-input"
+          className="account-input account-mt"
         />
+        <ErrorMessage message={updateNameErrors?.last_name} />
         <button type="submit" className="account-button-update">
           Update Name
         </button>
       </form>
+      <ErrorMessage message={updateNameErrors?.server} />
       {isUpdateNameLoading && <h3>Loading...</h3>}
       {hasUpdateNameSucceeded && <p>Name Updated</p>}
-      {updateNameErrors?.first_name && (
-        <p style={{ color: "red" }}>{updateNameErrors.first_name}</p>
-      )}
-      {updateNameErrors?.last_name && (
-        <p style={{ color: "red" }}>{updateNameErrors.last_name}</p>
-      )}
-      {updateNameErrors?.server && (
-        <p style={{ color: "red" }}>{updateNameErrors.server}</p>
-      )}
     </div>
   );
 }

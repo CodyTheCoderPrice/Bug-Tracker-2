@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updateEmail } from "./accountSlice";
+import ErrorMessage from "@/components/form/ErrorMessage";
 
 type TEmailInfo = {
   email: string;
@@ -37,31 +38,25 @@ function UpdateEmail() {
           placeholder="Email"
           onChange={handleInput}
           value={emailInfo.email}
-          className="account-input"
+          className="account-input account-mt"
         />
+        <ErrorMessage message={updateEmailErrors?.email} />
         <input
           type="password"
           name="pwd"
           placeholder="Password"
           onChange={handleInput}
           value={emailInfo.pwd}
-          className="account-input"
+          className="account-input account-mt"
         />
+        <ErrorMessage message={updateEmailErrors?.pwd} />
         <button type="submit" className="account-button-update">
           Update Email
         </button>
       </form>
+      <ErrorMessage message={updateEmailErrors?.server} />
       {isUpdateEmailLoading && <h3>Loading...</h3>}
       {hasUpdateEmailSucceeded && <p>Email Updated</p>}
-      {updateEmailErrors?.email && (
-        <p style={{ color: "red" }}>{updateEmailErrors.email}</p>
-      )}
-      {updateEmailErrors?.pwd && (
-        <p style={{ color: "red" }}>{updateEmailErrors.pwd}</p>
-      )}
-      {updateEmailErrors?.server && (
-        <p style={{ color: "red" }}>{updateEmailErrors.server}</p>
-      )}
     </div>
   );
 }

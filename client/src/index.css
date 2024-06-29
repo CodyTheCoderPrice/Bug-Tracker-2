@@ -31,12 +31,12 @@ body,
   @apply bg-color-foreground-dl hover:bg-plain-light-200 dark:hover:bg-plain-dark-300
 }
 .bg-color-input-dl {
-  @apply bg-white dark:bg-plain-dark-100
+  @apply bg-white dark:bg-plain-dark-500
 }
 
 /* Border color dark/light mode */
 .border-color-dl {
-  @apply border-plain-light-300 dark:border-plain-dark-100
+  @apply border-plain-light-300 dark:border-plain-dark-200
 }
 .border-color-input-dl {
   @apply border-color-dl focus:outline focus:outline-1 focus:outline-blue-500 dark:focus:outline-secondary-200
@@ -60,23 +60,18 @@ body,
 .account-feature-container-mt {
   @apply mt-12
 }
-
 .account-header {
   @apply text-xl font-semibold
 }
-
 .account-input {
-  @apply bg-color-input-dl border border-color-input-dl text-color-input-dl block mt-4 px-2 py-1 rounded
+  @apply flex-1 bg-color-input-dl border border-color-input-dl text-color-input-dl block px-2 py-1 rounded text-sm
 }
-
+.account-mt {
+  @apply mt-4
+}
 .account-button {
-  @apply w-[175px] py-2 rounded-lg text-white mt-4
+  @apply w-[200px] py-2 rounded text-white mt-4 text-sm
 }
-
 .account-button-update {
   @apply account-button bg-primary-300
-}
-
-.account-button-delete {
-  @apply account-button bg-red-700
 }

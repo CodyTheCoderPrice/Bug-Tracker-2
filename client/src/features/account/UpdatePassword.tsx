@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updatePassword } from "./accountSlice";
+import ErrorMessage from "@/components/form/ErrorMessage";
 
 type TPwdInfo = {
   pwd: string;
@@ -42,42 +43,34 @@ function UpdatePassword() {
           placeholder="Current password"
           onChange={handleInput}
           value={pwdInfo.pwd}
-          className="account-input"
+          className="account-input account-mt"
         />
+        <ErrorMessage message={updatePasswordErrors?.pwd} />
         <input
           type="password"
           name="newPwd"
           placeholder="New password"
           onChange={handleInput}
           value={pwdInfo.newPwd}
-          className="account-input"
+          className="account-input account-mt"
         />
+        <ErrorMessage message={updatePasswordErrors?.newPwd} />
         <input
           type="password"
           name="confirmPwd"
           placeholder="Confirm new password"
           onChange={handleInput}
           value={pwdInfo.confirmPwd}
-          className="account-input"
+          className="account-input account-mt"
         />
+        <ErrorMessage message={updatePasswordErrors?.confirmPwd} />
         <button type="submit" className="account-button-update">
           Update Password
         </button>
       </form>
+      <ErrorMessage message={updatePasswordErrors?.server} />
       {isUpdatePasswordLoading && <h3>Loading...</h3>}
       {hasUpdatePasswordSucceeded && <p>Password Updated</p>}
-      {updatePasswordErrors?.pwd && (
-        <p style={{ color: "red" }}>{updatePasswordErrors.pwd}</p>
-      )}
-      {updatePasswordErrors?.newPwd && (
-        <p style={{ color: "red" }}>{updatePasswordErrors.newPwd}</p>
-      )}
-      {updatePasswordErrors?.confirmPwd && (
-        <p style={{ color: "red" }}>{updatePasswordErrors.confirmPwd}</p>
-      )}
-      {updatePasswordErrors?.server && (
-        <p style={{ color: "red" }}>{updatePasswordErrors.server}</p>
-      )}
     </div>
   );
 }

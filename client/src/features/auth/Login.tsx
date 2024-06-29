@@ -3,7 +3,7 @@ import { useState } from "react";
 import { login } from "./authSlice";
 import Header from "@/components/onboarding/Header";
 import InputField from "@/components/onboarding/InputField";
-import ErrorMessage from "@/components/onboarding/ErrorMessage";
+import ErrorMessage from "@/components/form/ErrorMessage";
 import SubmitButton from "@/components/onboarding/SubmitButton";
 
 type TLoginInfo = {

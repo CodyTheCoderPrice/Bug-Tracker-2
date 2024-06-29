@@ -11,10 +11,13 @@ function AccountPage() {
   const { width } = useWindowSize();
   const isWideScreen = width > (isNavbarExpanded ? 1275 : 1080);
 
+  // Shared className
+  const containerShared = " flex flex-1 flex-col my-8 px-6 ";
+
   return (
     <div className="bg-protected flex flex-1 flex-col overflow-auto">
-      <div className="bg-color-foreground-dl m-10 flex flex-1 rounded p-6">
-        <div className="flex flex-1 flex-col">
+      <div className="bg-color-foreground-dl m-10 flex flex-1 rounded">
+        <div className={containerShared}>
           <UpdateName />
           <UpdateEmail />
           <UpdatePassword />
@@ -26,7 +29,12 @@ function AccountPage() {
           )}
         </div>
         {isWideScreen && (
-          <div className="flex-1">
+          <div
+            className={
+              containerShared +
+              " border-l-2 border-gray-300 dark:border-gray-700"
+            }
+          >
             <DeleteAccount />
             <CreateTestData />
           </div>
