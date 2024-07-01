@@ -64,7 +64,7 @@ function UpdatePassword() {
           className="account-input account-mt"
         />
         <ErrorMessage message={updatePasswordErrors?.confirmPwd} />
-        <button type="submit" className="account-button-update">
+        <button type="submit" className="account-button-update account-mt">
           Update Password
         </button>
       </form>

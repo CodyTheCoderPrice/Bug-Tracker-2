@@ -57,10 +57,8 @@ function DeleteAccount() {
           type="submit"
           disabled={isDisabled}
           className={
-            "account-button" +
-            (isDisabled
-              ? " bg-gray-400 opacity-50 dark:bg-gray-700"
-              : " bg-red-700")
+            "account-button account-mt" +
+            (isDisabled ? " bg-gray-400 dark:bg-gray-700" : " bg-red-700")
           }
         >
           Delete Account

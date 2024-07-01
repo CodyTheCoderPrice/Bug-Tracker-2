@@ -50,7 +50,7 @@ function UpdateEmail() {
           className="account-input account-mt"
         />
         <ErrorMessage message={updateEmailErrors?.pwd} />
-        <button type="submit" className="account-button-update">
+        <button type="submit" className="account-button-update account-mt">
           Update Email
         </button>
       </form>

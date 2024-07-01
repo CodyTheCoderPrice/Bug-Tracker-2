@@ -70,7 +70,7 @@ body,
   @apply mt-4
 }
 .account-button {
-  @apply w-[200px] py-2 rounded text-white mt-4 text-sm
+  @apply w-[200px] py-2 rounded text-white text-sm align-top
 }
 .account-button-update {
   @apply account-button bg-primary-300

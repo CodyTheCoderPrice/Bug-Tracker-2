@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updateName } from "./accountSlice";
 import ErrorMessage from "@/components/form/ErrorMessage";
+import Spinner from "@/components/form/Spinner";
 
 type TNameInfo = {
   first_name: string;
@@ -29,7 +30,7 @@ function UpdateName() {
     useAppSelector((state) => state.account);
 
   return (
-    <div>
+    <div className="">
       <h2 className="account-header">Change Name</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <input
@@ -50,9 +51,10 @@ function UpdateName() {
           className="account-input account-mt"
         />
         <ErrorMessage message={updateNameErrors?.last_name} />
-        <button type="submit" className="account-button-update">
+        <button type="submit" className="account-button-update account-mt">
           Update Name
         </button>
+        <Spinner className="account-mt" />
       </form>
       <ErrorMessage message={updateNameErrors?.server} />
       {isUpdateNameLoading && <h3>Loading...</h3>}
