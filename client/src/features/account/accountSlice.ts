@@ -78,8 +78,10 @@ export const updateName = createAsyncThunk(
         "/api/v1/accounts/update-name",
         nameInfo,
       );
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       return response.data;
     } catch (err: any) {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       if (!err.response.data.errors) {
         return rejectWithValue(null);
       }

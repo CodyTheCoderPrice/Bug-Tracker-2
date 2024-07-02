@@ -41,6 +41,9 @@ body,
 .border-color-input-dl {
   @apply border-color-dl focus:outline focus:outline-1 focus:outline-blue-500 dark:focus:outline-secondary-200
 }
+.border-color-input-error-dl {
+  @apply border-warning-red-light dark:border-warning-red-dark focus:outline-warning-red-light dark:focus:outline-warning-red-dark
+}
 .border-color-table-row-dl {
   @apply border-plain-light-300 dark:border-plain-dark-300
 }
@@ -58,19 +61,19 @@ body,
 
 /* Account Page */
 .account-feature-container-mt {
-  @apply mt-12
+  @apply mt-16
 }
 .account-header {
   @apply text-xl font-semibold
 }
 .account-input {
-  @apply flex-1 bg-color-input-dl border border-color-input-dl text-color-input-dl block px-2 py-1 rounded text-sm
+  @apply bg-color-input-dl w-full max-w-[300px] border text-color-input-dl flex-1 block px-2 py-1 rounded text-sm
 }
 .account-mt {
   @apply mt-4
 }
 .account-button {
-  @apply w-[200px] py-2 rounded text-white text-sm align-top
+  @apply w-full max-w-[300px] py-2 rounded text-white text-sm align-top flex justify-center items-center
 }
 .account-button-update {
   @apply account-button bg-primary-300

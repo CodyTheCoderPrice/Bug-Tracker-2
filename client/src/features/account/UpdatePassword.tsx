@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { updatePassword } from "./accountSlice";
 import ErrorMessage from "@/components/form/ErrorMessage";
+import LoadingButton from "@/components/form/LoadingButton";
 
 type TPwdInfo = {
   pwd: string;
@@ -64,9 +65,12 @@ function UpdatePassword() {
           className="account-input account-mt"
         />
         <ErrorMessage message={updatePasswordErrors?.confirmPwd} />
-        <button type="submit" className="account-button-update account-mt">
-          Update Password
-        </button>
+        <LoadingButton
+          message="Update Password"
+          isLoading={isUpdatePasswordLoading}
+          hasSucceeded={hasUpdatePasswordSucceeded}
+          hasErrors={updatePasswordErrors !== null}
+        />
       </form>
       <ErrorMessage message={updatePasswordErrors?.server} />
       {isUpdatePasswordLoading && <h3>Loading...</h3>}

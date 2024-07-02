@@ -16,7 +16,7 @@ function AccountPage() {
 
   return (
     <div className="bg-protected flex flex-1 flex-col overflow-auto">
-      <div className="bg-color-foreground-dl m-10 flex flex-1 rounded">
+      <div className="bg-color-foreground-dl m-10 flex min-w-[300px] flex-1 rounded">
         <div className={containerShared}>
           <UpdateName />
           <UpdateEmail />

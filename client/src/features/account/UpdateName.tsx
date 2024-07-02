@@ -1,8 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateName } from "./accountSlice";
 import ErrorMessage from "@/components/form/ErrorMessage";
-import Spinner from "@/components/form/Spinner";
+import LoadingButton from "@/components/form/LoadingButton";
 
 type TNameInfo = {
   first_name: string;
@@ -17,6 +17,17 @@ function UpdateName() {
     last_name: "",
   });
 
+  const { account } = useAppSelector((state) => state.account);
+
+  useEffect(() => {
+    if (account !== null) {
+      setNameInfo({
+        first_name: account.first_name,
+        last_name: account.last_name,
+      });
+    }
+  }, [account]);
+
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNameInfo({ ...nameInfo, [e.target.name]: e.target.value });
   };
@@ -29,8 +40,14 @@ function UpdateName() {
   const { isUpdateNameLoading, hasUpdateNameSucceeded, updateNameErrors } =
     useAppSelector((state) => state.account);
 
+  const inputErrorClassname = (hasError: boolean) => {
+    return hasError
+      ? " border-color-input-error-dl "
+      : " border-color-input-dl ";
+  };
+
   return (
-    <div className="">
+    <div>
       <h2 className="account-header">Change Name</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <input
@@ -39,7 +56,10 @@ function UpdateName() {
           placeholder="First name"
           onChange={handleInput}
           value={nameInfo.first_name}
-          className="account-input account-mt"
+          className={
+            "account-input account-mt" +
+            inputErrorClassname(!!updateNameErrors?.first_name)
+          }
         />
         <ErrorMessage message={updateNameErrors?.first_name} />
         <input
@@ -48,17 +68,20 @@ function UpdateName() {
           placeholder="Last name"
           onChange={handleInput}
           value={nameInfo.last_name}
-          className="account-input account-mt"
+          className={
+            "account-input account-mt" +
+            inputErrorClassname(!!updateNameErrors?.last_name)
+          }
         />
         <ErrorMessage message={updateNameErrors?.last_name} />
-        <button type="submit" className="account-button-update account-mt">
-          Update Name
-        </button>
-        <Spinner className="account-mt" />
+        <LoadingButton
+          message="Update Name"
+          isLoading={isUpdateNameLoading}
+          hasSucceeded={hasUpdateNameSucceeded}
+          hasErrors={updateNameErrors !== null}
+        />
       </form>
       <ErrorMessage message={updateNameErrors?.server} />
-      {isUpdateNameLoading && <h3>Loading...</h3>}
-      {hasUpdateNameSucceeded && <p>Name Updated</p>}
     </div>
   );
 }

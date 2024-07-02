@@ -1,7 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateEmail } from "./accountSlice";
 import ErrorMessage from "@/components/form/ErrorMessage";
+import LoadingButton from "@/components/form/LoadingButton";
 
 type TEmailInfo = {
   email: string;
@@ -15,6 +16,17 @@ function UpdateEmail() {
     email: "",
     pwd: "",
   });
+
+  const { account } = useAppSelector((state) => state.account);
+
+  useEffect(() => {
+    if (account !== null) {
+      setEmailInfo({
+        email: account.email,
+        pwd: "",
+      });
+    }
+  }, [account]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmailInfo({ ...emailInfo, [e.target.name]: e.target.value });
@@ -50,9 +62,12 @@ function UpdateEmail() {
           className="account-input account-mt"
         />
         <ErrorMessage message={updateEmailErrors?.pwd} />
-        <button type="submit" className="account-button-update account-mt">
-          Update Email
-        </button>
+        <LoadingButton
+          message="Update Email"
+          isLoading={isUpdateEmailLoading}
+          hasSucceeded={hasUpdateEmailSucceeded}
+          hasErrors={updateEmailErrors !== null}
+        />
       </form>
       <ErrorMessage message={updateEmailErrors?.server} />
       {isUpdateEmailLoading && <h3>Loading...</h3>}
