@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { clearAuthErrors } from "@/features/auth/authSlice";
 import { setAccountDeletedToFalse } from "@/features/account/accountSlice";
 import { useEffect } from "react";
@@ -11,13 +11,20 @@ import { Link } from "react-router-dom";
 function LoginPage() {
   const dispatch = useAppDispatch();
 
+  const { hasDeleteAccountSucceeded } = useAppSelector(
+    (state) => state.account,
+  );
+
   useEffect(() => {
     return () => {
       dispatch(clearAuthErrors());
-      // Keeps account deleted popup from showing more than once
-      dispatch(setAccountDeletedToFalse());
+
+      if (hasDeleteAccountSucceeded) {
+        // Keeps account deleted popup from showing more than once
+        dispatch(setAccountDeletedToFalse());
+      }
     };
-  }, []);
+  }, [hasDeleteAccountSucceeded]);
 
   return (
     <div className="flex h-full">

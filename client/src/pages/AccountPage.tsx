@@ -1,5 +1,7 @@
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import useWindowSize from "@/hooks/useWindowSize";
+import { useEffect } from "react";
+import { clearAccountErrors } from "@/features/account/accountSlice";
 import UpdateName from "../features/account/UpdateName";
 import UpdateEmail from "../features/account/UpdateEmail";
 import UpdatePassword from "../features/account/UpdatePassword";
@@ -7,9 +9,17 @@ import DeleteAccount from "../features/account/DeleteAccount";
 import CreateTestData from "@/features/account/CreateTestData";
 
 function AccountPage() {
+  const dispatch = useAppDispatch();
+
   const { isNavbarExpanded } = useAppSelector((state) => state.system);
   const { width } = useWindowSize();
   const isWideScreen = width > (isNavbarExpanded ? 1275 : 1080);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearAccountErrors());
+    };
+  }, []);
 
   // Shared className
   const containerShared = " flex flex-1 flex-col my-8 px-10 py-2 ";
