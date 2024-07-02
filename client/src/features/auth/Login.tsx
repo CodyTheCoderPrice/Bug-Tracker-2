@@ -1,10 +1,8 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { login } from "./authSlice";
-import Header from "@/components/onboarding/Header";
-import InputField from "@/components/onboarding/InputField";
+import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
-import SubmitButton from "@/components/onboarding/SubmitButton";
 
 type TLoginInfo = {
   email: string;
@@ -32,7 +30,7 @@ function Login() {
 
   return (
     <>
-      <Header text="Sign In" />
+      <h1 className="onboarding-header">Sign In</h1>
       <form
         noValidate
         autoComplete="off"
@@ -47,6 +45,7 @@ function Login() {
           value={loginInfo.email}
           autoComplete="off"
           hasError={!!errors?.email}
+          className="onboarding-input"
         />
         <ErrorMessage message={errors?.email} />
         <InputField
@@ -56,9 +55,12 @@ function Login() {
           onChange={handleInput}
           value={loginInfo.pwd}
           hasError={!!errors?.pwd}
+          className="onboarding-input"
         />
         <ErrorMessage message={errors?.pwd} />
-        <SubmitButton text="LOGIN" />
+        <button type="submit" className="onboarding-submit">
+          LOGIN
+        </button>
       </form>
       <ErrorMessage message={errors?.server} />
     </>

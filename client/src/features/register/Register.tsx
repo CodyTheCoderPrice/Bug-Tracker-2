@@ -2,10 +2,8 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { register } from "./registerSlice";
-import Header from "@/components/onboarding/Header";
-import InputField from "@/components/onboarding/InputField";
+import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
-import SubmitButton from "@/components/onboarding/SubmitButton";
 
 type TRegisterInfo = {
   first_name: string;
@@ -40,11 +38,11 @@ function Register() {
     if (hasSucceeded) {
       navigate("/login");
     }
-  }, [hasSucceeded]);
+  }, [hasSucceeded, navigate]);
 
   return (
     <>
-      <Header text="Register" />
+      <h1 className="onboarding-header">Register</h1>
       <form
         noValidate
         autoComplete="off"
@@ -59,6 +57,7 @@ function Register() {
             onChange={handleInput}
             value={registerInfo.first_name}
             hasError={!!errors?.first_name}
+            className="onboarding-input"
           />
           <ErrorMessage message={errors?.first_name} />
         </div>
@@ -70,6 +69,7 @@ function Register() {
             onChange={handleInput}
             value={registerInfo.last_name}
             hasError={!!errors?.last_name}
+            className="onboarding-input"
           />
           <ErrorMessage message={errors?.last_name} />
         </div>
@@ -79,9 +79,10 @@ function Register() {
           name="email"
           placeholder="Email"
           onChange={handleInput}
-          value={registerInfo.email}
           autoComplete="off"
+          value={registerInfo.email}
           hasError={!!errors?.email}
+          className="onboarding-input"
         />
         <ErrorMessage message={errors?.email} />
         <InputField
@@ -91,9 +92,12 @@ function Register() {
           onChange={handleInput}
           value={registerInfo.pwd}
           hasError={!!errors?.pwd}
+          className="onboarding-input"
         />
         <ErrorMessage message={errors?.pwd} />
-        <SubmitButton text="SIGN UP" />
+        <button type="submit" className="onboarding-submit">
+          SIGN UP
+        </button>
       </form>
       <ErrorMessage message={errors?.server} />
     </>

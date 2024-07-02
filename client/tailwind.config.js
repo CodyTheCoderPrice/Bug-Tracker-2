@@ -51,6 +51,7 @@ module.exports = {
     transitionProperty: {
       width: "width",
       right: "right",
+      bg: "background",
     },
   },
   plugins: [],

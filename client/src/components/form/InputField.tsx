@@ -5,8 +5,8 @@ type TProps = {
   name: string;
   placeholder: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
-  value: string;
   autoComplete?: string;
+  value: string;
   hasError: boolean;
   className?: string;
 };
@@ -18,14 +18,13 @@ function InputField(props: TProps) {
       name={props.name}
       placeholder={props.placeholder}
       onChange={props.onChange}
-      value={props.value}
       autoComplete={props.autoComplete ? props.autoComplete : "on"}
+      value={props.value}
       className={
-        "mt-6 block w-full rounded border border-solid p-2 focus:outline focus:outline-1 " +
         props.className +
         (props.hasError
-          ? " border-warning-red-light focus:outline-warning-red-light"
-          : " border-gray-400 focus:outline-blue-500")
+          ? " border-color-input-error-dl"
+          : " border-color-input-dl")
       }
     />
   );
