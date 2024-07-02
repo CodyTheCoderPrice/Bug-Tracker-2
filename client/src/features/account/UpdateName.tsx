@@ -1,8 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useEffect, useState } from "react";
 import { updateName } from "./accountSlice";
+import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
-import LoadingButton from "@/components/form/LoadingButton";
+import SubmitButton from "@/components/form/SubmitButton";
 
 type TNameInfo = {
   first_name: string;
@@ -50,35 +51,32 @@ function UpdateName() {
     <div>
       <h2 className="account-header">Change Name</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <input
+        <InputField
           type="text"
           name="first_name"
           placeholder="First name"
           onChange={handleInput}
           value={nameInfo.first_name}
-          className={
-            "account-input account-mt" +
-            inputErrorClassname(!!updateNameErrors?.first_name)
-          }
+          hasError={!!updateNameErrors?.first_name}
+          className="account-input account-mt"
         />
         <ErrorMessage message={updateNameErrors?.first_name} />
-        <input
+        <InputField
           type="text"
           name="last_name"
           placeholder="Last name"
           onChange={handleInput}
           value={nameInfo.last_name}
-          className={
-            "account-input account-mt" +
-            inputErrorClassname(!!updateNameErrors?.last_name)
-          }
+          hasError={!!updateNameErrors?.last_name}
+          className="account-input account-mt"
         />
         <ErrorMessage message={updateNameErrors?.last_name} />
-        <LoadingButton
+        <SubmitButton
           message="Update Name"
           isLoading={isUpdateNameLoading}
           hasSucceeded={hasUpdateNameSucceeded}
           hasErrors={updateNameErrors !== null}
+          className="account-button-update account-mt"
         />
       </form>
       <ErrorMessage message={updateNameErrors?.server} />

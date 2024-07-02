@@ -6,11 +6,17 @@ type TProps = {
   isLoading: boolean;
   hasSucceeded: boolean;
   hasErrors: boolean;
+  isDisable?: boolean;
+  className: string;
 };
 
-function LoadingButton(props: TProps) {
+function SubmitButton(props: TProps) {
   return (
-    <button type="submit" className="account-button-update account-mt relative">
+    <button
+      type="submit"
+      disabled={props.isDisable ? props.isDisable : false}
+      className={props.className + " relative"}
+    >
       {props.isLoading && (
         <svg
           width="20"
@@ -34,4 +40,4 @@ function LoadingButton(props: TProps) {
   );
 }
 
-export default LoadingButton;
+export default SubmitButton;

@@ -1,7 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { deleteAccount } from "./accountSlice";
+import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
+import SubmitButton from "@/components/form/SubmitButton";
 
 type TDeleteInfo = {
   pwd: string;
@@ -25,9 +27,11 @@ function DeleteAccount() {
     dispatch(deleteAccount(deleteInfo));
   };
 
-  const { isDeleteAccountLoading, deleteAccountErrors } = useAppSelector(
-    (state) => state.account,
-  );
+  const {
+    isDeleteAccountLoading,
+    deleteAccountErrors,
+    hasDeleteAccountSucceeded,
+  } = useAppSelector((state) => state.account);
 
   const isDisabled = deleteInfo.confirmDelete !== "DELETE";
 
@@ -35,37 +39,39 @@ function DeleteAccount() {
     <div>
       <h2 className="account-header">Delete Account</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <input
+        <InputField
           type="password"
           name="pwd"
           placeholder="Password"
           onChange={handleInput}
           value={deleteInfo.pwd}
+          hasError={!!deleteAccountErrors?.pwd}
           className="account-input account-mt"
         />
         <ErrorMessage message={deleteAccountErrors?.pwd} />
         <p className="account-mt text-sm">To confirm this, type "DELETE"</p>
-        <input
+        <InputField
           type="text"
           name="confirmDelete"
           placeholder="DELETE"
           onChange={handleInput}
           value={deleteInfo.confirmDelete}
+          hasError={false}
           className="account-input mt-1"
         />
-        <button
-          type="submit"
-          disabled={isDisabled}
+        <SubmitButton
+          message="Delete Account"
+          isLoading={isDeleteAccountLoading}
+          hasSucceeded={hasDeleteAccountSucceeded}
+          hasErrors={deleteAccountErrors !== null}
+          isDisable={isDisabled}
           className={
-            "account-button account-mt" +
-            (isDisabled ? " bg-gray-400 dark:bg-gray-700" : " bg-red-700")
+            "account-mt" +
+            (isDisabled ? " account-button-disabled" : " account-button-delete")
           }
-        >
-          Delete Account
-        </button>
+        />
       </form>
       <ErrorMessage message={deleteAccountErrors?.server} />
-      {isDeleteAccountLoading && <h3>Loading...</h3>}
     </div>
   );
 }

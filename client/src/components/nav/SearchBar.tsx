@@ -41,10 +41,10 @@ function SearchBar() {
         onClick={() => {
           dispatch(toggleSearchBar());
         }}
-        className="absolute left-0 top-0 h-full w-full bg-black/60"
+        className="absolute left-0 top-0 z-10 h-full w-full bg-black/60"
       />
       {/* Searchbar */}
-      <div className="bg-color-foreground-dl absolute left-1/2 top-2 h-[400px] w-[60%] translate-x-[-50%] rounded-xl p-6">
+      <div className="bg-color-foreground-dl absolute left-1/2 top-2 z-10 h-[400px] w-[60%] translate-x-[-50%] rounded-xl p-6">
         <div className="flex">
           <button
             id="dropdown-button"

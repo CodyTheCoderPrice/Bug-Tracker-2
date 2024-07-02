@@ -34,7 +34,7 @@ module.exports = {
         "plain-dark-500": "#11171e",
         // Other
         "warning-red-light": "#f02849",
-        "warning-red-dark": "#DC3F59",
+        "warning-red-dark": "#d12e49",
         "open-icon-red": "#c83737",
         "progress-icon-orange": "#ff7f2a",
         "testing-icon-teal": "#008080",

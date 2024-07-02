@@ -1,8 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useEffect, useState } from "react";
 import { updateEmail } from "./accountSlice";
+import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
-import LoadingButton from "@/components/form/LoadingButton";
+import SubmitButton from "@/components/form/SubmitButton";
 
 type TEmailInfo = {
   email: string;
@@ -44,34 +45,35 @@ function UpdateEmail() {
     <div className="account-feature-container-mt">
       <h2 className="account-header">Change Email</h2>
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        <input
+        <InputField
           type="email"
           name="email"
           placeholder="Email"
           onChange={handleInput}
           value={emailInfo.email}
+          hasError={!!updateEmailErrors?.email}
           className="account-input account-mt"
         />
         <ErrorMessage message={updateEmailErrors?.email} />
-        <input
+        <InputField
           type="password"
           name="pwd"
           placeholder="Password"
           onChange={handleInput}
           value={emailInfo.pwd}
+          hasError={!!updateEmailErrors?.pwd}
           className="account-input account-mt"
         />
         <ErrorMessage message={updateEmailErrors?.pwd} />
-        <LoadingButton
+        <SubmitButton
           message="Update Email"
           isLoading={isUpdateEmailLoading}
           hasSucceeded={hasUpdateEmailSucceeded}
           hasErrors={updateEmailErrors !== null}
+          className="account-button-update account-mt"
         />
       </form>
       <ErrorMessage message={updateEmailErrors?.server} />
-      {isUpdateEmailLoading && <h3>Loading...</h3>}
-      {hasUpdateEmailSucceeded && <p>Email Updated</p>}
     </div>
   );
 }

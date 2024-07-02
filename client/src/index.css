@@ -87,8 +87,14 @@ body,
   @apply mt-4
 }
 .account-button {
-  @apply w-full max-w-[300px] py-2 rounded text-white text-sm align-top flex justify-center items-center
+  @apply w-full max-w-[300px] py-2 rounded text-sm align-top flex justify-center items-center
 }
 .account-button-update {
-  @apply account-button bg-primary-300
+  @apply account-button bg-primary-200 dark:bg-primary-300 text-white
+}
+.account-button-delete {
+  @apply account-button bg-red-700 text-white
+}
+.account-button-disabled {
+  @apply account-button bg-plain-light-400 dark:bg-plain-dark-200 text-black opacity-50 dark:text-white
 }
