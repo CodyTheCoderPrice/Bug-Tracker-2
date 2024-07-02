@@ -537,10 +537,14 @@ function CreateTestData() {
   };
 
   return (
-    <>
-      <button onClick={() => createTestProjects()}>Create Test Projects</button>
-      <button onClick={() => createTestBugs()}>Create Test Bugs</button>
-    </>
+    <div className="mt-10">
+      <button onClick={() => createTestProjects()} className="block">
+        Create Test Projects
+      </button>
+      <button onClick={() => createTestBugs()} className="block">
+        Create Test Bugs
+      </button>
+    </div>
   );
 }
 

@@ -81,19 +81,19 @@ body,
   @apply text-xl font-semibold
 }
 .account-input {
-  @apply bg-color-input-dl text-color-input-dl w-full max-w-[300px] border flex-1 block px-2 py-1 rounded text-sm
+  @apply bg-color-input-dl text-color-input-dl w-[300px] border flex-1 block px-2 py-1 rounded text-sm
 }
 .account-mt {
   @apply mt-4
 }
 .account-button {
-  @apply w-full max-w-[300px] py-2 rounded text-sm align-top flex justify-center items-center
+  @apply w-[300px] py-2 rounded text-sm align-top flex justify-center items-center
 }
 .account-button-update {
   @apply account-button bg-primary-200 dark:bg-primary-300 text-white
 }
 .account-button-delete {
-  @apply account-button bg-red-700 text-white
+  @apply account-button bg-[#ad1f1f] text-white
 }
 .account-button-disabled {
   @apply account-button bg-plain-light-400 dark:bg-plain-dark-200 text-black opacity-50 dark:text-white

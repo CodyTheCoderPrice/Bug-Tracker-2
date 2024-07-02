@@ -12,11 +12,16 @@ function AccountPage() {
   const isWideScreen = width > (isNavbarExpanded ? 1275 : 1080);
 
   // Shared className
-  const containerShared = " flex flex-1 flex-col my-8 px-6 ";
+  const containerShared = " flex flex-1 flex-col my-8 px-10 py-2 ";
 
   return (
     <div className="bg-protected flex flex-1 flex-col overflow-auto">
-      <div className="bg-color-foreground-dl m-10 flex min-w-[300px] flex-1 rounded">
+      <div
+        className={
+          "bg-color-foreground-dl m-10 flex min-w-[300px] flex-1 rounded transition-width duration-300" +
+          (isWideScreen ? " w-[920px]" : " w-[400px]")
+        }
+      >
         <div className={containerShared}>
           <UpdateName />
           <UpdateEmail />

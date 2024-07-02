@@ -61,7 +61,7 @@ function PopUpMessages() {
         <div
           className={
             messageContainerShared +
-            " bg-green-700" +
+            " bg-[#35754d]" +
             (isCreatedMsgCentered ? " right-[150px]" : " right-[-300px]")
           }
         >
@@ -72,7 +72,7 @@ function PopUpMessages() {
         <div
           className={
             messageContainerShared +
-            " bg-red-700" +
+            " bg-[#ad1f1f]" +
             (isDeletedMsgCentered ? " right-[150px]" : " right-[-300px]")
           }
         >

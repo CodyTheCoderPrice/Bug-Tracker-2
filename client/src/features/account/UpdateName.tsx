@@ -41,12 +41,6 @@ function UpdateName() {
   const { isUpdateNameLoading, hasUpdateNameSucceeded, updateNameErrors } =
     useAppSelector((state) => state.account);
 
-  const inputErrorClassname = (hasError: boolean) => {
-    return hasError
-      ? " border-color-input-error-dl "
-      : " border-color-input-dl ";
-  };
-
   return (
     <div>
       <h2 className="account-header">Change Name</h2>
