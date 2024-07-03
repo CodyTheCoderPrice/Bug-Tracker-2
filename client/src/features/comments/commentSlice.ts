@@ -157,7 +157,6 @@ const commentSlice = createSlice({
     builder.addCase(createComment.pending, (state) => {
       state.isCreateCommentLoading = true;
       state.hasCreateCommentSucceeded = false;
-      state.createCommentErrors = null;
     });
     builder.addCase(
       createComment.fulfilled,
@@ -177,7 +176,6 @@ const commentSlice = createSlice({
     builder.addCase(updateComment.pending, (state) => {
       state.isUpdateCommentLoading = true;
       state.hasUpdateCommentSucceeded = false;
-      state.updateCommentErrors = null;
     });
     builder.addCase(
       updateComment.fulfilled,
@@ -197,7 +195,6 @@ const commentSlice = createSlice({
     builder.addCase(deleteComment.pending, (state) => {
       state.isDeleteCommentLoading = true;
       state.isDeleteCommentSucceeded = false;
-      state.deleteCommentErrors = null;
     });
     builder.addCase(
       deleteComment.fulfilled,

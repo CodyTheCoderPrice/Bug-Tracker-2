@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { register } from "./registerSlice";
 import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
+import SubmitButton from "@/components/form/SubmitButton";
 
 type TRegisterInfo = {
   first_name: string;
@@ -32,7 +33,9 @@ function Register() {
     dispatch(register(registerInfo));
   };
 
-  const { hasSucceeded, errors } = useAppSelector((state) => state.register);
+  const { isLoading, hasSucceeded, errors } = useAppSelector(
+    (state) => state.register,
+  );
 
   useEffect(() => {
     if (hasSucceeded) {
@@ -95,9 +98,13 @@ function Register() {
           className="onboarding-input"
         />
         <ErrorMessage message={errors?.pwd} />
-        <button type="submit" className="onboarding-submit">
-          SIGN UP
-        </button>
+        <SubmitButton
+          message="SIGN UP"
+          isLoading={isLoading}
+          hasSucceeded={hasSucceeded}
+          hasErrors={errors !== null}
+          className="onboarding-submit"
+        />
       </form>
       <ErrorMessage message={errors?.server} />
     </>

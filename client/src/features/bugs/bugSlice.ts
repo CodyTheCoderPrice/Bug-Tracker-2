@@ -173,7 +173,6 @@ const bugSlice = createSlice({
     builder.addCase(createBug.pending, (state) => {
       state.isCreateBugLoading = true;
       state.hasCreateBugSucceeded = false;
-      state.createBugErrors = null;
     });
     builder.addCase(
       createBug.fulfilled,
@@ -193,7 +192,6 @@ const bugSlice = createSlice({
     builder.addCase(updateBug.pending, (state) => {
       state.isUpdateBugLoading = true;
       state.hasUpdateBugSucceeded = false;
-      state.updateBugErrors = null;
     });
     builder.addCase(
       updateBug.fulfilled,
@@ -213,7 +211,6 @@ const bugSlice = createSlice({
     builder.addCase(deleteBug.pending, (state) => {
       state.isDeleteBugLoading = true;
       state.hasDeleteBugSucceeded = false;
-      state.deleteBugErrors = null;
     });
     builder.addCase(
       deleteBug.fulfilled,

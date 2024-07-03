@@ -3,6 +3,7 @@ import { useState } from "react";
 import { login } from "./authSlice";
 import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
+import SubmitButton from "@/components/form/SubmitButton";
 
 type TLoginInfo = {
   email: string;
@@ -26,7 +27,9 @@ function Login() {
     dispatch(login(loginInfo));
   };
 
-  const { errors } = useAppSelector((state) => state.auth);
+  const { isLoading, isLoggedIn, errors } = useAppSelector(
+    (state) => state.auth,
+  );
 
   return (
     <>
@@ -58,9 +61,13 @@ function Login() {
           className="onboarding-input"
         />
         <ErrorMessage message={errors?.pwd} />
-        <button type="submit" className="onboarding-submit">
-          LOGIN
-        </button>
+        <SubmitButton
+          message="LOGIN"
+          isLoading={isLoading}
+          hasSucceeded={isLoggedIn}
+          hasErrors={errors !== null}
+          className="onboarding-submit"
+        />
       </form>
       <ErrorMessage message={errors?.server} />
     </>

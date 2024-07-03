@@ -81,7 +81,6 @@ const authSlice = createSlice({
     // Login
     builder.addCase(login.pending, (state) => {
       state.isLoading = true;
-      state.errors = null;
     });
     builder.addCase(login.fulfilled, (state) => {
       state.isLoading = false;
@@ -96,7 +95,6 @@ const authSlice = createSlice({
     // Relogin
     builder.addCase(relogin.pending, (state) => {
       state.isLoading = true;
-      state.errors = null;
     });
     builder.addCase(relogin.fulfilled, (state) => {
       state.isLoading = false;

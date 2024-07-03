@@ -87,7 +87,7 @@ body,
   @apply mt-4
 }
 .account-button {
-  @apply transition-colors w-[300px] py-2 rounded text-sm align-top flex justify-center items-center shadow-sm
+  @apply transition-colors w-[300px] py-2 rounded text-sm align-top flex shadow-sm
 }
 .account-button-update {
   @apply account-button bg-primary-100 hover:bg-primary-200 dark:bg-primary-300 dark:hover:bg-primary-400 text-white

@@ -136,7 +136,6 @@ const projectSlice = createSlice({
     builder.addCase(createProject.pending, (state) => {
       state.isCreateProjectLoading = true;
       state.hasCreateProjectSucceeded = false;
-      state.createProjectErrors = null;
     });
     builder.addCase(
       createProject.fulfilled,
@@ -156,7 +155,6 @@ const projectSlice = createSlice({
     builder.addCase(updateProject.pending, (state) => {
       state.isUpdateProjectLoading = true;
       state.hasUpdateProjectSucceeded = false;
-      state.updateProjectErrors = null;
     });
     builder.addCase(
       updateProject.fulfilled,
@@ -176,7 +174,6 @@ const projectSlice = createSlice({
     builder.addCase(deleteProject.pending, (state) => {
       state.isDeleteProjectLoading = true;
       state.hasDeleteProjectSucceeded = false;
-      state.deleteProjectErrors = null;
     });
     builder.addCase(
       deleteProject.fulfilled,

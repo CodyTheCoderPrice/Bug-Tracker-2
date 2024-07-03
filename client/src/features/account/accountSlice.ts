@@ -187,7 +187,6 @@ const accountSlice = createSlice({
     builder.addCase(updateName.pending, (state) => {
       state.isUpdateNameLoading = true;
       state.hasUpdateNameSucceeded = false;
-      state.updateNameErrors = null;
     });
     builder.addCase(
       updateName.fulfilled,
@@ -207,7 +206,6 @@ const accountSlice = createSlice({
     builder.addCase(updateEmail.pending, (state) => {
       state.isUpdateEmailLoading = true;
       state.hasUpdateEmailSucceeded = false;
-      state.updateEmailErrors = null;
     });
     builder.addCase(
       updateEmail.fulfilled,
@@ -227,7 +225,6 @@ const accountSlice = createSlice({
     builder.addCase(updatePassword.pending, (state) => {
       state.isUpdatePasswordLoading = true;
       state.hasUpdatePasswordSucceeded = false;
-      state.updatePasswordErrors = null;
     });
     builder.addCase(
       updatePassword.fulfilled,
@@ -247,7 +244,6 @@ const accountSlice = createSlice({
     builder.addCase(deleteAccount.pending, (state) => {
       state.isDeleteAccountLoading = true;
       state.hasDeleteAccountSucceeded = false;
-      state.deleteAccountErrors = null;
     });
     builder.addCase(deleteAccount.fulfilled, (state) => {
       state.isDeleteAccountLoading = false;
