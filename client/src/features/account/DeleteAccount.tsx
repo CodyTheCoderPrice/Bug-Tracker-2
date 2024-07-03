@@ -13,6 +13,12 @@ type TDeleteInfo = {
 function DeleteAccount() {
   const dispatch = useAppDispatch();
 
+  const {
+    isDeleteAccountLoading,
+    deleteAccountErrors,
+    hasDeleteAccountSucceeded,
+  } = useAppSelector((state) => state.account);
+
   const [deleteInfo, setDeleteInfo] = useState<TDeleteInfo>({
     pwd: "",
     confirmDelete: "",
@@ -26,12 +32,6 @@ function DeleteAccount() {
     e.preventDefault();
     dispatch(deleteAccount(deleteInfo));
   };
-
-  const {
-    isDeleteAccountLoading,
-    deleteAccountErrors,
-    hasDeleteAccountSucceeded,
-  } = useAppSelector((state) => state.account);
 
   const isDisabled = deleteInfo.confirmDelete !== "DELETE";
 

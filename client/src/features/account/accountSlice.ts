@@ -165,6 +165,15 @@ const accountSlice = createSlice({
       state.deleteAccountErrors = null;
       state.hasDeleteAccountSucceeded = false;
     },
+    setAccountNameUpdatedToFalse: (state) => {
+      state.hasUpdateNameSucceeded = false;
+    },
+    setAccountEmailUpdatedToFalse: (state) => {
+      state.hasUpdateEmailSucceeded = false;
+    },
+    setAccountPasswordUpdatedToFalse: (state) => {
+      state.hasUpdatePasswordSucceeded = false;
+    },
     setAccountDeletedToFalse: (state) => {
       state.hasDeleteAccountSucceeded = false;
     },
@@ -260,5 +269,10 @@ const accountSlice = createSlice({
 });
 
 export default accountSlice.reducer;
-export const { clearAccountErrors, setAccountDeletedToFalse } =
-  accountSlice.actions;
+export const {
+  clearAccountErrors,
+  setAccountNameUpdatedToFalse,
+  setAccountEmailUpdatedToFalse,
+  setAccountPasswordUpdatedToFalse,
+  setAccountDeletedToFalse,
+} = accountSlice.actions;

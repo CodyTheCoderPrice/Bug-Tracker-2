@@ -1,6 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
-import { useState } from "react";
-import { updatePassword } from "./accountSlice";
+import { useEffect, useState } from "react";
+import {
+  setAccountPasswordUpdatedToFalse,
+  updatePassword,
+} from "./accountSlice";
 import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
 import SubmitButton from "@/components/form/SubmitButton";
@@ -14,13 +17,29 @@ type TPwdInfo = {
 function UpdatePassword() {
   const dispatch = useAppDispatch();
 
-  const [pwdInfo, setPwdInfo] = useState<TPwdInfo>({
+  const {
+    isUpdatePasswordLoading,
+    hasUpdatePasswordSucceeded,
+    updatePasswordErrors,
+  } = useAppSelector((state) => state.account);
+
+  const pwdInitialState = {
     pwd: "",
     newPwd: "",
     confirmPwd: "",
-  });
+  };
+  const [pwdInfo, setPwdInfo] = useState<TPwdInfo>(pwdInitialState);
+
+  useEffect(() => {
+    if (hasUpdatePasswordSucceeded) {
+      setPwdInfo(pwdInitialState);
+    }
+  }, [hasUpdatePasswordSucceeded]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasUpdatePasswordSucceeded) {
+      dispatch(setAccountPasswordUpdatedToFalse());
+    }
     setPwdInfo({ ...pwdInfo, [e.target.name]: e.target.value });
   };
 
@@ -28,12 +47,6 @@ function UpdatePassword() {
     e.preventDefault();
     dispatch(updatePassword(pwdInfo));
   };
-
-  const {
-    isUpdatePasswordLoading,
-    hasUpdatePasswordSucceeded,
-    updatePasswordErrors,
-  } = useAppSelector((state) => state.account);
 
   return (
     <div className="account-feature-container-mt">

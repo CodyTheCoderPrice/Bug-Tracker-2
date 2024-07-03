@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useEffect, useState } from "react";
-import { updateName } from "./accountSlice";
+import { setAccountNameUpdatedToFalse, updateName } from "./accountSlice";
 import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
 import SubmitButton from "@/components/form/SubmitButton";
@@ -13,12 +13,14 @@ type TNameInfo = {
 function UpdateName() {
   const dispatch = useAppDispatch();
 
+  const { account } = useAppSelector((state) => state.account);
+  const { isUpdateNameLoading, hasUpdateNameSucceeded, updateNameErrors } =
+    useAppSelector((state) => state.account);
+
   const [nameInfo, setNameInfo] = useState<TNameInfo>({
     first_name: "",
     last_name: "",
   });
-
-  const { account } = useAppSelector((state) => state.account);
 
   useEffect(() => {
     if (account !== null) {
@@ -30,6 +32,9 @@ function UpdateName() {
   }, [account]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasUpdateNameSucceeded) {
+      dispatch(setAccountNameUpdatedToFalse());
+    }
     setNameInfo({ ...nameInfo, [e.target.name]: e.target.value });
   };
 
@@ -37,9 +42,6 @@ function UpdateName() {
     e.preventDefault();
     dispatch(updateName(nameInfo));
   };
-
-  const { isUpdateNameLoading, hasUpdateNameSucceeded, updateNameErrors } =
-    useAppSelector((state) => state.account);
 
   return (
     <div>

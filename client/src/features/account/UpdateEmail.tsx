@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useEffect, useState } from "react";
-import { updateEmail } from "./accountSlice";
+import { setAccountEmailUpdatedToFalse, updateEmail } from "./accountSlice";
 import InputField from "@/components/form/InputField";
 import ErrorMessage from "@/components/form/ErrorMessage";
 import SubmitButton from "@/components/form/SubmitButton";
@@ -13,12 +13,14 @@ type TEmailInfo = {
 function UpdateEmail() {
   const dispatch = useAppDispatch();
 
+  const { account } = useAppSelector((state) => state.account);
+  const { isUpdateEmailLoading, hasUpdateEmailSucceeded, updateEmailErrors } =
+    useAppSelector((state) => state.account);
+
   const [emailInfo, setEmailInfo] = useState<TEmailInfo>({
     email: "",
     pwd: "",
   });
-
-  const { account } = useAppSelector((state) => state.account);
 
   useEffect(() => {
     if (account !== null) {
@@ -30,6 +32,9 @@ function UpdateEmail() {
   }, [account]);
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasUpdateEmailSucceeded) {
+      dispatch(setAccountEmailUpdatedToFalse());
+    }
     setEmailInfo({ ...emailInfo, [e.target.name]: e.target.value });
   };
 
@@ -37,9 +42,6 @@ function UpdateEmail() {
     e.preventDefault();
     dispatch(updateEmail(emailInfo));
   };
-
-  const { isUpdateEmailLoading, hasUpdateEmailSucceeded, updateEmailErrors } =
-    useAppSelector((state) => state.account);
 
   return (
     <div className="account-feature-container-mt">
