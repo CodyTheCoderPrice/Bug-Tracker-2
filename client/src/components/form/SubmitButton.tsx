@@ -14,7 +14,7 @@ function SubmitButton(props: TProps) {
   return (
     <button
       type="submit"
-      disabled={props.isDisable ? props.isDisable : false}
+      disabled={props.isDisable ? true : props.isLoading ? true : false}
       className={props.className + " relative"}
     >
       {props.isLoading && (

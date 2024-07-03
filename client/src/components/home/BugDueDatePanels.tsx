@@ -48,9 +48,9 @@ function BugDueDatePanels(props: TProps) {
     const filterSelected = isDueSoon ? dueSoonFilter : overdueFilter;
     // Shared classNames
     const buttonShared = " border-color-dl border px-4 py-[1px] ";
-    const selectedShared = " bg-primary-200 dark:bg-primary-300 text-white ";
+    const selectedShared = " bg-primary-200 dark:bg-primary-400 text-white ";
     return (
-      <div className="mt-6 font-medium text-primary-300 dark:text-plain-light-100">
+      <div className="mt-6 font-medium text-primary-400 dark:text-plain-light-100">
         <button
           onClick={() => {
             setFilterFunc(0);

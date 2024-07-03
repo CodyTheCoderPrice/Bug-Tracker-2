@@ -11,9 +11,10 @@ module.exports = {
         // Primary
         "primary-100": "#527a8c",
         "primary-200": "#466979",
-        "primary-300": "#355166",
-        "primary-400": "#283d4c",
-        "primary-500": "#1e2e39",
+        "primary-300": "#3b576d",
+        "primary-400": "#355166",
+        "primary-500": "#283d4c",
+        "primary-600": "#1e2e39",
         // Secondary
         "secondary-100": "#A7CEDE",
         "secondary-200": "#9BBECB",
@@ -32,9 +33,15 @@ module.exports = {
         "plain-dark-300": "#393e4a",
         "plain-dark-400": "#202936",
         "plain-dark-500": "#11171e",
-        // Other
+        // Red
         "warning-red-light": "#f02849",
         "warning-red-dark": "#d12e49",
+        "delete-red-light-100": "#ad1f1f",
+        "delete-red-light-200": "#a01c1c",
+        "delete-red-dark-100": "#8e1c1c",
+        "delete-red-dark-200": "#7f1919",
+        // Other
+        "success-green": "#35754d",
         "open-icon-red": "#c83737",
         "progress-icon-orange": "#ff7f2a",
         "testing-icon-teal": "#008080",
@@ -49,6 +56,8 @@ module.exports = {
       homePageBP: "1000px",
     },
     transitionProperty: {
+      all: "all",
+      colors: "background, border, text, opacity",
       width: "width",
       right: "right",
       bg: "background",
