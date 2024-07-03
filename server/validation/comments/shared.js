@@ -6,6 +6,7 @@ const comment_id = {
 };
 
 const description = {
+	notEmpty: { errorMessage: 'Description cannot be empty' },
 	isString: { errorMessage: 'Description must be a string' },
 	isLength: {
 		options: { max: descriptionMaxLen },
