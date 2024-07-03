@@ -10,6 +10,12 @@ type TProjectInfo = {
 function CreateProject() {
   const dispatch = useAppDispatch();
 
+  const {
+    isCreateProjectLoading,
+    hasCreateProjectSucceeded,
+    createProjectErrors,
+  } = useAppSelector((state) => state.projects);
+
   const [projectInfo, setProjectInfo] = useState<TProjectInfo>({
     name: "",
     description: "",
@@ -25,12 +31,6 @@ function CreateProject() {
     e.preventDefault();
     dispatch(createProject(projectInfo));
   };
-
-  const {
-    isCreateProjectLoading,
-    hasCreateProjectSucceeded,
-    createProjectErrors,
-  } = useAppSelector((state) => state.projects);
 
   return (
     <>

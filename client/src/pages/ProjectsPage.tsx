@@ -7,6 +7,7 @@ import UpdateProject from "@/features/projects/UpdateProject";
 function ProjectsPage() {
   const { account } = useAppSelector((state) => state.account);
   const { isLoading } = useAppSelector((state) => state.auth);
+
   return (
     <>
       {account ? (

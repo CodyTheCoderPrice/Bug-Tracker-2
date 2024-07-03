@@ -13,6 +13,11 @@ function UpdateProject() {
   const dispatch = useAppDispatch();
 
   const { projects } = useAppSelector((state) => state.projects);
+  const {
+    isUpdateProjectLoading,
+    hasUpdateProjectSucceeded,
+    updateProjectErrors,
+  } = useAppSelector((state) => state.projects);
   const { id } = useParams();
 
   const project = projects?.find((p) => {
@@ -35,12 +40,6 @@ function UpdateProject() {
     e.preventDefault();
     dispatch(updateProject(projectInfo));
   };
-
-  const {
-    isUpdateProjectLoading,
-    hasUpdateProjectSucceeded,
-    updateProjectErrors,
-  } = useAppSelector((state) => state.projects);
 
   return (
     <>

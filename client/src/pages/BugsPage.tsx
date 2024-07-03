@@ -7,6 +7,7 @@ import UpdateBug from "@/features/bugs/UpdateBug";
 function BugPage() {
   const { account } = useAppSelector((state) => state.account);
   const { isLoading } = useAppSelector((state) => state.auth);
+
   return (
     <div>
       {account ? (

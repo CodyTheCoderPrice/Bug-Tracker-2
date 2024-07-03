@@ -18,14 +18,13 @@ function App() {
   const dispatch = useAppDispatch();
 
   const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { isDarkModeOn } = useAppSelector((state) => state.system);
 
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(relogin());
     }
   }, []);
-
-  const { isDarkModeOn } = useAppSelector((state) => state.system);
 
   return (
     <div className={"h-full w-full" + (isDarkModeOn ? " dark" : "")}>

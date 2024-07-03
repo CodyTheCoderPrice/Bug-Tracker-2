@@ -13,6 +13,10 @@ type TLoginInfo = {
 function Login() {
   const dispatch = useAppDispatch();
 
+  const { isLoading, isLoggedIn, errors } = useAppSelector(
+    (state) => state.auth,
+  );
+
   const [loginInfo, setLoginInfo] = useState<TLoginInfo>({
     email: "",
     pwd: "",
@@ -26,10 +30,6 @@ function Login() {
     e.preventDefault();
     dispatch(login(loginInfo));
   };
-
-  const { isLoading, isLoggedIn, errors } = useAppSelector(
-    (state) => state.auth,
-  );
 
   return (
     <>

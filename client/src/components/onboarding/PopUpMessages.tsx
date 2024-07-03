@@ -2,17 +2,17 @@ import { useAppSelector } from "@/app/hooks";
 import { Dispatch, useEffect, useState } from "react";
 
 function PopUpMessages() {
+  const { hasSucceeded } = useAppSelector((state) => state.register);
+  const { hasDeleteAccountSucceeded } = useAppSelector(
+    (state) => state.account,
+  );
+
   const [isCreatedMsgInDom, setIsCreatedMsgInDom] = useState<boolean>(false);
   const [isCreatedMsgCentered, setIsCreatedMsgCentered] =
     useState<boolean>(false);
   const [isDeletedMsgInDom, setIsDeletedMsgInDom] = useState<boolean>(false);
   const [isDeletedMsgCentered, setIsDeletedMsgCentered] =
     useState<boolean>(false);
-
-  const { hasSucceeded } = useAppSelector((state) => state.register);
-  const { hasDeleteAccountSucceeded } = useAppSelector(
-    (state) => state.account,
-  );
 
   function timeout(ms: number) {
     return new Promise((resolve) => setTimeout(resolve, ms));

@@ -17,6 +17,10 @@ function Register() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const { isLoading, hasSucceeded, errors } = useAppSelector(
+    (state) => state.register,
+  );
+
   const [registerInfo, setRegisterInfo] = useState<TRegisterInfo>({
     first_name: "",
     last_name: "",
@@ -32,10 +36,6 @@ function Register() {
     e.preventDefault();
     dispatch(register(registerInfo));
   };
-
-  const { isLoading, hasSucceeded, errors } = useAppSelector(
-    (state) => state.register,
-  );
 
   useEffect(() => {
     if (hasSucceeded) {
