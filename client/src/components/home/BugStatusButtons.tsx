@@ -12,6 +12,7 @@ type TProps = {
 
 function BugStatusButtons(props: TProps) {
   const { bugs } = useAppSelector((state) => state.bugs);
+  const { hasTransition } = useAppSelector((state) => state.system);
 
   const getRibbonColor = (statusCode: 1 | 2 | 3 | 4) => {
     switch (statusCode) {
@@ -38,7 +39,8 @@ function BugStatusButtons(props: TProps) {
       <button
         onClick={onClick}
         className={
-          "bg-color-foreground-hover-dl mb-[20px] flex h-[65px] items-center rounded-lg shadow" +
+          "bg-color-foreground-hover-dl mb-[20px] flex h-[65px] items-center rounded-lg shadow " +
+          (hasTransition ? " transition-bg" : "") +
           (statusCode !== 4 ? " mr-[25px]" : "") +
           " " +
           (props.isWideScreen

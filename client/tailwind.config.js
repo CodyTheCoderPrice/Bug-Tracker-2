@@ -41,12 +41,15 @@ module.exports = {
         "delete-red-dark-100": "#8e1c1c",
         "delete-red-dark-200": "#7f1919",
         // Other
-        "success-green": "#35754d",
+        "success-green": "#1d7d41",
         "open-icon-red": "#c83737",
         "progress-icon-orange": "#ff7f2a",
         "testing-icon-teal": "#008080",
         "closed-icon-green": "#217844",
       },
+    },
+    fontFamily: {
+      inter: ["Inter", "sans-serif"],
     },
     screens: {
       tablet: "640px",
@@ -57,10 +60,11 @@ module.exports = {
     },
     transitionProperty: {
       all: "all",
-      colors: "background, border, text, opacity",
+      colors: "background, border, color, opacity",
       width: "width",
       right: "right",
       bg: "background",
+      none: "none",
     },
   },
   plugins: [],

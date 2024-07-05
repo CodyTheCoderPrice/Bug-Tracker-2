@@ -13,6 +13,7 @@ type TDeleteInfo = {
 function DeleteAccount() {
   const dispatch = useAppDispatch();
 
+  const { hasTransition } = useAppSelector((state) => state.system);
   const {
     isDeleteAccountLoading,
     deleteAccountErrors,
@@ -67,6 +68,7 @@ function DeleteAccount() {
           isDisable={isDisabled}
           className={
             "account-mt" +
+            (hasTransition ? " transition-colors" : "") +
             (isDisabled ? " account-button-disabled" : " account-button-delete")
           }
         />

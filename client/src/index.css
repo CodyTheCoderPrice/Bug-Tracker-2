@@ -9,10 +9,7 @@ html,
 body,
 #root,
 .app {
-  height: 100%;
-  width: 100%;
-  font-family: "Inter", sans-serif;
-  overflow: hidden;
+  @apply h-full w-full overflow-hidden font-inter
 }
 
 .bg-protected {
@@ -39,7 +36,7 @@ body,
   @apply border-plain-light-400 dark:border-plain-dark-200
 }
 .border-color-input-dl {
-  @apply border-color-dl focus:outline focus:outline-1 focus:outline-blue-500 dark:focus:outline-secondary-200
+  @apply border-color-dl focus:border-blue-500 dark:focus:border-secondary-200 focus:outline focus:outline-1 focus:outline-blue-500 dark:focus:outline-secondary-200
 }
 .border-color-input-error-dl {
   @apply focus:outline focus:outline-1 border-warning-red-light dark:border-warning-red-dark focus:outline-warning-red-light dark:focus:outline-warning-red-dark
@@ -87,7 +84,7 @@ body,
   @apply mt-4
 }
 .account-button {
-  @apply transition-colors w-[300px] py-2 rounded text-sm align-top flex shadow-sm
+  @apply w-[300px] py-2 rounded text-sm align-top flex shadow-sm
 }
 .account-button-update {
   @apply account-button bg-primary-100 hover:bg-primary-200 dark:bg-primary-300 dark:hover:bg-primary-400 text-white

@@ -1,4 +1,4 @@
-import { faCheck, faX } from "@fortawesome/free-solid-svg-icons";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type TProps = {
@@ -11,9 +11,6 @@ type TProps = {
 };
 
 function SubmitButton(props: TProps) {
-  // Shared classNames
-  const iconShared = " absolute left-4 top-2/4 translate-y-[-50%] ";
-
   return (
     <button
       type="submit"

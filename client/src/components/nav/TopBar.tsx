@@ -2,7 +2,11 @@ import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import { toggleSearchBar, toggleDarkMode } from "@/features/system/systemSlice";
+import {
+  toggleSearchBar,
+  toggleDarkMode,
+  setHasTransition,
+} from "@/features/system/systemSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faCircleUser } from "@fortawesome/free-regular-svg-icons";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -34,6 +38,12 @@ function TopBar() {
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] =
     useState<boolean>(false);
 
+  const darkModeOnClick = () => {
+    // Prevents transition when turning darkmode on/off
+    dispatch(setHasTransition(false));
+    dispatch(toggleDarkMode());
+  };
+
   // Shared classNames
   const buttonShared = "mr-6 inline-block cursor-pointer";
 
@@ -49,7 +59,7 @@ function TopBar() {
             <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
           </button>
           <button
-            onClick={() => dispatch(toggleDarkMode())}
+            onClick={darkModeOnClick}
             className={buttonShared + " w-[22px]"}
           >
             {isDarkModeOn ? (

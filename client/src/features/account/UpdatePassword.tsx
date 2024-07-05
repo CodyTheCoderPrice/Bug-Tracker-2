@@ -17,6 +17,7 @@ type TPwdInfo = {
 function UpdatePassword() {
   const dispatch = useAppDispatch();
 
+  const { hasTransition } = useAppSelector((state) => state.system);
   const {
     isUpdatePasswordLoading,
     hasUpdatePasswordSucceeded,
@@ -87,7 +88,10 @@ function UpdatePassword() {
           isLoading={isUpdatePasswordLoading}
           hasSucceeded={hasUpdatePasswordSucceeded}
           hasErrors={updatePasswordErrors !== null}
-          className="account-button-update account-mt"
+          className={
+            "account-button-update account-mt" +
+            (hasTransition ? " transition-colors" : "")
+          }
         />
       </form>
       <ErrorMessage message={updatePasswordErrors?.server} />

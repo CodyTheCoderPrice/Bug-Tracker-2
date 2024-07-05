@@ -13,6 +13,7 @@ type TNameInfo = {
 function UpdateName() {
   const dispatch = useAppDispatch();
 
+  const { hasTransition } = useAppSelector((state) => state.system);
   const { account } = useAppSelector((state) => state.account);
   const { isUpdateNameLoading, hasUpdateNameSucceeded, updateNameErrors } =
     useAppSelector((state) => state.account);
@@ -72,7 +73,10 @@ function UpdateName() {
           isLoading={isUpdateNameLoading}
           hasSucceeded={hasUpdateNameSucceeded}
           hasErrors={updateNameErrors !== null}
-          className="account-button-update account-mt"
+          className={
+            "account-button-update account-mt" +
+            (hasTransition ? " transition-colors" : "")
+          }
         />
       </form>
       <ErrorMessage message={updateNameErrors?.server} />

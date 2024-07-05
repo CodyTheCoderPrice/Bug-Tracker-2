@@ -2,6 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 type TInitialState = {
   isDarkModeOn: boolean;
+  hasTransition: boolean; // Used to prevent transition when turing darkmode on/off
   isNavbarExpanded: boolean;
   isSearchBarOpen: boolean;
   homeDueSoonPage: number;
@@ -10,6 +11,7 @@ type TInitialState = {
 
 const initialState: TInitialState = {
   isDarkModeOn: false,
+  hasTransition: true,
   isNavbarExpanded: true,
   isSearchBarOpen: false,
   homeDueSoonPage: 1,
@@ -22,6 +24,9 @@ const systemSlice = createSlice({
   reducers: {
     toggleDarkMode: (state) => {
       state.isDarkModeOn = !state.isDarkModeOn;
+    },
+    setHasTransition: (state, action: PayloadAction<boolean>) => {
+      state.hasTransition = action.payload;
     },
     toggleNavbarExpanded: (state) => {
       state.isNavbarExpanded = !state.isNavbarExpanded;
@@ -41,6 +46,7 @@ const systemSlice = createSlice({
 export default systemSlice.reducer;
 export const {
   toggleDarkMode,
+  setHasTransition,
   toggleNavbarExpanded,
   toggleSearchBar,
   setHomeDueSoonPage,

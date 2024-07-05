@@ -13,6 +13,7 @@ type TEmailInfo = {
 function UpdateEmail() {
   const dispatch = useAppDispatch();
 
+  const { hasTransition } = useAppSelector((state) => state.system);
   const { account } = useAppSelector((state) => state.account);
   const { isUpdateEmailLoading, hasUpdateEmailSucceeded, updateEmailErrors } =
     useAppSelector((state) => state.account);
@@ -72,7 +73,10 @@ function UpdateEmail() {
           isLoading={isUpdateEmailLoading}
           hasSucceeded={hasUpdateEmailSucceeded}
           hasErrors={updateEmailErrors !== null}
-          className="account-button-update account-mt"
+          className={
+            "account-button-update account-mt" +
+            (hasTransition ? " transition-colors" : "")
+          }
         />
       </form>
       <ErrorMessage message={updateEmailErrors?.server} />
