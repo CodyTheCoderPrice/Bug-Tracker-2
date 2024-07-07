@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "@/API";
-import { login, relogin } from "../auth/authSlice";
+import { login, logout, relogin } from "../auth/authSlice";
 
 type TProject = {
   project_id: number;
@@ -59,7 +59,7 @@ export const createProject = createAsyncThunk(
   "projects/create",
   async (
     projectInfo: { name: string; description: string },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.post(
@@ -68,10 +68,12 @@ export const createProject = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
@@ -80,7 +82,7 @@ export const updateProject = createAsyncThunk(
   "projects/update",
   async (
     projectInfo: { project_id: number; name: string; description: string },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.put(
@@ -89,27 +91,34 @@ export const updateProject = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
 
 export const deleteProject = createAsyncThunk(
   "projects/delete",
-  async (projectInfo: { project_id: number }, { rejectWithValue }) => {
+  async (
+    projectInfo: { project_id: number },
+    { dispatch, rejectWithValue },
+  ) => {
     try {
       const response = await axiosInstance.delete("/api/v1/projects/delete", {
         data: projectInfo,
       });
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );

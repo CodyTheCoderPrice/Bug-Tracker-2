@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "@/API";
-import { login, relogin } from "../auth/authSlice";
+import { login, logout, relogin } from "../auth/authSlice";
 import { deleteProject } from "../projects/projectSlice";
 import { deleteBug } from "../bugs/bugSlice";
 
@@ -63,7 +63,7 @@ export const createComment = createAsyncThunk(
       bug_id: number;
       description: string;
     },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.post(
@@ -72,10 +72,12 @@ export const createComment = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
@@ -88,7 +90,7 @@ export const updateComment = createAsyncThunk(
       bug_id: number;
       description: string;
     },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.put(
@@ -97,27 +99,34 @@ export const updateComment = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
 
 export const deleteComment = createAsyncThunk(
   "comments/delete",
-  async (commentInfo: { comment_id: number }, { rejectWithValue }) => {
+  async (
+    commentInfo: { comment_id: number },
+    { dispatch, rejectWithValue },
+  ) => {
     try {
       const response = await axiosInstance.delete("/api/v1/comments/delete", {
         data: commentInfo,
       });
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );

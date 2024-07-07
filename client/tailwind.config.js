@@ -64,6 +64,7 @@ module.exports = {
       width: "width",
       right: "right",
       bg: "background",
+      text: "color",
       none: "none",
     },
   },

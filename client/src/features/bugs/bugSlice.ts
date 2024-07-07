@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "@/API";
-import { login, relogin } from "../auth/authSlice";
+import { login, logout, relogin } from "../auth/authSlice";
 import { deleteProject } from "../projects/projectSlice";
 
 export type TBug = {
@@ -86,16 +86,18 @@ export const createBug = createAsyncThunk(
       due_date: string | null;
       complete_date: string | null;
     },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.post("/api/v1/bugs/create", bugInfo);
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
@@ -113,33 +115,37 @@ export const updateBug = createAsyncThunk(
       due_date: string | null;
       complete_date: string | null;
     },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.put("/api/v1/bugs/update", bugInfo);
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
 
 export const deleteBug = createAsyncThunk(
   "bugs/delete",
-  async (bugInfo: { bug_id: number }, { rejectWithValue }) => {
+  async (bugInfo: { bug_id: number }, { dispatch, rejectWithValue }) => {
     try {
       const response = await axiosInstance.delete("/api/v1/bugs/delete", {
         data: bugInfo,
       });
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );

@@ -30,7 +30,7 @@ function AccountDropDown(props: TProps) {
   const spanShared = " pr-20 ";
   const smallSpanShared = spanShared + " mt-[1px] text-sm ";
   const buttonShared =
-    " transition-colors hover:text-blue-700 dark:hover:text-secondary-200 text-sm ";
+    " transition-text hover:text-blue-700 dark:hover:text-secondary-200 text-sm ";
 
   return (
     <OutsideClickHandler onOutsideClick={(e) => outsideOnClick(e)}>

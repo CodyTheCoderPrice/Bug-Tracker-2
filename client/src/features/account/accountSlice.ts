@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "@/API";
-import { login, relogin, reset } from "../auth/authSlice";
+import { login, logout, relogin, reset } from "../auth/authSlice";
 
 type TAccount = {
   account_id: number;
@@ -71,7 +71,7 @@ export const updateName = createAsyncThunk(
   "account/update-name",
   async (
     nameInfo: { first_name: string; last_name: string },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.put(
@@ -80,17 +80,19 @@ export const updateName = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
 
 export const updateEmail = createAsyncThunk(
   "account/update-email",
-  async (emailInfo: { email: string }, { rejectWithValue }) => {
+  async (emailInfo: { email: string }, { dispatch, rejectWithValue }) => {
     try {
       const response = await axiosInstance.put(
         "/api/v1/accounts/update-email",
@@ -98,10 +100,12 @@ export const updateEmail = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
@@ -110,7 +114,7 @@ export const updatePassword = createAsyncThunk(
   "account/update-password",
   async (
     pwdInfo: { pwd: string; newPwd: string; confirmPwd: string },
-    { rejectWithValue },
+    { dispatch, rejectWithValue },
   ) => {
     try {
       const response = await axiosInstance.put(
@@ -119,10 +123,12 @@ export const updatePassword = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
@@ -139,10 +145,12 @@ export const deleteAccount = createAsyncThunk(
       console.log("Account deleted");
       await axiosInstance.delete("/api/v1/auth/logout");
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
+      if (err.hasRefreshFailed) {
+        dispatch(logout());
       }
-      return rejectWithValue(err.response.data.errors);
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
 
     if (accountDeleted) {

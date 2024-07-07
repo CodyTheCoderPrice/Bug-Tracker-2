@@ -1,4 +1,3 @@
-import { AppDispatch } from "@/app/store";
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import axiosInstance from "@/API";
 
@@ -57,16 +56,17 @@ export const relogin = createAsyncThunk(
 
 export const reset = createAction("reset");
 
-export const logout = () => {
-  return async (dispatch: AppDispatch) => {
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { dispatch }) => {
     try {
       await axiosInstance.delete("/api/v1/auth/logout");
     } catch (err: any) {
       console.log("Logout api call failed");
     }
     dispatch(reset());
-  };
-};
+  },
+);
 
 const authSlice = createSlice({
   name: "auth",
