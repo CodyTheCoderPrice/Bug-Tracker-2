@@ -40,16 +40,16 @@ export const login = createAsyncThunk(
 export const relogin = createAsyncThunk(
   "auth/relogin",
   // Uses accessToken instead of password
-  async (_, { rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/api/v1/auth/relogin");
       console.log("Re-login succesful");
       return response.data;
     } catch (err: any) {
-      if (!err.response.data.errors) {
-        return rejectWithValue(null);
-      }
-      return rejectWithValue(err.response.data.errors);
+      dispatch(logout());
+      return rejectWithValue(
+        err.response.data.errors ? err.response.data.errors : null,
+      );
     }
   },
 );
