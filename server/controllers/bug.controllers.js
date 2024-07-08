@@ -1,8 +1,8 @@
 const { matchedData } = require('express-validator');
 const pool = require('../database/db.js');
 const {
-	doesProjectBelongToAccountInDB,
-	doesBugBelongToAccountInDB,
+	getIsProjectBelongingToAccountInDB,
+	getIsBugBelongingToAccountInDB,
 	getBugsFromDB,
 	getCommentsFromDB,
 } = require('../utils/queries.js');
@@ -33,12 +33,10 @@ const createBug = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const projectBelongs = await doesProjectBelongToAccountInDB(
-			account_id,
-			project_id
-		);
+		const isProjectBelongingToAccount =
+			await getIsProjectBelongingToAccountInDB(account_id, project_id);
 
-		if (!projectBelongs) {
+		if (!isProjectBelongingToAccount) {
 			throw new CustomError('Project ID does not belong to account', 403, {
 				errors: { project_id: 'Project ID does not belong to account' },
 			});
@@ -103,20 +101,21 @@ const updateBug = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const projectBelongs = await doesProjectBelongToAccountInDB(
-			account_id,
-			project_id
-		);
+		const isProjectBelongingToAccount =
+			await getIsProjectBelongingToAccountInDB(account_id, project_id);
 
-		if (!projectBelongs) {
+		if (!isProjectBelongingToAccount) {
 			throw new CustomError('Project ID does not belong to account', 403, {
 				errors: { project_id: 'Project ID does not belong to account' },
 			});
 		}
 
-		const bugBelongs = await doesBugBelongToAccountInDB(account_id, bug_id);
+		const isBugBelongingToAccount = await getIsBugBelongingToAccountInDB(
+			account_id,
+			bug_id
+		);
 
-		if (!bugBelongs) {
+		if (!isBugBelongingToAccount) {
 			throw new CustomError('Bug ID does not belong to account', 403, {
 				errors: { bug_id: 'Bug ID does not belong to account' },
 			});
@@ -174,9 +173,12 @@ const deleteBug = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const bugBelongs = await doesBugBelongToAccountInDB(account_id, bug_id);
+		const isBugBelongingToAccount = await getIsBugBelongingToAccountInDB(
+			account_id,
+			bug_id
+		);
 
-		if (!bugBelongs) {
+		if (!isBugBelongingToAccount) {
 			throw new CustomError('Bug ID does not belong to account', 403, {
 				errors: { bug_id: 'Bug ID does not belong to account' },
 			});

@@ -72,7 +72,7 @@ export const createComment = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -99,7 +99,7 @@ export const updateComment = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -121,7 +121,7 @@ export const deleteComment = createAsyncThunk(
       });
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(

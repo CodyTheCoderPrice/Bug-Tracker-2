@@ -68,7 +68,7 @@ export const createProject = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -91,7 +91,7 @@ export const updateProject = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -113,7 +113,7 @@ export const deleteProject = createAsyncThunk(
       });
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(

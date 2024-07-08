@@ -1,9 +1,9 @@
 const { matchedData } = require('express-validator');
 const pool = require('../database/db.js');
 const {
-	doesBugBelongToAccountInDB,
+	getIsBugBelongingToAccountInDB,
 	getCommentsFromDB,
-	doesCommentBelongToAccountInDB,
+	getIsCommentBelongingToAccountInDB,
 } = require('../utils/queries.js');
 const { CustomError } = require('../utils/classes.js');
 
@@ -24,9 +24,12 @@ const createComment = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const bugBelongs = await doesBugBelongToAccountInDB(account_id, bug_id);
+		const isBugBelongingToAccount = await getIsBugBelongingToAccountInDB(
+			account_id,
+			bug_id
+		);
 
-		if (!bugBelongs) {
+		if (!isBugBelongingToAccount) {
 			throw new CustomError('Bug ID does not belong to account', 403, {
 				errors: { bug_id: 'Bug ID does not belong to account' },
 			});
@@ -73,20 +76,21 @@ const updateComment = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const bugBelongs = await doesBugBelongToAccountInDB(account_id, bug_id);
+		const isBugBelongingToAccount = await getIsBugBelongingToAccountInDB(
+			account_id,
+			bug_id
+		);
 
-		if (!bugBelongs) {
+		if (!isBugBelongingToAccount) {
 			throw new CustomError('Bug ID does not belong to account', 403, {
 				errors: { bug_id: 'Bug ID does not belong to account' },
 			});
 		}
 
-		const commentBelongs = await doesCommentBelongToAccountInDB(
-			account_id,
-			comment_id
-		);
+		const isCommentBelongingToAccount =
+			await getIsCommentBelongingToAccountInDB(account_id, comment_id);
 
-		if (!commentBelongs) {
+		if (!isCommentBelongingToAccount) {
 			throw new CustomError('Comment ID does not belong to account', 403, {
 				errors: { bug_id: 'Comment ID does not belong to account' },
 			});
@@ -134,12 +138,10 @@ const deleteComment = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const commentBelongs = await doesCommentBelongToAccountInDB(
-			account_id,
-			comment_id
-		);
+		const isCommentBelongingToAccount =
+			await getIsCommentBelongingToAccountInDB(account_id, comment_id);
 
-		if (!commentBelongs) {
+		if (!isCommentBelongingToAccount) {
 			throw new CustomError('Comment ID does not belong to account', 403, {
 				errors: { bug_id: 'Comment ID does not belong to account' },
 			});

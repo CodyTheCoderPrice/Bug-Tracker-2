@@ -25,11 +25,11 @@ function TablePagingFooter(props: TProps) {
     setPageRangeText(`${lowerBound}-${upperBound} of ${props.numBugs}`);
   }, [props.pageNum, props.numBugs]);
 
-  const canPageDown = props.pageNum > 1;
-  const canPageUp = props.pageNum * homeRowsPerPage < props.numBugs;
+  const isAbleToPageDown = props.pageNum > 1;
+  const isAbleToPageUp = props.pageNum * homeRowsPerPage < props.numBugs;
 
   const pageDownOnClick = () => {
-    if (canPageDown) {
+    if (isAbleToPageDown) {
       const newPageNum = props.pageNum - 1;
       props.isDueSoon
         ? dispatch(setHomeDueSoonPage(newPageNum))
@@ -38,7 +38,7 @@ function TablePagingFooter(props: TProps) {
   };
 
   const pageUpOnClick = () => {
-    if (canPageUp) {
+    if (isAbleToPageUp) {
       const newPageNum = props.pageNum + 1;
       props.isDueSoon
         ? dispatch(setHomeDueSoonPage(newPageNum))
@@ -58,13 +58,13 @@ function TablePagingFooter(props: TProps) {
       <div className="ml-8 flex items-center text-sm">
         <button
           onClick={pageDownOnClick}
-          className={canPageDown ? "" : buttonDisabledShared}
+          className={isAbleToPageDown ? "" : buttonDisabledShared}
         >
           <FontAwesomeIcon icon={faAngleLeft} className="mr-4" />
         </button>
         <button
           onClick={pageUpOnClick}
-          className={canPageUp ? "" : buttonDisabledShared}
+          className={isAbleToPageUp ? "" : buttonDisabledShared}
         >
           <FontAwesomeIcon icon={faAngleRight} className="mr-4" />
         </button>

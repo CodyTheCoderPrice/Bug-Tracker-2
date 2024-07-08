@@ -29,7 +29,7 @@ function BugStatusButtons(props: TProps) {
     }
   };
 
-  const statusButton = (
+  const getStatusButton = (
     onClick: MouseEventHandler<HTMLButtonElement>,
     icon: string,
     title: string,
@@ -71,12 +71,12 @@ function BugStatusButtons(props: TProps) {
   return (
     <div className="mx-10 mt-10 flex flex-wrap">
       <div className="flex">
-        {statusButton(() => {}, openBugIcon, "Open Bugs", 1)}
-        {statusButton(() => {}, inProgressBugIcon, "Bugs in Progress", 2)}
+        {getStatusButton(() => {}, openBugIcon, "Open Bugs", 1)}
+        {getStatusButton(() => {}, inProgressBugIcon, "Bugs in Progress", 2)}
       </div>
       <div className="flex">
-        {statusButton(() => {}, inTestingBugIcon, "Bugs in Testing", 3)}
-        {statusButton(() => {}, closedBugIcon, "Closed Bugs", 4)}
+        {getStatusButton(() => {}, inTestingBugIcon, "Bugs in Testing", 3)}
+        {getStatusButton(() => {}, closedBugIcon, "Closed Bugs", 4)}
       </div>
     </div>
   );

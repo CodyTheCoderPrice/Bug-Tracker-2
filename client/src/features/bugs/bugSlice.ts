@@ -92,7 +92,7 @@ export const createBug = createAsyncThunk(
       const response = await axiosInstance.post("/api/v1/bugs/create", bugInfo);
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -121,7 +121,7 @@ export const updateBug = createAsyncThunk(
       const response = await axiosInstance.put("/api/v1/bugs/update", bugInfo);
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -140,7 +140,7 @@ export const deleteBug = createAsyncThunk(
       });
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(

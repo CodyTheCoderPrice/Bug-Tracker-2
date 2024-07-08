@@ -43,11 +43,11 @@ function PopUpMessages() {
     }
   }, [hasDeleteAccountSucceeded]);
 
-  const displayCreated = () => {
+  const displayCreatedOnClick = () => {
     displayMessage(setIsCreatedMsgInDom, setIsCreatedMsgCentered);
   };
 
-  const displayDeleted = () => {
+  const displayDeletedOnClick = () => {
     displayMessage(setIsDeletedMsgInDom, setIsDeletedMsgCentered);
   };
 
@@ -80,12 +80,15 @@ function PopUpMessages() {
         </div>
       )}
 
-      <button onClick={() => displayCreated()} className="absolute bottom-0">
+      <button
+        onClick={() => displayCreatedOnClick()}
+        className="absolute bottom-0"
+      >
         Display Created
       </button>
 
       <button
-        onClick={() => displayDeleted()}
+        onClick={() => displayDeletedOnClick()}
         className="absolute bottom-0 right-10"
       >
         Display Deleted

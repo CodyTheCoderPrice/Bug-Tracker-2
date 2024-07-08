@@ -13,7 +13,7 @@ const registerAccount = async (req, res, next) => {
 		const data = matchedData(req);
 		const { email, pwd, first_name, last_name } = data;
 
-		const emailInUse =
+		const isEmailBeingUsed =
 			(
 				await pool.query(
 					`SELECT account_id
@@ -23,7 +23,7 @@ const registerAccount = async (req, res, next) => {
 				)
 			).rowCount > 0;
 
-		if (emailInUse) {
+		if (isEmailBeingUsed) {
 			throw new CustomError('Email already in use', 400, {
 				errors: { email: 'Email already in use' },
 			});
@@ -101,7 +101,7 @@ const updateAccountEmail = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const emailInUse =
+		const isEmailBeingUsed =
 			(
 				await pool.query(
 					`SELECT account_id
@@ -111,7 +111,7 @@ const updateAccountEmail = async (req, res, next) => {
 				)
 			).rowCount > 0;
 
-		if (emailInUse) {
+		if (isEmailBeingUsed) {
 			throw new CustomError('Email already in use', 400, {
 				errors: { email: 'Email already in use' },
 			});

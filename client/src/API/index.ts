@@ -1,5 +1,3 @@
-import { useAppDispatch } from "@/app/hooks";
-import { logout } from "@/features/auth/authSlice";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -15,7 +13,7 @@ axiosInstance.interceptors.response.use(
     const config = err.config;
 
     // Access Token was expired
-    if (err.response.data.needRefresh) {
+    if (err.response.data.isRefreshNeeded) {
       try {
         console.log("Token needs refreshing");
         await axiosInstance.post("/api/v1/auth/refresh");
@@ -26,7 +24,7 @@ axiosInstance.interceptors.response.use(
         if (err.response.data.log) {
           console.log(err.response.data.log);
         }
-        _err.hasRefreshFailed = true;
+        _err.isLogoutNeeded = true;
         return Promise.reject(_err);
       }
     }

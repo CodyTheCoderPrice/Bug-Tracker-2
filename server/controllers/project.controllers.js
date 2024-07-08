@@ -2,7 +2,7 @@ const { matchedData } = require('express-validator');
 const pool = require('../database/db.js');
 const {
 	getProjectsFromDB,
-	doesProjectBelongToAccountInDB,
+	getIsProjectBelongingToAccountInDB,
 	getBugsFromDB,
 	getCommentsFromDB,
 } = require('../utils/queries.js');
@@ -66,12 +66,10 @@ const updateProject = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const projectBelongs = await doesProjectBelongToAccountInDB(
-			account_id,
-			project_id
-		);
+		const isProjectBelongingToAccount =
+			await getIsProjectBelongingToAccountInDB(account_id, project_id);
 
-		if (!projectBelongs) {
+		if (!isProjectBelongingToAccount) {
 			throw new CustomError('Project ID does not belong to account', 403, {
 				errors: { project_id: 'Project ID does not belong to account' },
 			});
@@ -119,12 +117,10 @@ const deleteProject = async (req, res, next) => {
 			throw new Error('res.locals missing account_id');
 		}
 
-		const projectBelongs = await doesProjectBelongToAccountInDB(
-			account_id,
-			project_id
-		);
+		const isProjectBelongingToAccount =
+			await getIsProjectBelongingToAccountInDB(account_id, project_id);
 
-		if (!projectBelongs) {
+		if (!isProjectBelongingToAccount) {
 			throw new CustomError('Project ID does not belong to account', 403, {
 				errors: { project_id: 'Project ID does not belong to account' },
 			});
@@ -156,13 +152,11 @@ const deleteProject = async (req, res, next) => {
 			throw new Error('getCommentsFromDB returned without comments array');
 		}
 
-		return res
-			.status(200)
-			.json({
-				projects: projects.rows,
-				bugs: bugs.rows,
-				comments: comments.rows,
-			});
+		return res.status(200).json({
+			projects: projects.rows,
+			bugs: bugs.rows,
+			comments: comments.rows,
+		});
 	} catch (err) {
 		err.message = `delete-project: ${err.message}`;
 		next(err);

@@ -38,11 +38,11 @@ function BugDueDatePanels(props: TProps) {
     );
   }, [bugs, overdueFilter]);
 
-  const titleHeader = (title: string) => {
+  const getTitleHeader = (title: string) => {
     return <h2 className="text-xl font-semibold">{title}</h2>;
   };
 
-  const filterButtons = (
+  const getFilterButtons = (
     setFilterFunc: Dispatch<SetStateAction<TFilter>>,
     isDueSoon: boolean,
   ) => {
@@ -94,7 +94,7 @@ function BugDueDatePanels(props: TProps) {
     );
   };
 
-  const bugTable = (isDueSoon: boolean) => {
+  const getBugTable = (isDueSoon: boolean) => {
     const bugList = isDueSoon
       ? filterBugsByPage(dueSoonBugs, homeDueSoonPage)
       : filterBugsByPage(overdueBugs, homeOverduePage);
@@ -156,9 +156,9 @@ function BugDueDatePanels(props: TProps) {
           bugTableContainerShared + (props.isWideScreen ? " mr-5" : "")
         }
       >
-        {titleHeader("Bugs Due Soon")}
-        {filterButtons(setDueSoonFilter, true)}
-        {bugTable(true)}
+        {getTitleHeader("Bugs Due Soon")}
+        {getFilterButtons(setDueSoonFilter, true)}
+        {getBugTable(true)}
         <TablePagingFooter
           isDueSoon={true}
           pageNum={homeDueSoonPage}
@@ -170,9 +170,9 @@ function BugDueDatePanels(props: TProps) {
           bugTableContainerShared + (props.isWideScreen ? " ml-5" : " mt-5")
         }
       >
-        {titleHeader("Overdue Bugs")}
-        {filterButtons(setOverdueFilter, false)}
-        {bugTable(false)}
+        {getTitleHeader("Overdue Bugs")}
+        {getFilterButtons(setOverdueFilter, false)}
+        {getBugTable(false)}
         <TablePagingFooter
           isDueSoon={false}
           pageNum={homeOverduePage}

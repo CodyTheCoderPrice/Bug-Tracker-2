@@ -44,9 +44,9 @@ async function replaceRefreshTokenInDB(account_id, refreshToken) {
  * @param {number} project_id - Project id.
  * @returns {boolean} whether the project belongs to the account.
  */
-async function doesProjectBelongToAccountInDB(account_id, project_id) {
+async function getIsProjectBelongingToAccountInDB(account_id, project_id) {
 	try {
-		const projectBelongsToAccount =
+		const isProjectBelongingToAccount =
 			(
 				await pool.query(
 					`SELECT project_id
@@ -56,7 +56,7 @@ async function doesProjectBelongToAccountInDB(account_id, project_id) {
 				)
 			).rowCount > 0;
 
-		return projectBelongsToAccount;
+		return isProjectBelongingToAccount;
 	} catch (err) {
 		throw err;
 	}
@@ -69,9 +69,9 @@ async function doesProjectBelongToAccountInDB(account_id, project_id) {
  * @param {number} bug_id - Bug id.
  * @returns {boolean} whether the bug belongs to the account.
  */
-async function doesBugBelongToAccountInDB(account_id, bug_id) {
+async function getIsBugBelongingToAccountInDB(account_id, bug_id) {
 	try {
-		const bugBelongsToAccount =
+		const isBugBelongingToAccountToAccount =
 			(
 				await pool.query(
 					`WITH p AS (
@@ -84,7 +84,7 @@ async function doesBugBelongToAccountInDB(account_id, bug_id) {
 				)
 			).rowCount > 0;
 
-		return bugBelongsToAccount;
+		return isBugBelongingToAccountToAccount;
 	} catch (err) {
 		throw err;
 	}
@@ -97,9 +97,9 @@ async function doesBugBelongToAccountInDB(account_id, bug_id) {
  * @param {number} comment_id - Comment id.
  * @returns {boolean} whether the comment belongs to the account.
  */
-async function doesCommentBelongToAccountInDB(account_id, comment_id) {
+async function getIsCommentBelongingToAccountInDB(account_id, comment_id) {
 	try {
-		const commentBelongsToAccount =
+		const isCommentBelongingToAccount =
 			(
 				await pool.query(
 					`WITH b AS (
@@ -113,7 +113,7 @@ async function doesCommentBelongToAccountInDB(account_id, comment_id) {
 				)
 			).rowCount > 0;
 
-		return commentBelongsToAccount;
+		return isCommentBelongingToAccount;
 	} catch (err) {
 		throw err;
 	}
@@ -315,9 +315,9 @@ async function getEverythingForAccountFromDB(account_id) {
 module.exports = {
 	removeRefreshTokenInDB,
 	replaceRefreshTokenInDB,
-	doesProjectBelongToAccountInDB,
-	doesBugBelongToAccountInDB,
-	doesCommentBelongToAccountInDB,
+	getIsProjectBelongingToAccountInDB,
+	getIsBugBelongingToAccountInDB,
+	getIsCommentBelongingToAccountInDB,
 	getAccountFromDB,
 	getProjectsFromDB,
 	getBugsFromDB,

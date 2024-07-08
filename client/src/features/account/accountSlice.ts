@@ -80,7 +80,7 @@ export const updateName = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -100,7 +100,7 @@ export const updateEmail = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -123,7 +123,7 @@ export const updatePassword = createAsyncThunk(
       );
       return response.data;
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -136,16 +136,16 @@ export const updatePassword = createAsyncThunk(
 export const deleteAccount = createAsyncThunk(
   "account/delete",
   async (deleteInfo: { pwd: string }, { dispatch, rejectWithValue }) => {
-    let accountDeleted = false;
+    let hasAccountBeenDeleted = false;
     try {
       await axiosInstance.delete("/api/v1/accounts/delete", {
         data: deleteInfo,
       });
-      accountDeleted = true;
+      hasAccountBeenDeleted = true;
       console.log("Account deleted");
       await axiosInstance.delete("/api/v1/auth/logout");
     } catch (err: any) {
-      if (err.hasRefreshFailed) {
+      if (err.isLogoutNeeded) {
         dispatch(logout());
       }
       return rejectWithValue(
@@ -153,7 +153,7 @@ export const deleteAccount = createAsyncThunk(
       );
     }
 
-    if (accountDeleted) {
+    if (hasAccountBeenDeleted) {
       dispatch(reset());
     }
   },

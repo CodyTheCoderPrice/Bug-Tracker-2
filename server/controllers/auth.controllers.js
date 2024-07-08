@@ -36,9 +36,12 @@ const login = async (req, res, next) => {
 			});
 		}
 
-		const correctpwd = bcrypt.compareSync(pwd, idAndHashPass.rows[0].hash_pass);
+		const isPwdCorrect = bcrypt.compareSync(
+			pwd,
+			idAndHashPass.rows[0].hash_pass
+		);
 
-		if (!correctpwd) {
+		if (!isPwdCorrect) {
 			throw new CustomError('Incorrect password', 403, {
 				errors: { pwd: 'Incorrect password' },
 			});

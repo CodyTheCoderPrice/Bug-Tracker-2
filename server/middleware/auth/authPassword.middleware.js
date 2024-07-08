@@ -32,9 +32,9 @@ async function authPassword(req, res, next) {
 			throw new Error('No hash_pass for account');
 		}
 
-		const pwdMatch = bcrypt.compareSync(pwd, dbPwd.rows[0].hash_pass);
+		const isPwdMatching = bcrypt.compareSync(pwd, dbPwd.rows[0].hash_pass);
 
-		if (!pwdMatch) {
+		if (!isPwdMatching) {
 			throw new CustomError('Incorrect password', 400, {
 				errors: { pwd: 'Incorrect password' },
 			});

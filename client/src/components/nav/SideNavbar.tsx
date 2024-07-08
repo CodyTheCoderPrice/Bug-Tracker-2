@@ -20,7 +20,7 @@ function SideNavbar() {
   const linkShared = " text-lg hover:bg-primary-500 hover:dark:bg-primary-600 ";
   const linkExpandedShared = " text-nowrap py-3 pl-6" + linkShared;
   const linkMiniShared = " py-3 text-center" + linkShared;
-  const linkSelectedShared = (path: string) => {
+  const getLinkSelectedShared = (path: string) => {
     return location.pathname === path ? " text-secondary-100 " : "";
   };
   const iconShared = " inline-block w-6 box-content align-[-5px] ";
@@ -53,28 +53,32 @@ function SideNavbar() {
           <nav className={navShared}>
             <Link
               to="/home"
-              className={linkExpandedShared + linkSelectedShared("/home")}
+              className={linkExpandedShared + getLinkSelectedShared("/home")}
             >
               <HomeIcon className={iconExpandedShared} />
               Home
             </Link>
             <Link
               to="/projects"
-              className={linkExpandedShared + linkSelectedShared("/projects")}
+              className={
+                linkExpandedShared + getLinkSelectedShared("/projects")
+              }
             >
               <ProjectIcon className={iconExpandedShared} />
               Projects
             </Link>
             <Link
               to="/bugs"
-              className={linkExpandedShared + linkSelectedShared("/bugs")}
+              className={linkExpandedShared + getLinkSelectedShared("/bugs")}
             >
               <BugIcon className={iconExpandedShared} />
               Bugs
             </Link>
             <Link
               to="/comments"
-              className={linkExpandedShared + linkSelectedShared("/comments")}
+              className={
+                linkExpandedShared + getLinkSelectedShared("/comments")
+              }
             >
               Comments
             </Link>
@@ -91,19 +95,19 @@ function SideNavbar() {
           <nav className={navShared}>
             <Link
               to="/home"
-              className={linkMiniShared + linkSelectedShared("/home")}
+              className={linkMiniShared + getLinkSelectedShared("/home")}
             >
               <HomeIcon className={iconMiniShared} />
             </Link>
             <Link
               to="/projects"
-              className={linkMiniShared + linkSelectedShared("/projects")}
+              className={linkMiniShared + getLinkSelectedShared("/projects")}
             >
               <ProjectIcon className={iconMiniShared} />
             </Link>
             <Link
               to="/bugs"
-              className={linkMiniShared + linkSelectedShared("/bugs")}
+              className={linkMiniShared + getLinkSelectedShared("/bugs")}
             >
               <BugIcon className={iconMiniShared} />
             </Link>
