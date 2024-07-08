@@ -1,5 +1,9 @@
 import { SetStateAction, useState, Dispatch, useEffect } from "react";
-import { useAppSelector } from "@/app/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/hooks";
+import {
+  setHomeDueSoonPage,
+  setHomeOverduePage,
+} from "@/features/system/systemSlice";
 import { TBug } from "@/features/bugs/bugSlice";
 import { sortBugsByDueDate } from "@/utils/sortUtils";
 import {
@@ -17,14 +21,16 @@ type TProps = {
 };
 
 function BugDueDatePanels(props: TProps) {
+  const dispatch = useAppDispatch();
+
+  const { bugs } = useAppSelector((state) => state.bugs);
+  const { hasTransition } = useAppSelector((state) => state.system);
+
   const [dueSoonFilter, setDueSoonFilter] = useState<TFilter>(0);
   const [overdueFilter, setOverdueFilter] = useState<TFilter>(0);
 
   const [dueSoonBugs, setDueSoonBugs] = useState<TBug[] | null>(null);
   const [overdueBugs, setOverdueBugs] = useState<TBug[] | null>(null);
-
-  const { bugs } = useAppSelector((state) => state.bugs);
-  const { hasTransition } = useAppSelector((state) => state.system);
 
   useEffect(() => {
     setDueSoonBugs(
@@ -46,6 +52,14 @@ function BugDueDatePanels(props: TProps) {
     setFilterFunc: Dispatch<SetStateAction<TFilter>>,
     isDueSoon: boolean,
   ) => {
+    const filterOnClick = (filter: TFilter) => {
+      setFilterFunc(filter);
+      if (isDueSoon) {
+        dispatch(setHomeDueSoonPage(1));
+      } else {
+        dispatch(setHomeOverduePage(1));
+      }
+    };
     const filterSelected = isDueSoon ? dueSoonFilter : overdueFilter;
     // Shared classNames
     const buttonShared =
@@ -55,9 +69,7 @@ function BugDueDatePanels(props: TProps) {
     return (
       <div className="mt-6 font-medium text-primary-400 dark:text-plain-light-100">
         <button
-          onClick={() => {
-            setFilterFunc(0);
-          }}
+          onClick={() => filterOnClick(0)}
           className={
             buttonShared +
             "rounded-l" +
@@ -67,9 +79,7 @@ function BugDueDatePanels(props: TProps) {
           All
         </button>
         <button
-          onClick={() => {
-            setFilterFunc(1);
-          }}
+          onClick={() => filterOnClick(1)}
           className={
             buttonShared +
             "border-l-0" +
@@ -79,9 +89,7 @@ function BugDueDatePanels(props: TProps) {
           This Week
         </button>
         <button
-          onClick={() => {
-            setFilterFunc(2);
-          }}
+          onClick={() => filterOnClick(2)}
           className={
             buttonShared +
             "rounded-r border-l-0" +

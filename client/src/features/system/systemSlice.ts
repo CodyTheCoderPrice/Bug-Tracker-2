@@ -1,4 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { deleteProject } from "../projects/projectSlice";
+import { deleteBug } from "../bugs/bugSlice";
 
 type TInitialState = {
   isDarkModeOn: boolean;
@@ -40,6 +42,18 @@ const systemSlice = createSlice({
     setHomeOverduePage: (state, action: PayloadAction<number>) => {
       state.homeOverduePage = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    // Delete Project
+    builder.addCase(deleteProject.fulfilled, (state) => {
+      state.homeDueSoonPage = 1;
+      state.homeOverduePage = 1;
+    });
+    // Delete Bug
+    builder.addCase(deleteBug.fulfilled, (state) => {
+      state.homeDueSoonPage = 1;
+      state.homeOverduePage = 1;
+    });
   },
 });
 
