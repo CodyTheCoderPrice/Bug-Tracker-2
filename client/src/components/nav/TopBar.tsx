@@ -1,9 +1,9 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import SearchBar from "./SearchBar";
+import SearchBarModal from "../modal/SearchBarModal";
 import {
-  toggleSearchBar,
+  toggleSearchBarModal,
   toggleDarkMode,
   setHasTransition,
 } from "@/features/system/systemSlice";
@@ -31,7 +31,7 @@ function TopBar() {
     }
   };
 
-  const { isSearchBarOpen, isDarkModeOn } = useAppSelector(
+  const { isSearchBarModalOpen, isDarkModeOn } = useAppSelector(
     (state) => state.system,
   );
 
@@ -53,7 +53,7 @@ function TopBar() {
         <h1 className="ml-4 font-semibold">{getPageName()}</h1>
         <div className="ml-auto">
           <button
-            onClick={() => dispatch(toggleSearchBar())}
+            onClick={() => dispatch(toggleSearchBarModal())}
             className={buttonShared + " w-[20px]"}
           >
             <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" />
@@ -84,7 +84,7 @@ function TopBar() {
       {isAccountDropdownOpen && (
         <AccountDropDown setIsDropdownOpen={setIsAccountDropdownOpen} />
       )}
-      {isSearchBarOpen && <SearchBar />}
+      {isSearchBarModalOpen && <SearchBarModal />}
     </>
   );
 }
