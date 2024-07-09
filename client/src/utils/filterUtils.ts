@@ -1,5 +1,5 @@
 import { TBug } from "@/features/bugs/bugSlice";
-import { TFilter } from "@/components/home/BugDueDatePanels";
+import { THomeFilter } from "@/features/system/systemSlice";
 import moment from "moment";
 import { homeRowsPerPage } from "./constants";
 
@@ -15,7 +15,7 @@ export const getNumBugsByStatus = (
 
 export const filterDueSoonBugsByDate = (
   bugs: TBug[] | null,
-  approach: TFilter,
+  approach: THomeFilter,
 ) => {
   if (bugs === null) {
     return null;
@@ -44,7 +44,7 @@ export const filterDueSoonBugsByDate = (
 
 export const filterOverdueBugsByDate = (
   bugs: TBug[] | null,
-  approach: TFilter,
+  approach: THomeFilter,
 ) => {
   if (bugs === null) {
     return null;

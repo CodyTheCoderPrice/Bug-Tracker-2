@@ -2,11 +2,15 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { deleteProject } from "../projects/projectSlice";
 import { deleteBug } from "../bugs/bugSlice";
 
+export type THomeFilter = 0 | 1 | 2;
+
 type TInitialState = {
   isDarkModeOn: boolean;
   hasTransition: boolean; // Used to prevent transition when turing darkmode on/off
   isNavbarExpanded: boolean;
   isSearchBarOpen: boolean;
+  homeDueSoonFilterOption: THomeFilter;
+  homeOverdueFilterOption: THomeFilter;
   homeDueSoonPage: number;
   homeOverduePage: number;
 };
@@ -16,6 +20,8 @@ const initialState: TInitialState = {
   hasTransition: true,
   isNavbarExpanded: true,
   isSearchBarOpen: false,
+  homeDueSoonFilterOption: 0,
+  homeOverdueFilterOption: 0,
   homeDueSoonPage: 1,
   homeOverduePage: 1,
 };
@@ -35,6 +41,14 @@ const systemSlice = createSlice({
     },
     toggleSearchBar: (state) => {
       state.isSearchBarOpen = !state.isSearchBarOpen;
+    },
+    setHomeDueSoonFilterOption: (state, action: PayloadAction<THomeFilter>) => {
+      state.homeDueSoonFilterOption = action.payload;
+      state.homeDueSoonPage = 1;
+    },
+    setHomeOverdueFilterOption: (state, action: PayloadAction<THomeFilter>) => {
+      state.homeOverdueFilterOption = action.payload;
+      state.homeOverduePage = 1;
     },
     setHomeDueSoonPage: (state, action: PayloadAction<number>) => {
       state.homeDueSoonPage = action.payload;
@@ -63,6 +77,8 @@ export const {
   setHasTransition,
   toggleNavbarExpanded,
   toggleSearchBar,
+  setHomeDueSoonFilterOption,
+  setHomeOverdueFilterOption,
   setHomeDueSoonPage,
   setHomeOverduePage,
 } = systemSlice.actions;

@@ -1,8 +1,9 @@
-import { SetStateAction, useState, Dispatch, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import {
-  setHomeDueSoonPage,
-  setHomeOverduePage,
+  setHomeDueSoonFilterOption,
+  setHomeOverdueFilterOption,
+  THomeFilter,
 } from "@/features/system/systemSlice";
 import { TBug } from "@/features/bugs/bugSlice";
 import { sortBugsByDueDate } from "@/utils/sortUtils";
@@ -11,10 +12,9 @@ import {
   filterBugsByPage,
   filterOverdueBugsByDate,
 } from "@/utils/filterUtils";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import moment from "moment";
 import TablePagingFooter from "../table/TablePagingFooter";
-
-export type TFilter = 0 | 1 | 2;
 
 type TProps = {
   isWideScreen: boolean;
@@ -24,43 +24,41 @@ function BugDueDatePanels(props: TProps) {
   const dispatch = useAppDispatch();
 
   const { bugs } = useAppSelector((state) => state.bugs);
-  const { hasTransition } = useAppSelector((state) => state.system);
-
-  const [dueSoonFilter, setDueSoonFilter] = useState<TFilter>(0);
-  const [overdueFilter, setOverdueFilter] = useState<TFilter>(0);
+  const { hasTransition, homeDueSoonFilterOption, homeOverdueFilterOption } =
+    useAppSelector((state) => state.system);
 
   const [dueSoonBugs, setDueSoonBugs] = useState<TBug[] | null>(null);
   const [overdueBugs, setOverdueBugs] = useState<TBug[] | null>(null);
 
   useEffect(() => {
     setDueSoonBugs(
-      sortBugsByDueDate(filterDueSoonBugsByDate(bugs, dueSoonFilter)),
+      sortBugsByDueDate(filterDueSoonBugsByDate(bugs, homeDueSoonFilterOption)),
     );
-  }, [bugs, dueSoonFilter]);
+  }, [bugs, homeDueSoonFilterOption]);
 
   useEffect(() => {
     setOverdueBugs(
-      sortBugsByDueDate(filterOverdueBugsByDate(bugs, overdueFilter)),
+      sortBugsByDueDate(filterOverdueBugsByDate(bugs, homeOverdueFilterOption)),
     );
-  }, [bugs, overdueFilter]);
+  }, [bugs, homeOverdueFilterOption]);
 
   const getTitleHeader = (title: string) => {
     return <h2 className="text-xl font-semibold">{title}</h2>;
   };
 
   const getFilterButtons = (
-    setFilterFunc: Dispatch<SetStateAction<TFilter>>,
+    setFilterFunc: ActionCreatorWithPayload<
+      THomeFilter,
+      "system/setHomeDueSoonFilterOption" | "system/setHomeOverdueFilterOption"
+    >,
     isDueSoon: boolean,
   ) => {
-    const filterOnClick = (filter: TFilter) => {
-      setFilterFunc(filter);
-      if (isDueSoon) {
-        dispatch(setHomeDueSoonPage(1));
-      } else {
-        dispatch(setHomeOverduePage(1));
-      }
+    const filterOnClick = (filter: THomeFilter) => {
+      dispatch(setFilterFunc(filter));
     };
-    const filterSelected = isDueSoon ? dueSoonFilter : overdueFilter;
+    const filterSelected = isDueSoon
+      ? homeDueSoonFilterOption
+      : homeOverdueFilterOption;
     // Shared classNames
     const buttonShared =
       (hasTransition ? " transition-bg " : "") +
@@ -165,7 +163,7 @@ function BugDueDatePanels(props: TProps) {
         }
       >
         {getTitleHeader("Bugs Due Soon")}
-        {getFilterButtons(setDueSoonFilter, true)}
+        {getFilterButtons(setHomeDueSoonFilterOption, true)}
         {getBugTable(true)}
         <TablePagingFooter
           isDueSoon={true}
@@ -179,7 +177,7 @@ function BugDueDatePanels(props: TProps) {
         }
       >
         {getTitleHeader("Overdue Bugs")}
-        {getFilterButtons(setOverdueFilter, false)}
+        {getFilterButtons(setHomeOverdueFilterOption, false)}
         {getBugTable(false)}
         <TablePagingFooter
           isDueSoon={false}
