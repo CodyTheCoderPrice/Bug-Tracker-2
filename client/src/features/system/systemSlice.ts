@@ -9,6 +9,7 @@ type TInitialState = {
   hasTransition: boolean; // Used to prevent transition when turing darkmode on/off
   isNavbarExpanded: boolean;
   isSearchBarModalOpen: boolean;
+  isCreateProjectModalOpen: boolean;
   homeDueSoonFilterOption: THomeFilter;
   homeOverdueFilterOption: THomeFilter;
   homeDueSoonPage: number;
@@ -20,6 +21,7 @@ const initialState: TInitialState = {
   hasTransition: true,
   isNavbarExpanded: true,
   isSearchBarModalOpen: false,
+  isCreateProjectModalOpen: false,
   homeDueSoonFilterOption: 0,
   homeOverdueFilterOption: 0,
   homeDueSoonPage: 1,
@@ -41,6 +43,9 @@ const systemSlice = createSlice({
     },
     toggleSearchBarModal: (state) => {
       state.isSearchBarModalOpen = !state.isSearchBarModalOpen;
+    },
+    toggleCreateProjectModal: (state) => {
+      state.isCreateProjectModalOpen = !state.isCreateProjectModalOpen;
     },
     setHomeDueSoonFilterOption: (state, action: PayloadAction<THomeFilter>) => {
       state.homeDueSoonFilterOption = action.payload;
@@ -77,6 +82,7 @@ export const {
   setHasTransition,
   toggleNavbarExpanded,
   toggleSearchBarModal,
+  toggleCreateProjectModal,
   setHomeDueSoonFilterOption,
   setHomeOverdueFilterOption,
   setHomeDueSoonPage,

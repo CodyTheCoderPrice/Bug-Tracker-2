@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/app/hooks";
 import { Link } from "react-router-dom";
+import { toggleCreateProjectModal } from "@/features/system/systemSlice";
 import { deleteProject } from "./projectSlice";
 
 function ProjectList() {
@@ -14,6 +15,13 @@ function ProjectList() {
 
   return (
     <>
+      <button
+        onClick={() => {
+          dispatch(toggleCreateProjectModal());
+        }}
+      >
+        Open Create Project Modal
+      </button>
       <h1>Projects List</h1>
       {projects?.length === 0 ? (
         <p>No projects</p>

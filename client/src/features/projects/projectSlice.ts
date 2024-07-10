@@ -126,7 +126,12 @@ export const deleteProject = createAsyncThunk(
 const projectSlice = createSlice({
   name: "projects",
   initialState,
-  reducers: {},
+  reducers: {
+    clearProjectErrors: (state) => {
+      state.createProjectErrors = null;
+      state.hasCreateProjectSucceeded = false;
+    },
+  },
   extraReducers: (builder) => {
     // Login / Relogin
     builder.addCase(
@@ -202,3 +207,4 @@ const projectSlice = createSlice({
 });
 
 export default projectSlice.reducer;
+export const { clearProjectErrors } = projectSlice.actions;
