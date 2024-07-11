@@ -1,9 +1,19 @@
 import { ReactNode } from "react";
 
-function SidePanelModal({ children }: { children: ReactNode }) {
+type TProps = {
+  children: ReactNode;
+  isOnScreen: boolean;
+};
+
+function SidePanelModal(props: TProps) {
   return (
-    <div className="bg-color-foreground-dl absolute right-0 top-0 z-10 h-full w-[500px] p-6">
-      {children}
+    <div
+      className={
+        "bg-color-foreground-dl absolute top-0 z-10 h-full w-[500px] p-6 shadow transition-right duration-300" +
+        (props.isOnScreen ? " right-0" : " right-[-500px]")
+      }
+    >
+      {props.children}
     </div>
   );
 }

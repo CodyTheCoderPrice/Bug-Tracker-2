@@ -1,5 +1,6 @@
 import { useAppSelector } from "@/app/hooks";
 import { Dispatch, useEffect, useState } from "react";
+import { timeout } from "@/utils/timeoutUtils";
 
 function PopUpMessages() {
   const { hasSucceeded } = useAppSelector((state) => state.register);
@@ -13,10 +14,6 @@ function PopUpMessages() {
   const [isDeletedMsgInDom, setIsDeletedMsgInDom] = useState<boolean>(false);
   const [isDeletedMsgCentered, setIsDeletedMsgCentered] =
     useState<boolean>(false);
-
-  function timeout(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
 
   const displayMessage = async (
     setExists: Dispatch<React.SetStateAction<boolean>>,

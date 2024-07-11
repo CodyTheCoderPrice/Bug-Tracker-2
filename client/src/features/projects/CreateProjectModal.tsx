@@ -11,6 +11,7 @@ import ErrorMessage from "@/components/form/ErrorMessage";
 import InputField from "@/components/form/InputField";
 import TextAreaField from "@/components/form/TextAreaField";
 import SubmitButton from "@/components/form/SubmitButton";
+import { timeout } from "@/utils/timeoutUtils";
 
 type TProjectInfo = {
   name: string;
@@ -32,11 +33,21 @@ function CreateProjectModal() {
     description: "",
   });
 
+  const [isModalOnScreen, setIsModalOnScreen] = useState<boolean>(false);
+
   useEffect(() => {
-    dispatch(clearProjectErrors());
+    return () => {
+      dispatch(clearProjectErrors());
+    };
   }, []);
 
-  const closeModalOnClick = () => {
+  useEffect(() => {
+    setIsModalOnScreen(true);
+  }, []);
+
+  const closeModalOnClick = async () => {
+    setIsModalOnScreen(false);
+    await timeout(300);
     dispatch(toggleCreateProjectModal());
   };
 
@@ -54,7 +65,7 @@ function CreateProjectModal() {
   return (
     <>
       <BlurredBackdrop />
-      <SidePanelModal>
+      <SidePanelModal isOnScreen={isModalOnScreen}>
         <button onClick={closeModalOnClick} className="modal-close-button">
           <FontAwesomeIcon icon={faX} />
         </button>
