@@ -66,9 +66,6 @@ function CreateProjectModal() {
     <>
       <BlurredBackdrop />
       <SidePanelModal isOnScreen={isModalOnScreen}>
-        <button onClick={closeModalOnClick} className="modal-close-button">
-          <FontAwesomeIcon icon={faX} />
-        </button>
         <ProjectIcon className="modal-icon" />
         <h2 className="modal-header">New Project</h2>
         <form
@@ -98,8 +95,12 @@ function CreateProjectModal() {
             className="modal-text-area modal-mt"
           />
           <ErrorMessage message={createProjectErrors?.description} />
-          <div className="modal-mt flex">
-            <button onClick={closeModalOnClick} className="modal-button-cancel">
+          <div className="modal-button-container">
+            <button
+              type="button"
+              onClick={closeModalOnClick}
+              className="modal-button-cancel"
+            >
               Cancel
             </button>
             <SubmitButton

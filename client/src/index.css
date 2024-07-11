@@ -97,14 +97,11 @@ body,
 }
 
 /* Side-Panel Modal */
-.modal-close-button {
-  @apply absolute right-5 top-5
-}
 .modal-icon {
-  @apply box-content inline-block w-6 align-[-5px]
+  @apply box-content inline-block w-7 align-[-7px]
 }
 .modal-header {
-  @apply ml-2 inline-block text-2xl font-medium
+  @apply ml-4 inline-block text-2xl font-semibold
 }
 .modal-form {
   @apply flex flex-col mt-5
@@ -118,6 +115,9 @@ body,
 .modal-mt {
   @apply mt-5
 }
+.modal-button-container {
+  @apply mt-7 flex
+}
 .modal-button {
   @apply w-[300px] py-3 rounded text-base align-top flex shadow-sm
 }
@@ -125,5 +125,5 @@ body,
   @apply modal-button ml-4 bg-primary-100 hover:bg-primary-200 dark:bg-primary-300 dark:hover:bg-primary-400 text-white
 }
 .modal-button-cancel {
-  @apply modal-button mr-4 justify-center bg-plain-dark-100 hover:bg-plain-dark-200 dark:bg-plain-dark-200 dark:hover:bg-plain-dark-300 text-white
+  @apply modal-button mr-4 justify-center bg-plain-light-600 hover:bg-plain-light-700 dark:bg-plain-dark-200 dark:hover:bg-plain-dark-300 text-white
 }

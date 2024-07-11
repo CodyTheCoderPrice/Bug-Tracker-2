@@ -27,6 +27,8 @@ module.exports = {
         "plain-light-300": "#dddddd",
         "plain-light-400": "#cccccc",
         "plain-light-500": "#bbbbbb",
+        "plain-light-600": "#888888",
+        "plain-light-700": "#777777",
         // Plain dark
         "plain-dark-100": "#585d65",
         "plain-dark-200": "#424956",
